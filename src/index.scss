@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+@import "utils/variables.scss";
+
+body {
+  font-family: "Raleway", sans-serif;
+  color: $default-text-color;
+}
+
+a {
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+a:hover {
+  color: $link-color;
+  border-bottom: solid 2px $link-color;
+  padding-bottom: 20px;
+}

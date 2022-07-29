@@ -1,0 +1,29 @@
+@import '../utils/variables.scss';
+
+.active {
+  color: $link-color;
+  border-bottom: solid 2px $link-color;
+  padding-bottom: 20px;
+}
+
+.label {
+  color: $default-text-color;
+}
+
+.wrapper {
+  position: relative;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+  /* --c-white */
+
+  background: white;
+}
+
+.labelStyle {
+  height: 20px;
+  line-height: 120%;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
