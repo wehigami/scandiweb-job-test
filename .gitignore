@@ -2,23 +2,9 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
 
 # production
 /build
-postcss.config.js
-tailwind.config.js
-package-lock.json
-package.json
-next.config.js
 
 # misc
 .DS_Store
