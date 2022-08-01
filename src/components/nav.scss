@@ -1,0 +1,15 @@
+@import '../utils/variables.scss';
+
+.labels {
+  a:hover {
+    border-bottom: solid 2px $link-color;
+    padding-bottom: 20px;
+  }
+}
+
+.currencyPicker {
+  p:hover {
+    background-color: #EEE;
+    cursor: pointer;
+  }
+}

@@ -1,44 +1,14 @@
 import React from "react";
 import Layout from "./components/layout";
-import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
+import { getQuery } from './lib/queries';
 
-const GET_CATEGORIES = gql`
-  query getCategories {
-    categories {
-      name
-      products {
-        id
-        name
-        inStock
-        gallery
-        description
-        category
-        brand
-        attributes {
-          name
-          items {
-            displayValue
-          }
-        }
-        prices {
-          currency {
-            label
-          }
-          amount
-        }
-      }
-    }
-  }
-`;
-console.log(GET_CATEGORIES);
-
+//get all the required data from the endpoint using graphql
 class App extends React.Component {
   render() {
     return (
-      <div>
-        <Layout />
-        <Query query={GET_CATEGORIES}>
+      <Layout navData={getQuery(0)}>
+        <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error :(</p>;
@@ -51,8 +21,12 @@ class App extends React.Component {
                       {category.products.map((product) => (
                         <li key={product.id}>
                           <h4>{product.name}</h4>
-                          {product.description}
                           <img src={product.gallery[0]} alt={product.name} />
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: product.description,
+                            }}
+                          ></div>
                         </li>
                       ))}
                     </ul>
@@ -62,7 +36,7 @@ class App extends React.Component {
             );
           }}
         </Query>
-      </div>
+      </Layout>
     );
   }
 }

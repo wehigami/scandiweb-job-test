@@ -16,19 +16,21 @@ const client = new ApolloClient({
   uri: "http://localhost:4000/",
   cache: new InMemoryCache(),
 });
+//Connect to the provided endpoint using ApolloClient
 
 const links = [
   { name: "Women", href: "women", element: <Women /> },
   { name: "Men", href: "men", element: <Men /> },
   { name: "Kids", href: "kids", element: <Kids /> },
-];
+]; 
+// I tried not to repeat myself, but passing this list as a prop all the way down to Nav component didn't really work.
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App labels={links} />} />
+        <Route path="/" element={<App />} />
         {links.map((link) => {
           return <Route path={link.href} element={link.element} key={link}/>;
         })}
