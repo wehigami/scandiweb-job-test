@@ -53,6 +53,7 @@ class Nav extends React.Component {
             gridTemplateColumns: "33% 33% 33%",
             height: "80px",
             backgroundColor: "#fff",
+
           }}
         >
           <div

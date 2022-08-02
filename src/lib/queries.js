@@ -46,6 +46,5 @@ const allQueries = [
 ];
 
 export function getQuery(x) {
-    return allQueries[x].query;
-  }
-  
+  return allQueries[x].query;
+}
