@@ -1,21 +1,19 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import navStyle from "./nav.module.scss";
-import Logo from "../imgs/logo.svg";
-import Arrow from "../imgs/arrow.svg";
-import Cart from "../imgs/Cart.svg";
+import Logo from "../../imgs/logo.svg";
+import Arrow from "../../imgs/arrow.svg";
+import Cart from "../../imgs/Cart.svg";
 import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
-
-//test
-
+import { connect } from "react-redux";
+import { setActiveCurrency } from "../../redux/currencySlice";
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = { 
       currencyActive: false,
-      currencySymbol: "$",
     };
 
   }
@@ -116,7 +114,7 @@ class Nav extends React.Component {
               }}
               onClick={this.handleCurrencyClick}
             >
-              <p>{this.state.currencySymbol}</p>
+              <p>{this.props.symbol}</p>
               <img src={Arrow} alt="Arrow" style={arrowStyle} />
             </div>
 
@@ -148,7 +146,7 @@ class Nav extends React.Component {
                               justifyContent: "center",
                               display: "flex",
                             }}
-                            onClick={() => this.handleCurrencyChange(currency.symbol)}
+                            onClick={() => this.props.setActiveCurrency(currency.symbol)}
                           >
                             {currency.symbol} {currency.label}
                           </p>
@@ -175,4 +173,10 @@ class Nav extends React.Component {
   }
 }
 
-export default Nav;
+const mapStateToProps = (state) => ({
+  label: state.activeCurrency.label,
+  symbol: state.activeCurrency.symbol,
+})
+
+const mapDispatchToProps = { setActiveCurrency };
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
