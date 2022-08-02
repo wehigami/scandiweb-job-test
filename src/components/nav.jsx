@@ -7,6 +7,8 @@ import Cart from "../imgs/Cart.svg";
 import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
 
+//test
+
 
 class Nav extends React.Component {
   constructor(props) {
