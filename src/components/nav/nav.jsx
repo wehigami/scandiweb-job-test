@@ -12,21 +12,14 @@ import { setActiveCurrency } from "../../redux/currencySlice";
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       currencyActive: false,
     };
-
   }
 
   handleCurrencyClick = () => {
     this.setState({ currencyActive: !this.state.currencyActive });
   };
-
-   handleCurrencyChange = (currentSymbol) => {
-    this.setState({ currencySymbol: currentSymbol });
-    this.setState({ currencyActive: !this.state.currencyActive });
-  }
-
 
   render() {
     const labels = [
@@ -53,7 +46,6 @@ class Nav extends React.Component {
             gridTemplateColumns: "33% 33% 33%",
             height: "80px",
             backgroundColor: "#fff",
-
           }}
         >
           <div
@@ -146,7 +138,14 @@ class Nav extends React.Component {
                               justifyContent: "center",
                               display: "flex",
                             }}
-                            onClick={() => this.props.setActiveCurrency(currency.symbol)}
+                            onClick={() => {
+                              this.props.setActiveCurrency([
+                                currency.symbol,
+                                currency.label,
+                              ]);
+
+                              this.handleCurrencyClick();
+                            }}
                           >
                             {currency.symbol} {currency.label}
                           </p>
@@ -176,7 +175,7 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
-})
+});
 
 const mapDispatchToProps = { setActiveCurrency };
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

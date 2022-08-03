@@ -9,7 +9,8 @@ export const currencySlice = createSlice({
     },
     reducers: {
         setActiveCurrency: (state, action) => {
-            state.symbol = action.payload;
+            state.symbol = action.payload[0];
+            state.label = action.payload[1];
         }
     }
 });
