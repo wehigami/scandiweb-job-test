@@ -7,7 +7,7 @@ import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
-import Dropdown from "../dropdown";
+import Dropdown from "../dropdown/dropdown";
 
 class Nav extends React.Component {
   constructor(props) {

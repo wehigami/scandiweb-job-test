@@ -1,5 +1,5 @@
 import React from "react";
-import Arrow from "../imgs/arrow.svg";
+import Arrow from "../../imgs/arrow.svg";
 import "./dropdown.scss";
 
 class Dropdown extends React.Component {
