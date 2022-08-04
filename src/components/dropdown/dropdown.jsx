@@ -15,7 +15,7 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const arrowStyle = this.props.stateProp
+    const arrowStyle = this.state.dropdownActive
       ? {
           transform: "scaleY(-1)",
           marginLeft: "5px",
@@ -38,18 +38,20 @@ class Dropdown extends React.Component {
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>
         {this.state.dropdownActive ? (
-          <div
-          className="picker"
-            style={{
-              position: "absolute",
-              top: "100px",
-              textAlign: "center",
-              width: "115px",
-              boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            {this.props.query}
-          </div>
+          this.props.category ? null : (
+            <div
+              className="picker"
+              style={{
+                position: "absolute",
+                top: "100px",
+                textAlign: "center",
+                width: "115px",
+                boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              {this.props.query}
+            </div>
+          )
         ) : null}
       </>
     );

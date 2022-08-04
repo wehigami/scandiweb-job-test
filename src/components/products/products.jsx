@@ -20,6 +20,43 @@ class Products extends React.Component {
     this.setState({ dropdownActive: !this.state.dropdownActive });
   };
   render() {
+    
+    const categoriesQuery = (
+      <Query query={getQuery(0)}>
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error :(</p>;
+          return (
+            <>
+              {data.currencies.map((currency) => (
+                <p
+                  key={currency.symbol}
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    height: 35,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                  onClick={() => {
+                    this.props.setActiveCurrency([
+                      currency.symbol,
+                      currency.label,
+                    ]);
+
+                    this.handleCurrencyClick();
+                  }}
+                >
+                  {currency.symbol} {currency.label}
+                </p>
+              ))}
+            </>
+          );
+        }}
+      </Query>
+    );
+
     return (
       <Query query={getQuery(1)}>
         {({ loading, error, data }) => {
@@ -27,21 +64,23 @@ class Products extends React.Component {
           if (error) return <p>Error :(</p>;
           return (
             <>
+              <Dropdown
+                text={this.props.category}
+                style={{
+                  textTransform: "capitalize",
+                  fontWeight: 400,
+                  fontSize: "32px",
+                }}
+                stateProp={this.state.dropdownActive}
+                click={this.handleClick}
+                query={categoriesQuery}
+                category
+              />
               {data.categories.map((category) => (
                 <div
                   key={category.name}
                   style={{ padding: "20px 100px 20px 100px" }}
                 >
-                  <Dropdown
-                    text={category.name}
-                    style={{
-                      textTransform: "capitalize",
-                      fontWeight: 400,
-                      fontSize: "32px",
-                    }}
-                    stateProp={this.state.dropdownActive}
-                    click={this.handleClick}
-                  />
                   <div
                     style={{
                       display: "grid",
