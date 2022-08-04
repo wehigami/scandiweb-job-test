@@ -2,23 +2,23 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import navStyle from "./nav.module.scss";
 import Logo from "../../imgs/logo.svg";
-import Arrow from "../../imgs/arrow.svg";
 import Cart from "../../imgs/Cart.svg";
 import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
+import Dropdown from "../dropdown";
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currencyActive: false,
+      dropdownActive: false,
     };
   }
 
   handleCurrencyClick = () => {
-    this.setState({ currencyActive: !this.state.currencyActive });
+    this.setState({ dropdownActive: !this.state.dropdownActive });
   };
 
   render() {
@@ -28,14 +28,41 @@ class Nav extends React.Component {
       { name: "Kids", href: "/kids", active: false },
     ];
 
-    const arrowStyle = this.state.currencyActive
-      ? {
-          transform: "scaleY(-1)",
-          marginLeft: "5px",
-        }
-      : {
-          marginLeft: "5px",
-        };
+    const currencyQuery = (
+      <Query query={this.props.navData}>
+        {({ loading, error, data }) => {
+          if (loading) return <p>Loading...</p>;
+          if (error) return <p>Error :(</p>;
+          return (
+            <>
+              {data.currencies.map((currency) => (
+                <p
+                  key={currency.symbol}
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    height: 35,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                  onClick={() => {
+                    this.props.setActiveCurrency([
+                      currency.symbol,
+                      currency.label,
+                    ]);
+
+                    this.handleCurrencyClick();
+                  }}
+                >
+                  {currency.symbol} {currency.label}
+                </p>
+              ))}
+            </>
+          );
+        }}
+      </Query>
+    );
 
     return (
       <nav>
@@ -96,66 +123,13 @@ class Nav extends React.Component {
               alignItems: "center",
             }}
           >
-            <div
-              className="currency"
-              style={{
-                display: "flex",
-                cursor: "pointer",
-                height: "25px",
-                alignItems: "center",
-              }}
-              onClick={this.handleCurrencyClick}
-            >
-              <p>{this.props.symbol}</p>
-              <img src={Arrow} alt="Arrow" style={arrowStyle} />
-            </div>
-
-            {this.state.currencyActive ? (
-              <div
-                className="currencyPicker"
-                style={{
-                  position: "absolute",
-                  top: "100px",
-                  textAlign: "center",
-                  width: "115px",
-                  boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <Query query={this.props.navData}>
-                  {({ loading, error, data }) => {
-                    if (loading) return <p>Loading...</p>;
-                    if (error) return <p>Error :(</p>;
-                    return (
-                      <>
-                        {data.currencies.map((currency) => (
-                          <p
-                            key={currency.symbol}
-                            style={{
-                              margin: 0,
-                              padding: 0,
-                              height: 35,
-                              alignItems: "center",
-                              justifyContent: "center",
-                              display: "flex",
-                            }}
-                            onClick={() => {
-                              this.props.setActiveCurrency([
-                                currency.symbol,
-                                currency.label,
-                              ]);
-
-                              this.handleCurrencyClick();
-                            }}
-                          >
-                            {currency.symbol} {currency.label}
-                          </p>
-                        ))}
-                      </>
-                    );
-                  }}
-                </Query>
-              </div>
-            ) : null}
+            {/*dropdown goes here*/}
+            <Dropdown
+              click={this.handleCurrencyClick}
+              text={this.props.symbol}
+              stateProp={this.state.dropdownActive}
+              query={currencyQuery}
+            />
 
             <img
               src={Cart}
