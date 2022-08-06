@@ -23,6 +23,12 @@ class Dropdown extends React.Component {
       : {
           marginLeft: "5px",
         };
+
+    const pickerStyle = {
+      marginTop: "200px",
+    };
+
+    if(this.props.category) {pickerStyle.marginTop = "10px"}
     return (
       <>
         <div
@@ -38,20 +44,12 @@ class Dropdown extends React.Component {
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>
         {this.state.dropdownActive ? (
-          this.props.category ? null : (
             <div
               className="picker"
-              style={{
-                position: "absolute",
-                top: "100px",
-                textAlign: "center",
-                width: "115px",
-                boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-              }}
+              style={pickerStyle}
             >
               {this.props.query}
             </div>
-          )
         ) : null}
       </>
     );

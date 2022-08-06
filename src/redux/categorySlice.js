@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 export const categorySlice = createSlice({
     name: 'activeCategory',
     initialState: {
-        name: 'All'
+        categoryName: 'all'
     },
     reducers: {
-        setActivename: (state, action) => {
-            state.category = action.payload;
+        setActiveCategoryName: (state, action) => {
+            state.categoryName = action.payload;
         }
     }
 });
 
 const { actions, reducer } = categorySlice;
-export const { setActiveCategory } = actions;
+export const { setActiveCategoryName } = actions;
 export default reducer;

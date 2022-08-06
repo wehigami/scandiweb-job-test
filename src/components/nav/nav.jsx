@@ -17,7 +17,7 @@ class Nav extends React.Component {
     };
   }
 
-  handleCurrencyClick = () => {
+  handleClick = () => {
     this.setState({ dropdownActive: !this.state.dropdownActive });
   };
 
@@ -52,7 +52,7 @@ class Nav extends React.Component {
                       currency.label,
                     ]);
 
-                    this.handleCurrencyClick();
+                    this.handleClick();
                   }}
                 >
                   {currency.symbol} {currency.label}
@@ -71,7 +71,6 @@ class Nav extends React.Component {
             padding: "20px 100px 20px 100px",
             display: "grid",
             gridTemplateColumns: "33% 33% 33%",
-            height: "80px",
             backgroundColor: "#fff",
           }}
         >
@@ -125,9 +124,7 @@ class Nav extends React.Component {
           >
             {/*dropdown goes here*/}
             <Dropdown
-              click={this.handleCurrencyClick}
               text={this.props.symbol}
-              stateProp={this.state.dropdownActive}
               query={currencyQuery}
             />
 
