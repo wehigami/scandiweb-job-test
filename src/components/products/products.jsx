@@ -3,6 +3,7 @@ import { getQuery } from "../../lib/queries";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
+import { setProductHover } from "../../redux/productHoverSlice";
 import { Link } from "react-router-dom";
 import Dropdown from "../dropdown/dropdown";
 import Product from "./product";
@@ -85,6 +86,8 @@ class Products extends React.Component {
                             <Link
                               to={`products/${product.id}`}
                               style={{ color: "#1D1F22", display: "contents" }}
+                              onMouseEnter={() => setProductHover(true)}
+
                             >
                               <Product
                                 productId={product.id}
@@ -123,6 +126,6 @@ const mapStateToProps = (state) => ({
   categoryName: state.activeCategory.categoryName,
 });
 
-const mapDispatchToProps = { setActiveCategoryName };
+const mapDispatchToProps = { setActiveCategoryName, setProductHover };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
