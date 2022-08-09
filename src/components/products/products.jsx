@@ -86,8 +86,6 @@ class Products extends React.Component {
                             <Link
                               to={`products/${product.id}`}
                               style={{ color: "#1D1F22", display: "contents" }}
-                              onMouseEnter={() => setProductHover(true)}
-
                             >
                               <Product
                                 productId={product.id}
@@ -124,6 +122,7 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   categoryName: state.activeCategory.categoryName,
+  hover: state.productHover.hover,
 });
 
 const mapDispatchToProps = { setActiveCategoryName, setProductHover };

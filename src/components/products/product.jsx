@@ -30,6 +30,8 @@ class Product extends React.Component {
         key={this.allProps[0]}
         style={mainDivStyle}
         className={this.props.highlightStyle}
+        onMouseEnter={() => this.props.setProductHover(true)}
+        onMouseLeave={() => this.props.setProductHover(false)}
       >
         <div
           style={{
