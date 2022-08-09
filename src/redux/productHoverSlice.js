@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export const productHoverSlice = createSlice({
     name: 'productHover',
     initialState: {
-        hover: false
+        hover: false,
+        productId: null
     },
     reducers: {
         setProductHover: (state, action) => {
-            state.hover = action.payload;
+            state.hover = action.payload[0];
+            state.productId = action.payload[1];
         }
     }
 });

@@ -58,7 +58,7 @@ class Product extends React.Component {
               Out of stock
             </span>
           ) : null}
-          {/* {this.props.hover ? (
+          {this.props.hover && this.props.productsId === this.props.productId? (
             <div
               className="cart"
               style={{
@@ -70,7 +70,7 @@ class Product extends React.Component {
             >
               <CartAdd />
             </div>
-          ) : null} */}
+          ) : null}
         </div>
 
         <h3 style={{ fontWeight: 400 }}>{this.allProps[2]}</h3>
@@ -92,7 +92,10 @@ class Product extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  hover: state.productHover.hover,
+  productsId: state.productHover.productId,
 });
 
+const mapDispatchToProps = { setProductHover };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

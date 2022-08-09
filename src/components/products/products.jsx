@@ -38,7 +38,7 @@ class Products extends React.Component {
                     alignItems: "center",
                     justifyContent: "center",
                     display: "flex",
-                    textTransform: 'capitalize'
+                    textTransform: "capitalize",
                   }}
                   onClick={() => {
                     this.props.setActiveCategoryName(category.name);
@@ -83,27 +83,45 @@ class Products extends React.Component {
                       >
                         {category.products.map((product) =>
                           product.inStock ? (
-                            <Link
-                              to={`products/${product.id}`}
-                              style={{ color: "#1D1F22", display: "contents" }}
-                            >
+                              <Link
+                                to={`products/${product.id}`}
+                                style={{
+                                  color: "#1D1F22",
+                                  display: "contents",
+                                }}
+                                onMouseEnter={() =>
+                                  this.props.setProductHover([
+                                    true,
+                                    product.id,
+                                  ])
+                                }
+                                onMouseLeave={() =>
+                                  this.props.setProductHover([false, null])
+                                }
+                                key={product.id}
+                              >
+                                <Product
+                                  productId={product.id}
+                                  productImg={product.gallery[0]}
+                                  productName={product.name}
+                                  productPrices={product.prices}
+                                  highlightStyle={style.productHighlight}
+                                />
+                              </Link>
+                            
+                          ) : (
+                            <div key={product.id}>
+                              {/* <div>
+                                <CartAdd />
+                              </div> */}
                               <Product
                                 productId={product.id}
                                 productImg={product.gallery[0]}
                                 productName={product.name}
                                 productPrices={product.prices}
-                                highlightStyle={style.productHighlight}
-                                
+                                notInStock
                               />
-                            </Link>
-                          ) : (
-                            <Product
-                              productId={product.id}
-                              productImg={product.gallery[0]}
-                              productName={product.name}
-                              productPrices={product.prices}
-                              notInStock
-                            />
+                            </div>
                           )
                         )}
                       </div>
