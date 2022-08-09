@@ -93,6 +93,7 @@ class Products extends React.Component {
                                 productName={product.name}
                                 productPrices={product.prices}
                                 highlightStyle={style.productHighlight}
+                                
                               />
                             </Link>
                           ) : (
