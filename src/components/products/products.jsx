@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "../dropdown/dropdown";
 import Product from "./product";
 import style from "./products.module.scss";
+import CartAdd from "./cartadd";
 
 class Products extends React.Component {
   constructor(props) {
@@ -54,6 +55,24 @@ class Products extends React.Component {
       </Query>
     );
 
+    const mainDivStyle = {
+      background: "#fff",
+      height: "500px",
+      margin: 40,
+      padding: 15,
+      zIndex: 1,
+      opacity: 1,
+    };
+
+    const opacityDivStyle = {
+      background: "#fff",
+      height: "500px",
+      margin: 40,
+      padding: 15,
+      zIndex: 1,
+      opacity: 0.5,
+    };
+
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
         <Dropdown
@@ -78,11 +97,25 @@ class Products extends React.Component {
                       <div
                         style={{
                           display: "grid",
-                          gridTemplateColumns: "33% 33% 33%",
+                          gridTemplateColumns: "repeat(3, 1fr)",
                         }}
                       >
                         {category.products.map((product) =>
                           product.inStock ? (
+                            <div
+                              key={product.id}
+                              style={mainDivStyle}
+                              className={style.productHighlight}
+                            >
+                              {this.props.hover &&
+                              this.props.productsId === product.id? (
+                                <div
+                                  className="cart"
+                                  style={{}}
+                                >
+                                  <CartAdd />
+                                </div>
+                              ) : null}
                               <Link
                                 to={`products/${product.id}`}
                                 style={{
@@ -90,10 +123,7 @@ class Products extends React.Component {
                                   display: "contents",
                                 }}
                                 onMouseEnter={() =>
-                                  this.props.setProductHover([
-                                    true,
-                                    product.id,
-                                  ])
+                                  this.props.setProductHover([true, product.id])
                                 }
                                 onMouseLeave={() =>
                                   this.props.setProductHover([false, null])
@@ -108,12 +138,9 @@ class Products extends React.Component {
                                   highlightStyle={style.productHighlight}
                                 />
                               </Link>
-                            
+                            </div>
                           ) : (
-                            <div key={product.id}>
-                              {/* <div>
-                                <CartAdd />
-                              </div> */}
+                            <div key={product.id} style={opacityDivStyle}>
                               <Product
                                 productId={product.id}
                                 productImg={product.gallery[0]}
@@ -142,6 +169,7 @@ const mapStateToProps = (state) => ({
   symbol: state.activeCurrency.symbol,
   categoryName: state.activeCategory.categoryName,
   hover: state.productHover.hover,
+  productsId: state.productHover.productId,
 });
 
 const mapDispatchToProps = { setActiveCategoryName, setProductHover };
