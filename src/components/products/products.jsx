@@ -56,22 +56,18 @@ class Products extends React.Component {
     );
 
     const mainDivStyle = {
+      display: 'flex',
+      flexDirection: 'column',
       background: "#fff",
       height: "500px",
       margin: 40,
       padding: 15,
       zIndex: 1,
-      opacity: 1,
     };
-
-    const opacityDivStyle = {
-      background: "#fff",
-      height: "500px",
-      margin: 40,
-      padding: 15,
-      zIndex: 1,
+    let opacityDivStyle = {
+      ...mainDivStyle,
       opacity: 0.5,
-    };
+    }
 
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
@@ -106,13 +102,16 @@ class Products extends React.Component {
                               key={product.id}
                               style={mainDivStyle}
                               className={style.productHighlight}
+                              onMouseEnter={() =>
+                                this.props.setProductHover([true, product.id])
+                              }
+                              onMouseLeave={() =>
+                                this.props.setProductHover([false, null])
+                              }
                             >
                               {this.props.hover &&
-                              this.props.productsId === product.id? (
-                                <div
-                                  className="cart"
-                                  style={{}}
-                                >
+                              this.props.productsId === product.id ? (
+                                <div className="cart" >
                                   <CartAdd />
                                 </div>
                               ) : null}
@@ -122,12 +121,6 @@ class Products extends React.Component {
                                   color: "#1D1F22",
                                   display: "contents",
                                 }}
-                                onMouseEnter={() =>
-                                  this.props.setProductHover([true, product.id])
-                                }
-                                onMouseLeave={() =>
-                                  this.props.setProductHover([false, null])
-                                }
                                 key={product.id}
                               >
                                 <Product

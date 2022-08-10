@@ -11,39 +11,33 @@ class Product extends React.Component {
   ];
 
   render() {
-
     return (
       <>
+        <div
+          style={{
+            backgroundImage: `url(${this.allProps[1]})`,
+            height: 400,
+            width: "100%",
+            backgroundSize: "cover",
+            backgroundPosition: "90% 10%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {this.props.notInStock ? (
+            <span
+              style={{
+                fontSize: 24,
+                textTransform: "uppercase",
+              }}
+            >
+              Out of stock
+            </span>
+          ) : null}
+        </div>
 
-          <div
-            style={{
-              backgroundImage: `url(${this.allProps[1]})`,
-              height: 400,
-              width: "auto",
-              backgroundSize: "cover",
-              backgroundPosition: "90% 10%",
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gridTemplateRows: "repeat(3, 1fr)",
-              gridTemplateAreas: "'a a a' 'b center d' 'v v end'",
-            }}
-          >
-            {this.props.notInStock ? (
-              <span
-                style={{
-                  fontSize: 24,
-                  textTransform: "uppercase",
-                  gridArea: "center",
-                  justifySelf: "center",
-                  alignSelf: "center",
-                }}
-              >
-                Out of stock
-              </span>
-            ) : null}
-
-          </div>
-
+        <div>
           <h3 style={{ fontWeight: 400 }}>{this.allProps[2]}</h3>
           {this.allProps[3].map((price) => (
             <div key={price.amount}>
@@ -55,8 +49,8 @@ class Product extends React.Component {
               ) : null}
             </div>
           ))}
+        </div>
       </>
-      
     );
   }
 }
@@ -66,6 +60,5 @@ const mapStateToProps = (state) => ({
   symbol: state.activeCurrency.symbol,
   hover: state.productHover.hover,
 });
-
 
 export default connect(mapStateToProps)(Product);

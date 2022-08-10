@@ -6,18 +6,17 @@ class CartAdd extends React.Component {
     let surfaceStyle = {
       width: 52,
       height: 52,
-      background: "#5ECE7B",
-      transition: "all 0.3s ease-in-out",
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: '50%',
       position: 'absolute',
-      zIndex: '2'
-
+      zIndex: '2',
+      background: '#5ECE7B',
     };
+
     return (
-      <>
+      <div>
         <div style={surfaceStyle} className="surface">
           <img
             src={Cart}
@@ -29,7 +28,7 @@ class CartAdd extends React.Component {
             height="24px"
           />
         </div>
-      </>
+      </div>
     );
   }
 }

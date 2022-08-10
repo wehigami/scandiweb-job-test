@@ -55,7 +55,7 @@ class Nav extends React.Component {
                     this.handleClick();
                   }}
                 >
-                  {currency.symbol} {currency.label}
+                  <strong>{currency.symbol}<br /></strong>{currency.label}
                 </p>
               ))}
             </>
@@ -126,6 +126,7 @@ class Nav extends React.Component {
             <Dropdown
               text={this.props.symbol}
               query={currencyQuery}
+              nav
             />
 
             <img

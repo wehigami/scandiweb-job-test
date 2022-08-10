@@ -28,7 +28,9 @@ class Dropdown extends React.Component {
       marginTop: "200px",
     };
 
-    if(this.props.category) {pickerStyle.marginTop = "10px"}
+    if (this.props.category) {
+      pickerStyle.marginTop = "10px";
+    }
     return (
       <>
         <div
@@ -40,16 +42,15 @@ class Dropdown extends React.Component {
           }}
           onClick={this.handleClick}
         >
-          <p style={this.props.style}>{this.props.text}</p>
+          <p style={this.props.style}>
+            {this.props.nav ? (<strong>{this.props.text}</strong>) : this.props.text}
+          </p>
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>
         {this.state.dropdownActive ? (
-            <div
-              className="picker"
-              style={pickerStyle}
-            >
-              {this.props.query}
-            </div>
+          <div className="picker" style={pickerStyle}>
+            {this.props.query}
+          </div>
         ) : null}
       </>
     );
