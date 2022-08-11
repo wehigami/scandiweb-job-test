@@ -6,16 +6,16 @@ import { Query } from "@apollo/client/react/components";
 class Cart extends React.Component {
   render() {
     return (
-      <>
+      <div style={{height: 680, width: 325, background: 'red', position: 'absolute', zIndex: '2'}}>
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error :(</p>;
             return (
-              <>
-                <h3>
-                  <strong>My Bag.</strong> {this.props.cart.length} items
-                </h3>
+              <div>
+                <p>
+                  <strong>My Bag.</strong> {this.props.cart.length} {this.props.cart.length === 1 ? "item" : "items"}
+                </p>
                 {data.categories.map((category) => (
                   <div key={category.name}>
                     {category.products.map((product) =>
@@ -30,11 +30,11 @@ class Cart extends React.Component {
                     )}
                   </div>
                 ))}
-              </>
+              </div>
             );
           }}
         </Query>
-      </>
+      </div>
     );
   }
 }

@@ -137,9 +137,7 @@ class Nav extends React.Component {
               style={{ marginLeft: "20px", cursor: "pointer" }}
               onClick={() => console.log(this.props.cart)}
             />
-            <div style={{ position: "absolute" }}>
-              <CartComponent></CartComponent>
-            </div>
+            
           </div>
         </section>
       </nav>
