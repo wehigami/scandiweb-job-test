@@ -8,7 +8,6 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import Dropdown from "../dropdown/dropdown";
-import CartComponent from "../cart/cart";
 
 class Nav extends React.Component {
   constructor(props) {
@@ -137,7 +136,6 @@ class Nav extends React.Component {
               style={{ marginLeft: "20px", cursor: "pointer" }}
               onClick={() => console.log(this.props.cart)}
             />
-            
           </div>
         </section>
       </nav>

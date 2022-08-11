@@ -6,7 +6,7 @@ import { Query } from "@apollo/client/react/components";
 class Cart extends React.Component {
   render() {
     return (
-      <div style={{height: 680, width: 325, background: 'red', position: 'absolute', zIndex: '2'}}>
+      <div style={{height: 680, width: 325, background: 'red', position: 'absolute', zIndex: '2', marginRight: 32}}>
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
