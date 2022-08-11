@@ -8,6 +8,7 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import Dropdown from "../dropdown/dropdown";
+import CartComponent from "../cart/cart";
 
 class Nav extends React.Component {
   constructor(props) {
@@ -55,7 +56,11 @@ class Nav extends React.Component {
                     this.handleClick();
                   }}
                 >
-                  <strong>{currency.symbol}<br /></strong>{currency.label}
+                  <strong>
+                    {currency.symbol}
+                    <br />
+                  </strong>
+                  {currency.label}
                 </p>
               ))}
             </>
@@ -123,18 +128,18 @@ class Nav extends React.Component {
             }}
           >
             {/*dropdown goes here*/}
-            <Dropdown
-              text={this.props.symbol}
-              query={currencyQuery}
-              nav
-            />
+            <Dropdown text={this.props.symbol} query={currencyQuery} nav />
 
             <img
               src={Cart}
-              alt="Cart"
+              alt="cart"
               width={20}
-              style={{ marginLeft: "20px" }}
+              style={{ marginLeft: "20px", cursor: "pointer" }}
+              onClick={() => console.log(this.props.cart)}
             />
+            <div style={{ position: "absolute" }}>
+              <CartComponent></CartComponent>
+            </div>
           </div>
         </section>
       </nav>
@@ -145,6 +150,7 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  cart: state.addToCart,
 });
 
 const mapDispatchToProps = { setActiveCurrency };

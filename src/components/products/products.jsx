@@ -111,8 +111,8 @@ class Products extends React.Component {
                             >
                               {this.props.hover &&
                               this.props.productsId === product.id ? (
-                                <div className="cart" >
-                                  <CartAdd />
+                                <div className="cart" style={{ margin: '370px 0 0 390px', position: 'absolute'}}>
+                                  <CartAdd productId={product.id}/>
                                 </div>
                               ) : null}
                               <Link
@@ -158,8 +158,6 @@ class Products extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  label: state.activeCurrency.label,
-  symbol: state.activeCurrency.symbol,
   categoryName: state.activeCategory.categoryName,
   hover: state.productHover.hover,
   productsId: state.productHover.productId,
