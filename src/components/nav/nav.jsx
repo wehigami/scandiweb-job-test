@@ -7,6 +7,7 @@ import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
+import { setCartClick } from "../../redux/cartClickSlice";
 import Dropdown from "../dropdown/dropdown";
 
 class Nav extends React.Component {
@@ -69,75 +70,76 @@ class Nav extends React.Component {
     );
 
     return (
-      <nav>
-        <section
+      <nav
+        style={{
+          padding: "20px 100px 20px 100px",
+          display: "grid",
+          gridTemplateColumns: "33% 33% 33%",
+          backgroundColor: "#fff",
+          position: 'relative',
+          zIndex: '3',
+
+        }}
+      >
+        <div
+          className="labels"
           style={{
-            padding: "20px 100px 20px 100px",
-            display: "grid",
-            gridTemplateColumns: "33% 33% 33%",
-            backgroundColor: "#fff",
+            display: "flex",
+            justifySelf: "start",
+            alignSelf: "center",
           }}
         >
-          <div
-            className="labels"
-            style={{
-              display: "flex",
-              justifySelf: "start",
-              alignSelf: "center",
-            }}
-          >
-            {labels.map((label) => {
-              return (
-                <div
-                  style={{ textTransform: "uppercase", marginRight: "20px" }}
-                  key={label.name}
+          {labels.map((label) => {
+            return (
+              <div
+                style={{ textTransform: "uppercase", marginRight: "20px" }}
+                key={label.name}
+              >
+                <NavLink
+                  to={label.href}
+                  className={({ isActive }) =>
+                    isActive ? navStyle.active : navStyle.label
+                  }
                 >
-                  <NavLink
-                    to={label.href}
-                    className={({ isActive }) =>
-                      isActive ? navStyle.active : navStyle.label
-                    }
-                  >
-                    <span>{label.name}</span>
-                  </NavLink>
-                </div>
-              );
-            })}
-          </div>
+                  <span>{label.name}</span>
+                </NavLink>
+              </div>
+            );
+          })}
+        </div>
 
-          <div
-            className="logo"
-            style={{
-              textAlign: "center",
-              justifySelf: "center",
-              alignSelf: "center",
-            }}
-          >
-            <NavLink to="/">
-              <img src={Logo} alt="logo" height={41} />
-            </NavLink>
-          </div>
+        <div
+          className="logo"
+          style={{
+            textAlign: "center",
+            justifySelf: "center",
+            alignSelf: "center",
+          }}
+        >
+          <NavLink to="/">
+            <img src={Logo} alt="logo" height={41} />
+          </NavLink>
+        </div>
 
-          <div
-            className="actions"
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "center",
-            }}
-          >
-            {/*dropdown goes here*/}
-            <Dropdown text={this.props.symbol} query={currencyQuery} nav />
+        <div
+          className="actions"
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+          }}
+        >
+          {/*dropdown goes here*/}
+          <Dropdown text={this.props.symbol} query={currencyQuery} nav />
 
-            <img
-              src={Cart}
-              alt="cart"
-              width={20}
-              style={{ marginLeft: "20px", cursor: "pointer" }}
-              onClick={() => console.log(this.props.cart)}
-            />
-          </div>
-        </section>
+          <img
+            src={Cart}
+            alt="cart"
+            width={20}
+            style={{ marginLeft: "20px", cursor: "pointer" }}
+            onClick={() => this.props.setCartClick()}
+          />
+        </div>
       </nav>
     );
   }
@@ -149,5 +151,5 @@ const mapStateToProps = (state) => ({
   cart: state.addToCart,
 });
 
-const mapDispatchToProps = { setActiveCurrency };
+const mapDispatchToProps = { setActiveCurrency, setCartClick };
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);
