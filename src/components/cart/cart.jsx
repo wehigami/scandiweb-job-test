@@ -5,6 +5,7 @@ import { Query } from "@apollo/client/react/components";
 
 class Cart extends React.Component {
   render() {
+    const uniqueItems = new Set(this.props.cart);
     return (
       <div style={{height: 680, width: 325, background: 'red', position: 'absolute', zIndex: '2', marginRight: 32}}>
         <Query query={getQuery(1)}>
@@ -19,14 +20,11 @@ class Cart extends React.Component {
                 {data.categories.map((category) => (
                   <div key={category.name}>
                     {category.products.map((product) =>
-                      this.props.cart.map((item) =>
-                        product.id === item ? (
-                          <div>
-                            <div>test</div>
-                            <div>tester</div>
-                          </div>
-                        ) : null
-                      )
+                      uniqueItems.has(product.id) ? (
+                        <div>
+                          <div>{product.name}</div>
+                        </div>
+                      ) : null
                     )}
                   </div>
                 ))}
