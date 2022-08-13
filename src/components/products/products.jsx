@@ -69,6 +69,15 @@ class Products extends React.Component {
       opacity: 0.5,
     }
 
+    function productPrice(product) {
+      let amount;
+      product.prices.map((price) => {
+        amount = price.amount;
+        return amount;
+      })
+
+    }
+
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
         <Dropdown
@@ -112,7 +121,7 @@ class Products extends React.Component {
                               {this.props.hover &&
                               this.props.productsId === product.id ? (
                                 <div className="cart" style={{ margin: '370px 0 0 390px', position: 'absolute'}}>
-                                  <CartAdd productId={product.id}/>
+                                  <CartAdd productId={product.id} productPrice={productPrice(product)}/>
                                 </div>
                               ) : null}
                               <Link

@@ -1,7 +1,7 @@
 import React from "react";
 import Cart from "../../imgs/Cart.svg";
 import { connect } from "react-redux";
-import { setCart } from "../../redux/cartSlice";
+import { setCart, setCartPrices } from "../../redux/cartSlice";
 
 class CartAdd extends React.Component {
   render() {
@@ -19,7 +19,10 @@ class CartAdd extends React.Component {
 
     return (
       <div>
-        <div style={surfaceStyle} className="surface" onClick={() => this.props.setCart(this.props.productId)}>
+        <div style={surfaceStyle} className="surface" onClick={() => {
+          this.props.setCart(this.props.productId)
+          this.props.setCartPrices(this.props.productPrice)
+          }}>
           <img
             src={Cart}
             alt="cart"
@@ -36,10 +39,10 @@ class CartAdd extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cart: state.addToCart
+  cart: state.addToCart.cart
 });
 
-const mapDispatchToProps = { setCart };
+const mapDispatchToProps = { setCart, setCartPrices };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartAdd);

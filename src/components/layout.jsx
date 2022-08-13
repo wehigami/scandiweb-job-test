@@ -1,6 +1,7 @@
 import React from "react";
 import Nav from "./nav/nav";
 import CartComponent from "../components/cart/cart";
+import { setCartClick } from "../redux/cartClickSlice";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
@@ -14,8 +15,9 @@ class Layout extends React.Component {
               height: "100%",
               background: "rgba(0, 0, 0, 0.3)",
               position: "fixed",
-              zIndex: "2",
+              zIndex: "3",
             }}
+            onClick={() => this.props.setCartClick()}
           />
         ) : null}
         <Nav navData={this.props.navData} />
@@ -32,4 +34,7 @@ const mapStateToProps = (state) => ({
   cartClick: state.cartClick.cartClicked,
 });
 
-export default connect(mapStateToProps)(Layout);
+const mapDispatchToProps = { setCartClick };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
