@@ -6,6 +6,7 @@ import {
   setCart,
   setCartDecrement,
   setCartPrices,
+  setCartPricesRemove,
 } from "../../redux/cartSlice";
 
 class Cart extends React.Component {
@@ -29,13 +30,11 @@ class Cart extends React.Component {
     };
 
     let totalPriceArr = [];
-    let totalPrice = 0;
 
     const itemPrice = (priceAmount, productId) => {
-      let price = parseFloat(priceAmount) * itemAmount(productId);
-      totalPriceArr.push(price.toFixed(2));
-      totalPrice = totalPriceArr.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
-      return price.toFixed(2);
+      let price = (parseFloat(priceAmount) * itemAmount(productId)).toFixed(2);
+      totalPriceArr.push(price);
+      return price;
     };
 
     return this.props.cartClick ? (
@@ -84,7 +83,7 @@ class Cart extends React.Component {
                         <p>{product.name}</p>
                         {product.prices.map((price) =>
                           this.props.label === price.currency.label ? (
-                            <p key={price.amount}>
+                            <p key={price.amount} style={{fontWeight: 600}}>
                               <span>{this.props.symbol}</span>
                               <span>{itemPrice(price.amount, product.id)}</span>
                             </p>
@@ -101,7 +100,17 @@ class Cart extends React.Component {
                       >
                         <button
                           style={countBtnStyle}
-                          onClick={() => this.props.setCart(product.id)}
+                          onClick={() => {
+                            this.props.setCart(product.id);
+                            this.props.setCartPrices(
+                              product.prices
+                                .filter(
+                                  (price) =>
+                                    this.props.label === price.currency.label
+                                )
+                                .map((price) => price.amount)
+                            );
+                          }}
                         >
                           +
                         </button>
@@ -115,9 +124,17 @@ class Cart extends React.Component {
                         </div>
                         <button
                           style={{ ...countBtnStyle, alignSelf: "end" }}
-                          onClick={() =>
-                            this.props.setCartDecrement(product.id)
-                          }
+                          onClick={() => {
+                            this.props.setCartDecrement(product.id);
+                            this.props.setCartPricesRemove(
+                              product.prices
+                                .filter(
+                                  (price) =>
+                                    this.props.label === price.currency.label
+                                )
+                                .map((price) => price.amount)
+                            );
+                          }}
                         >
                           -
                         </button>
@@ -146,8 +163,11 @@ class Cart extends React.Component {
             margin: "20px 0",
           }}
         >
-          <p style={{ gridArea: "a" }}>Total</p>
-          <p style={{ gridArea: "b", justifySelf: "end" }}>{totalPrice}</p>
+          <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
+          <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
+            {this.props.symbol}
+            {this.props.cartPrice.toFixed(2)}
+          </p>
           <button style={{ ...btnStyle, gridArea: "c" }}>view bag</button>
           <button style={{ ...btnStyle, gridArea: "d" }}>check out</button>
         </div>
@@ -163,6 +183,11 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
 });
-const mapDispatchToProps = { setCart, setCartDecrement, setCartPrices };
+const mapDispatchToProps = {
+  setCart,
+  setCartDecrement,
+  setCartPrices,
+  setCartPricesRemove,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

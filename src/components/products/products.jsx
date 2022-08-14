@@ -4,6 +4,7 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
+import { setCartPrices } from "../../redux/cartSlice";
 import { Link } from "react-router-dom";
 import Dropdown from "../dropdown/dropdown";
 import Product from "./product";
@@ -69,7 +70,6 @@ class Products extends React.Component {
       opacity: 0.5,
     };
 
-
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
         <Dropdown
@@ -118,10 +118,21 @@ class Products extends React.Component {
                                     margin: "370px 0 0 390px",
                                     position: "absolute",
                                   }}
+                                  onClick={() => {
+                                    this.props.setCartPrices(
+                                      product.prices
+                                        .filter(
+                                          (price) =>
+                                            this.props.label ===
+                                            price.currency.label
+                                        )
+                                        .map((price) =>
+                                           [price.amount]
+                                        )
+                                    );
+                                  }}
                                 >
-                                  <CartAdd
-                                    productId={product.id}
-                                  />
+                                  <CartAdd productId={product.id} />
                                 </div>
                               ) : null}
                               <Link
@@ -173,6 +184,6 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
 });
 
-const mapDispatchToProps = { setActiveCategoryName, setProductHover };
+const mapDispatchToProps = { setActiveCategoryName, setProductHover, setCartPrices };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

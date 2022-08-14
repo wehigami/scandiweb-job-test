@@ -4,7 +4,7 @@ export const cartSlice = createSlice({
   name: "addToCart",
   initialState: {
     cart: [],
-    cartPrices: [],
+    cartPrices: 0,
   },
   reducers: {
     setCart(state, action) {
@@ -17,11 +17,18 @@ export const cartSlice = createSlice({
       }
     },
     setCartPrices(state, action) {
-      state.cartPrices.push(action.payload);
+      state.cartPrices += parseFloat(action.payload);
+    },
+    setCartPricesRemove(state, action) {
+      // let index = state.cartPrices.indexOf(parseFloat(action.payload));
+      // if (index !== -1) {
+      //   state.cartPrices.splice(index, 1);
+      // }
+      state.cartPrices -= parseFloat(action.payload);
     },
   },
 });
 
 const { actions, reducer } = cartSlice;
-export const { setCart, setCartDecrement, setCartPrices } = actions;
+export const { setCart, setCartDecrement, setCartPrices, setCartPricesRemove } = actions;
 export default reducer;
