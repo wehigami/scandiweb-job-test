@@ -15,7 +15,9 @@ class Cart extends React.Component {
 
     const btnStyle = {
       alignSelf: "end",
-      height: 40,
+      height: 45,
+      textTransform: 'uppercase',
+      fontWeight: 600,
     };
 
     const countBtnStyle = {
@@ -29,11 +31,8 @@ class Cart extends React.Component {
       return this.props.cart.filter((v) => v === productId).length;
     };
 
-    let totalPriceArr = [];
-
     const itemPrice = (priceAmount, productId) => {
       let price = (parseFloat(priceAmount) * itemAmount(productId)).toFixed(2);
-      totalPriceArr.push(price);
       return price;
     };
 
@@ -64,7 +63,8 @@ class Cart extends React.Component {
               <div
                 style={{
                   height: "100%",
-                  overflow: "hidden",
+                  overflow: "scroll",
+                  scrollbarWidth: "none",
                 }}
               >
                 {data.categories[0].products.map((product) =>
@@ -83,7 +83,7 @@ class Cart extends React.Component {
                         <p>{product.name}</p>
                         {product.prices.map((price) =>
                           this.props.label === price.currency.label ? (
-                            <p key={price.amount} style={{fontWeight: 600}}>
+                            <p key={price.amount} style={{ fontWeight: 600 }}>
                               <span>{this.props.symbol}</span>
                               <span>{itemPrice(price.amount, product.id)}</span>
                             </p>
@@ -143,7 +143,7 @@ class Cart extends React.Component {
                       <div
                         style={{
                           backgroundImage: `url(${product.gallery[0]})`,
-                          backgroundSize: "150%",
+                          backgroundSize: "170%",
                           backgroundPosition: "center",
                         }}
                       />
@@ -160,16 +160,25 @@ class Cart extends React.Component {
             gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
             columnGap: 10,
             gridTemplateAreas: "'a b' 'c d'",
-            margin: "20px 0",
+            margin: "30px 0",
           }}
         >
           <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
           <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
             {this.props.symbol}
-            {this.props.cartPrice.toFixed(2)}
+            {uniqueItems.size >= 1 ? String(this.props.cartPrice.toFixed(2)) : "0.00"}
           </p>
-          <button style={{ ...btnStyle, gridArea: "c" }}>view bag</button>
-          <button style={{ ...btnStyle, gridArea: "d" }}>check out</button>
+          <button
+            style={{
+              ...btnStyle,
+              gridArea: "c",
+              background: "#fff",
+              border: "1px solid #1D1F22",
+            }}
+          >
+            view bag
+          </button>
+          <button style={{ ...btnStyle, gridArea: "d", background: '#5ECE7B', color: '#fff', border: 'none' }}>check out</button>
         </div>
       </div>
     ) : null;

@@ -28,6 +28,7 @@ class CartAdd extends React.Component {
             style={{
               filter:
                 "invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(200%) contrast(119%)",
+                userSelect: 'none'
             }}
             height="24px"
           />

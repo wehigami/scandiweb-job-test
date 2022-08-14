@@ -26,6 +26,7 @@ class Dropdown extends React.Component {
 
     const pickerStyle = {
       marginTop: "200px",
+      userSelect: 'none'
     };
 
     if (this.props.category) {
@@ -39,6 +40,7 @@ class Dropdown extends React.Component {
             cursor: "pointer",
             height: "25px",
             alignItems: "center",
+            userSelect: "none",
           }}
           onClick={this.handleClick}
         >
