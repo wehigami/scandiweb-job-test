@@ -21,7 +21,6 @@ class CartAdd extends React.Component {
       <div>
         <div style={surfaceStyle} className="surface" onClick={() => {
           this.props.setCart(this.props.productId)
-          this.props.setCartPrices(this.props.productPrice)
           }}>
           <img
             src={Cart}

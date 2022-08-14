@@ -56,8 +56,8 @@ class Products extends React.Component {
     );
 
     const mainDivStyle = {
-      display: 'flex',
-      flexDirection: 'column',
+      display: "flex",
+      flexDirection: "column",
       background: "#fff",
       height: "500px",
       margin: 40,
@@ -67,16 +67,8 @@ class Products extends React.Component {
     let opacityDivStyle = {
       ...mainDivStyle,
       opacity: 0.5,
-    }
+    };
 
-    function productPrice(product) {
-      let amount;
-      product.prices.map((price) => {
-        amount = price.amount;
-        return amount;
-      })
-
-    }
 
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
@@ -120,8 +112,16 @@ class Products extends React.Component {
                             >
                               {this.props.hover &&
                               this.props.productsId === product.id ? (
-                                <div className="cart" style={{ margin: '370px 0 0 390px', position: 'absolute'}}>
-                                  <CartAdd productId={product.id} productPrice={productPrice(product)}/>
+                                <div
+                                  className="cart"
+                                  style={{
+                                    margin: "370px 0 0 390px",
+                                    position: "absolute",
+                                  }}
+                                >
+                                  <CartAdd
+                                    productId={product.id}
+                                  />
                                 </div>
                               ) : null}
                               <Link
@@ -170,6 +170,7 @@ const mapStateToProps = (state) => ({
   categoryName: state.activeCategory.categoryName,
   hover: state.productHover.hover,
   productsId: state.productHover.productId,
+  label: state.activeCurrency.label,
 });
 
 const mapDispatchToProps = { setActiveCategoryName, setProductHover };
