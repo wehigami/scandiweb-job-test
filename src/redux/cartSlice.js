@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let index = (state, action) => state.cart.findIndex((item) => item.id === action.payload);
+
 export const cartSlice = createSlice({
   name: "addToCart",
   initialState: {
@@ -7,14 +9,18 @@ export const cartSlice = createSlice({
     cartPrices: 0,
   },
   reducers: {
+    
     setCart(state, action) {
       state.cart.push(action.payload);
     },
+    setCartIncrement(state, action) {
+      state.cart[index(state, action)].quantity++;
+    },
     setCartDecrement(state, action) {
-      let index = state.cart.indexOf(action.payload);
-      if (index !== -1) {
-        state.cart.splice(index, 1);
-      }
+      state.cart[index(state, action)].quantity--;
+    },
+    setCartSplice(state, action) {
+      state.cart.splice(index(state, action), 1);
     },
     setCartPrices(state, action) {
       state.cartPrices += parseFloat(action.payload);
@@ -30,5 +36,5 @@ export const cartSlice = createSlice({
 });
 
 const { actions, reducer } = cartSlice;
-export const { setCart, setCartDecrement, setCartPrices, setCartPricesRemove } = actions;
+export const { setCart, setCartDecrement, setCartIncrement, setCartPrices, setCartPricesRemove, setCartSplice } = actions;
 export default reducer;

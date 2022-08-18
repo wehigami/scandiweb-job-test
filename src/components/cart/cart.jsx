@@ -5,18 +5,18 @@ import { Query } from "@apollo/client/react/components";
 import {
   setCart,
   setCartDecrement,
+  setCartIncrement,
   setCartPrices,
   setCartPricesRemove,
+  setCartSplice,
 } from "../../redux/cartSlice";
 
 class Cart extends React.Component {
   render() {
-    const uniqueItems = new Set(this.props.cart);
-
     const btnStyle = {
       alignSelf: "end",
       height: 45,
-      textTransform: 'uppercase',
+      textTransform: "uppercase",
       fontWeight: 600,
     };
 
@@ -27,14 +27,31 @@ class Cart extends React.Component {
       background: "#fff",
     };
 
-    const itemAmount = (productId) => {
-      return this.props.cart.filter((v) => v === productId).length;
-    };
+    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
-    const itemPrice = (priceAmount, productId) => {
-      let price = (parseFloat(priceAmount) * itemAmount(productId)).toFixed(2);
+    const itemPrice = (cart) => {
+      let price = (parseFloat(cart.price) * cart.quantity).toFixed(2);
       return price;
     };
+
+    const cart = (productId) => {
+      let index = this.props.cart.findIndex((item) => item.id === productId);
+      return this.props.cart[index];
+    };
+
+    const cartQuantity =
+      this.props.cart.length > 0
+        ? this.props.cart.reduce((acc, item) => {
+            return acc + item.quantity;
+          }, 0)
+        : null;
+
+    const cartTotal =
+      this.props.cart.length > 0
+        ? this.props.cart.reduce((acc, item) => {
+            return acc + item.price;
+          })
+        : "0.00";
 
     return this.props.cartClick ? (
       <div
@@ -52,9 +69,11 @@ class Cart extends React.Component {
         }}
       >
         <p style={{ marginBottom: "30px" }}>
-          <strong>My Bag.</strong> {this.props.cart.length}{" "}
+          <strong>My Bag.</strong>{" "}
+          {this.props.cart.length === 0 ? 0 : cartQuantity}{" "}
           {this.props.cart.length === 1 ? "item" : "items"}
         </p>
+
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
@@ -68,87 +87,97 @@ class Cart extends React.Component {
                 }}
               >
                 {data.categories[0].products.map((product) =>
-                  uniqueItems.has(product.id) ? (
-                    <div
-                      key={product.id}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "0.7fr 0.3fr 1fr",
-                        columnGap: "10px",
-                        padding: "10px",
-                        height: 190,
-                      }}
-                    >
-                      <div>
-                        <p>{product.name}</p>
-                        {product.prices.map((price) =>
-                          this.props.label === price.currency.label ? (
-                            <p key={price.amount} style={{ fontWeight: 600 }}>
-                              <span>{this.props.symbol}</span>
-                              <span>{itemPrice(price.amount, product.id)}</span>
-                            </p>
-                          ) : null
-                        )}
-                      </div>
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: "repeat(3, 1fr)",
-                          fontWeight: 600,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <button
-                          style={countBtnStyle}
-                          onClick={() => {
-                            this.props.setCart(product.id);
-                            this.props.setCartPrices(
-                              product.prices
-                                .filter(
-                                  (price) =>
-                                    this.props.label === price.currency.label
-                                )
-                                .map((price) => price.amount)
-                            );
-                          }}
-                        >
-                          +
-                        </button>
+                  uniqueItems.has(product.id)
+                    ? (console.log(cart(product.id).price),
+                      (
                         <div
+                          key={product.id}
                           style={{
-                            justifySelf: "center",
-                            alignSelf: "center",
+                            display: "grid",
+                            gridTemplateColumns: "0.7fr 0.3fr 1fr",
+                            columnGap: "10px",
+                            padding: "10px",
+                            height: 190,
                           }}
                         >
-                          {itemAmount(product.id)}
-                        </div>
-                        <button
-                          style={{ ...countBtnStyle, alignSelf: "end" }}
-                          onClick={() => {
-                            this.props.setCartDecrement(product.id);
-                            this.props.setCartPricesRemove(
-                              product.prices
-                                .filter(
-                                  (price) =>
-                                    this.props.label === price.currency.label
-                                )
-                                .map((price) => price.amount)
-                            );
-                          }}
-                        >
-                          -
-                        </button>
-                      </div>
+                          <div>
+                            <p>{product.name}</p>
+                            {product.prices.map((price) =>
+                              this.props.label === price.currency.label ? (
+                                <p
+                                  key={price.amount}
+                                  style={{ fontWeight: 600 }}
+                                >
+                                  <span>{this.props.symbol}</span>
+                                  <span>{itemPrice(cart(product.id))}</span>
+                                </p>
+                              ) : null
+                            )}
+                          </div>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateRows: "repeat(3, 1fr)",
+                              fontWeight: 600,
+                              justifyContent: "center",
+                            }}
+                          >
+                            <button
+                              style={countBtnStyle}
+                              onClick={() => {
+                                this.props.setCartIncrement(product.id);
+                                this.props.setCartPrices(
+                                  product.prices
+                                    .filter(
+                                      (price) =>
+                                        this.props.label ===
+                                        price.currency.label
+                                    )
+                                    .map((price) => price.amount)
+                                );
+                              }}
+                            >
+                              +
+                            </button>
+                            <div
+                              style={{
+                                justifySelf: "center",
+                                alignSelf: "center",
+                              }}
+                            >
+                              {cart(product.id).quantity}
+                            </div>
+                            <button
+                              style={{ ...countBtnStyle, alignSelf: "end" }}
+                              onClick={() => {
+                                cart(product.id).quantity === 1
+                                  ? this.props.setCartSplice(product.id)
+                                  : this.props.setCartDecrement(product.id);
+                                this.props.setCartPricesRemove(
+                                  product.prices
+                                    .filter(
+                                      (price) =>
+                                        this.props.label ===
+                                        price.currency.label
+                                    )
+                                    .map((price) => price.amount)
+                                );
+                              }}
+                            >
+                              -
+                            </button>
+                          </div>
 
-                      <div
-                        style={{
-                          backgroundImage: `url(${product.gallery[0]})`,
-                          backgroundSize: "170%",
-                          backgroundPosition: "center",
-                        }}
-                      />
-                    </div>
-                  ) : null
+                          <div
+                            style={{
+                              backgroundImage: `url(${product.gallery[0]})`,
+                              backgroundSize: "170%",
+                              backgroundPosition: "center",
+                            }}
+                          />
+                        </div>
+                      ))
+                    : null
                 )}
               </div>
             );
@@ -166,7 +195,7 @@ class Cart extends React.Component {
           <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
           <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
             {this.props.symbol}
-            {uniqueItems.size >= 1 ? String(this.props.cartPrice.toFixed(2)) : "0.00"}
+            {this.props.cartPrice}
           </p>
           <button
             style={{
@@ -178,7 +207,17 @@ class Cart extends React.Component {
           >
             view bag
           </button>
-          <button style={{ ...btnStyle, gridArea: "d", background: '#5ECE7B', color: '#fff', border: 'none' }}>check out</button>
+          <button
+            style={{
+              ...btnStyle,
+              gridArea: "d",
+              background: "#5ECE7B",
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            check out
+          </button>
         </div>
       </div>
     ) : null;
@@ -197,6 +236,8 @@ const mapDispatchToProps = {
   setCartDecrement,
   setCartPrices,
   setCartPricesRemove,
+  setCartIncrement,
+  setCartSplice,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
