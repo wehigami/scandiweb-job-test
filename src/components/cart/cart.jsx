@@ -30,7 +30,12 @@ class Cart extends React.Component {
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
     const itemPrice = (cart) => {
-      let price = (parseFloat(cart.price) * cart.quantity).toFixed(2);
+      let index = cart.price.findIndex(
+        (item) => item.label === this.props.label
+      );
+      let price = (
+        parseFloat(cart.price[index].amount) * cart.quantity
+      ).toFixed(2);
       return price;
     };
 
@@ -46,50 +51,52 @@ class Cart extends React.Component {
           }, 0)
         : null;
 
-    const cartTotal =
-      this.props.cart.length > 0
-        ? this.props.cart.reduce((acc, item) => {
-            return acc + item.price;
-          })
-        : "0.00";
+    
+    const cartTotal = this.props.cart.forEach((item) => {
+      let total = 0;
+      let index = item.price.findIndex(
+        (priceItem) => priceItem.label === this.props.label
+      );
+      return total + parseFloat(item.price[index].amount).toFixed(2);
+    });
 
-    return this.props.cartClick ? (
-      <div
-        style={{
-          height: 650,
-          width: 300,
-          background: "#fff",
-          position: "absolute",
-          zIndex: "3",
-          marginRight: 100,
-          overflow: "hidden",
-          display: "grid",
-          gridTemplateRows: "0.1fr 1.5fr 0.2fr",
-          padding: 15,
-        }}
-      >
-        <p style={{ marginBottom: "30px" }}>
-          <strong>My Bag.</strong>{" "}
-          {this.props.cart.length === 0 ? 0 : cartQuantity}{" "}
-          {this.props.cart.length === 1 ? "item" : "items"}
-        </p>
+    return this.props.cartClick
+      ? (console.log(this.props.cart[0]),
+        (
+          <div
+            style={{
+              height: 650,
+              width: 300,
+              background: "#fff",
+              position: "absolute",
+              zIndex: "3",
+              marginRight: 100,
+              overflow: "hidden",
+              display: "grid",
+              gridTemplateRows: "0.1fr 1.5fr 0.2fr",
+              padding: 15,
+            }}
+          >
+            <p style={{ marginBottom: "30px" }}>
+              <strong>My Bag.</strong>{" "}
+              {this.props.cart.length === 0 ? 0 : cartQuantity}{" "}
+              {this.props.cart.length === 1 ? "item" : "items"}
+            </p>
 
-        <Query query={getQuery(1)}>
-          {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error :(</p>;
-            return (
-              <div
-                style={{
-                  height: "100%",
-                  overflow: "scroll",
-                  scrollbarWidth: "none",
-                }}
-              >
-                {data.categories[0].products.map((product) =>
-                  uniqueItems.has(product.id)
-                    ? (console.log(cart(product.id).price),
-                      (
+            <Query query={getQuery(1)}>
+              {({ loading, error, data }) => {
+                if (loading) return <p>Loading...</p>;
+                if (error) return <p>Error :(</p>;
+                return (
+                  <div
+                    style={{
+                      height: "100%",
+                      overflow: "scroll",
+                      scrollbarWidth: "none",
+                    }}
+                  >
+                    {data.categories[0].products.map((product) =>
+                      uniqueItems.has(product.id) ? (
                         <div
                           key={product.id}
                           style={{
@@ -176,51 +183,51 @@ class Cart extends React.Component {
                             }}
                           />
                         </div>
-                      ))
-                    : null
-                )}
-              </div>
-            );
-          }}
-        </Query>
-        <div
-          style={{
-            display: "grid",
-            gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
-            columnGap: 10,
-            gridTemplateAreas: "'a b' 'c d'",
-            margin: "30px 0",
-          }}
-        >
-          <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
-          <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
-            {this.props.symbol}
-            {this.props.cartPrice}
-          </p>
-          <button
-            style={{
-              ...btnStyle,
-              gridArea: "c",
-              background: "#fff",
-              border: "1px solid #1D1F22",
-            }}
-          >
-            view bag
-          </button>
-          <button
-            style={{
-              ...btnStyle,
-              gridArea: "d",
-              background: "#5ECE7B",
-              color: "#fff",
-              border: "none",
-            }}
-          >
-            check out
-          </button>
-        </div>
-      </div>
-    ) : null;
+                      ) : null
+                    )}
+                  </div>
+                );
+              }}
+            </Query>
+            <div
+              style={{
+                display: "grid",
+                gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
+                columnGap: 10,
+                gridTemplateAreas: "'a b' 'c d'",
+                margin: "30px 0",
+              }}
+            >
+              <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
+              <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
+                {this.props.symbol}
+                {"x"}
+              </p>
+              <button
+                style={{
+                  ...btnStyle,
+                  gridArea: "c",
+                  background: "#fff",
+                  border: "1px solid #1D1F22",
+                }}
+              >
+                view bag
+              </button>
+              <button
+                style={{
+                  ...btnStyle,
+                  gridArea: "d",
+                  background: "#5ECE7B",
+                  color: "#fff",
+                  border: "none",
+                }}
+              >
+                check out
+              </button>
+            </div>
+          </div>
+        ))
+      : null;
   }
 }
 

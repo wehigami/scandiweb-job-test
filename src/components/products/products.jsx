@@ -132,12 +132,9 @@ class Products extends React.Component {
                                     );
                                   }}
                                 >
-                                  <CartAdd productId={product.id} productPrice={
-                                    product.prices
-                                    .map((price) =>
-                                       price.amount
-                                    )
-                                  }/>
+                                  <CartAdd productId={product.id} productPrices={product.prices.map((price) => {
+                                    return {label: price.currency.label, amount: price.amount}
+                                  })}/>
                                 </div>
                               ) : null}
                               <Link
