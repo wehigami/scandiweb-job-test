@@ -22,19 +22,12 @@ export const cartSlice = createSlice({
     setCartSplice(state, action) {
       state.cart.splice(index(state, action), 1);
     },
-    setCartPrices(state, action) {
-      state.cartPrices += parseFloat(action.payload);
-    },
-    setCartPricesRemove(state, action) {
-      // let index = state.cartPrices.indexOf(parseFloat(action.payload));
-      // if (index !== -1) {
-      //   state.cartPrices.splice(index, 1);
-      // }
-      state.cartPrices -= parseFloat(action.payload);
+    setCartItem(state, action) {
+      state.cart[index(state, action)].action.payload[0] = action.payload[1];
     },
   },
 });
 
 const { actions, reducer } = cartSlice;
-export const { setCart, setCartDecrement, setCartIncrement, setCartPrices, setCartPricesRemove, setCartSplice } = actions;
+export const { setCart, setCartDecrement, setCartIncrement, setCartSplice, setCartItem } = actions;
 export default reducer;

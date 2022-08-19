@@ -4,7 +4,6 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
-import { setCartPrices } from "../../redux/cartSlice";
 import { Link } from "react-router-dom";
 import Dropdown from "../dropdown/dropdown";
 import Product from "./product";
@@ -103,7 +102,7 @@ class Products extends React.Component {
                               key={product.id}
                               style={mainDivStyle}
                               className={style.productHighlight}
-                              onMouseEnter={() =>
+                              onMouseEnter={() => //responsible for showing the add to cart button on hover
                                 this.props.setProductHover([true, product.id])
                               }
                               onMouseLeave={() =>
@@ -186,6 +185,6 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
 });
 
-const mapDispatchToProps = { setActiveCategoryName, setProductHover, setCartPrices };
+const mapDispatchToProps = { setActiveCategoryName, setProductHover };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

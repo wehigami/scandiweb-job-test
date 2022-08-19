@@ -27,9 +27,13 @@ const allQueries = [
             category
             brand
             attributes {
+              id
               name
+              type
               items {
                 displayValue
+                value
+                id
               }
             }
             prices {
