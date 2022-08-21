@@ -117,19 +117,7 @@ class Products extends React.Component {
                                     margin: "370px 0 0 390px",
                                     position: "absolute",
                                   }}
-                                  onClick={() => {
-                                    this.props.setCartPrices(
-                                      product.prices
-                                        .filter(
-                                          (price) =>
-                                            this.props.label ===
-                                            price.currency.label
-                                        )
-                                        .map((price) =>
-                                           price.amount
-                                        )
-                                    );
-                                  }}
+                                 
                                 >
                                   <CartAdd productId={product.id} productPrices={product.prices.map((price) => {
                                     return {label: price.currency.label, amount: price.amount}

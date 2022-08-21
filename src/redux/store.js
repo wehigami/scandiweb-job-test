@@ -4,6 +4,7 @@ import categoryReducer from './categorySlice'
 import productHoverSlice from "./productHoverSlice";
 import cartSlice from "./cartSlice";
 import cartClickSlice from "./cartClickSlice";
+import currentAttrSlice from "./currentAttrSlice";
 
 export default configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
         activeCategory: categoryReducer,
         productHover: productHoverSlice,
         addToCart: cartSlice,
-        cartClick: cartClickSlice
+        cartClick: cartClickSlice,
+        currentAttr: currentAttrSlice,
     }
 });

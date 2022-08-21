@@ -25,8 +25,6 @@ class CartAdd extends React.Component {
         this.props.setCart({
           id: this.props.productId,
           price: this.props.productPrices,
-          size: "",
-          color: "",
           quantity: 1,
         });
       } else {

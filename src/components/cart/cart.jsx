@@ -7,9 +7,24 @@ import {
   setCartDecrement,
   setCartIncrement,
   setCartSplice,
+  setCartItem,
 } from "../../redux/cartSlice";
+import { setCurrentAttr } from "../../redux/currentAttrSlice";
 
 class Cart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      buttonActive: false,
+    };
+  }
+
+  handleClick = (itemId) => {
+    if (itemId === this.props.currentAttr) {
+      this.setState({ buttonActive: !this.state.buttonActive });
+    }
+  };
+
   render() {
     const btnStyle = {
       alignSelf: "end",
@@ -23,14 +38,14 @@ class Cart extends React.Component {
       height: "22px",
       width: "22px",
       background: "#fff",
-      cursor: 'pointer'
+      cursor: "pointer",
     };
 
     const attrBtnStyle = {
       border: "1px solid #1D1F22",
       background: "#fff",
       margin: "0 5px 5px 0",
-      cursor: 'pointer'
+      cursor: "pointer",
     };
 
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
@@ -129,10 +144,35 @@ class Cart extends React.Component {
                             <p>{attribute.name}:</p>
                             {attribute.items.map((item) =>
                               attribute.name === "Color" ? (
-                                <button key={item.id} style={{...attrBtnStyle, background: item.value, width: 16, height: 16}}>
-                                </button>
+                                <button
+                                  key={item.id}
+                                  style={{
+                                    ...attrBtnStyle,
+                                    background: item.value,
+                                    width: 16,
+                                    height: 16,
+                                  }}
+                                  onClick={() => {
+                                    this.props.setCartItem([
+                                      product.id,
+                                      attribute.id,
+                                      item.id,
+                                    ]);
+                                    this.handleClick();
+                                  }}
+                                ></button>
                               ) : (
-                                <button key={item.id} style={attrBtnStyle} onClick={() => {return}}>
+                                <button
+                                  key={item.id}
+                                  style={attrBtnStyle}
+                                  onClick={() => {
+                                    this.props.setCartItem([
+                                      product.id,
+                                      attribute.id,
+                                      item.id,
+                                    ]);
+                                  }}
+                                >
                                   {item.value}
                                 </button>
                               )
@@ -152,14 +192,6 @@ class Cart extends React.Component {
                           style={countBtnStyle}
                           onClick={() => {
                             this.props.setCartIncrement(product.id);
-                            this.props.setCartPrices(
-                              product.prices
-                                .filter(
-                                  (price) =>
-                                    this.props.label === price.currency.label
-                                )
-                                .map((price) => price.amount)
-                            );
                           }}
                         >
                           +
@@ -178,14 +210,6 @@ class Cart extends React.Component {
                             cart(product.id).quantity === 1
                               ? this.props.setCartSplice(product.id)
                               : this.props.setCartDecrement(product.id);
-                            this.props.setCartPricesRemove(
-                              product.prices
-                                .filter(
-                                  (price) =>
-                                    this.props.label === price.currency.label
-                                )
-                                .map((price) => price.amount)
-                            );
                           }}
                         >
                           -
@@ -253,12 +277,15 @@ const mapStateToProps = (state) => ({
   cartClick: state.cartClick.cartClicked,
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  currentAttr: state.currentAttr.current,
 });
 const mapDispatchToProps = {
   setCart,
   setCartDecrement,
   setCartIncrement,
   setCartSplice,
+  setCartItem,
+  setCurrentAttr,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
