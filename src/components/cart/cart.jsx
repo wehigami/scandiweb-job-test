@@ -9,61 +9,18 @@ import {
   setCartSplice,
   setCartItem,
 } from "../../redux/cartSlice";
-import { setCurrentAttr } from "../../redux/currentAttrSlice";
+import CartItem from "./cartItem";
+
+const btnStyle = {
+  alignSelf: "end",
+  height: 45,
+  textTransform: "uppercase",
+  fontWeight: 600,
+};
 
 class Cart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      buttonActive: false,
-    };
-  }
-
-  handleClick = (itemId) => {
-    if (itemId === this.props.currentAttr) {
-      this.setState({ buttonActive: !this.state.buttonActive });
-    }
-  };
-
   render() {
-    const btnStyle = {
-      alignSelf: "end",
-      height: 45,
-      textTransform: "uppercase",
-      fontWeight: 600,
-    };
-
-    const countBtnStyle = {
-      border: "1px solid #1D1F22",
-      height: "22px",
-      width: "22px",
-      background: "#fff",
-      cursor: "pointer",
-    };
-
-    const attrBtnStyle = {
-      border: "1px solid #1D1F22",
-      background: "#fff",
-      margin: "0 5px 5px 0",
-      cursor: "pointer",
-    };
-
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
-
-    const itemPrice = (cart) => {
-      let index = cart.price.findIndex(
-        (item) => item.label === this.props.label
-      );
-      let price = (
-        parseFloat(cart.price[index].amount) * cart.quantity
-      ).toFixed(2);
-      return price;
-    };
-
-    const cart = (productId) => {
-      let index = this.props.cart.findIndex((item) => item.id === productId);
-      return this.props.cart[index];
-    };
 
     const cartQuantity =
       this.props.cart.length > 0
@@ -118,112 +75,14 @@ class Cart extends React.Component {
               >
                 {data.categories[0].products.map((product) =>
                   uniqueItems.has(product.id) ? (
-                    <div
+                    <CartItem
+                      productId={product.id}
+                      productName={product.name}
+                      productPrices={product.prices}
+                      productAttributes={product.attributes}
+                      productGallery={product.gallery}
                       key={product.id}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "0.7fr 0.3fr 1fr",
-                        columnGap: "10px",
-                        padding: "10px",
-                      }}
-                    >
-                      <div>
-                        <p>{product.name}</p>
-
-                        {product.prices.map((price) =>
-                          this.props.label === price.currency.label ? (
-                            <p key={price.amount} style={{ fontWeight: 600 }}>
-                              <span>{this.props.symbol}</span>
-                              <span>{itemPrice(cart(product.id))}</span>
-                            </p>
-                          ) : null
-                        )}
-
-                        {product.attributes.map((attribute) => (
-                          <div key={attribute.id}>
-                            <p>{attribute.name}:</p>
-                            {attribute.items.map((item) =>
-                              attribute.name === "Color" ? (
-                                <button
-                                  key={item.id}
-                                  style={{
-                                    ...attrBtnStyle,
-                                    background: item.value,
-                                    width: 16,
-                                    height: 16,
-                                  }}
-                                  onClick={() => {
-                                    this.props.setCartItem([
-                                      product.id,
-                                      attribute.id,
-                                      item.id,
-                                    ]);
-                                    this.handleClick();
-                                  }}
-                                ></button>
-                              ) : (
-                                <button
-                                  key={item.id}
-                                  style={attrBtnStyle}
-                                  onClick={() => {
-                                    this.props.setCartItem([
-                                      product.id,
-                                      attribute.id,
-                                      item.id,
-                                    ]);
-                                  }}
-                                >
-                                  {item.value}
-                                </button>
-                              )
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateRows: "repeat(3, 1fr)",
-                          fontWeight: 600,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <button
-                          style={countBtnStyle}
-                          onClick={() => {
-                            this.props.setCartIncrement(product.id);
-                          }}
-                        >
-                          +
-                        </button>
-                        <div
-                          style={{
-                            justifySelf: "center",
-                            alignSelf: "center",
-                          }}
-                        >
-                          {cart(product.id).quantity}
-                        </div>
-                        <button
-                          style={{ ...countBtnStyle, alignSelf: "end" }}
-                          onClick={() => {
-                            cart(product.id).quantity === 1
-                              ? this.props.setCartSplice(product.id)
-                              : this.props.setCartDecrement(product.id);
-                          }}
-                        >
-                          -
-                        </button>
-                      </div>
-
-                      <div
-                        style={{
-                          backgroundImage: `url(${product.gallery[0]})`,
-                          backgroundSize: "300%",
-                          backgroundPosition: "center",
-                        }}
-                      />
-                    </div>
+                    />
                   ) : null
                 )}
               </div>
@@ -272,12 +131,10 @@ class Cart extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cart: state.addToCart.cart,
-  cartPrice: state.addToCart.cartPrices,
+  cart: state.cart.cart,
   cartClick: state.cartClick.cartClicked,
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
-  currentAttr: state.currentAttr.current,
 });
 const mapDispatchToProps = {
   setCart,
@@ -285,7 +142,8 @@ const mapDispatchToProps = {
   setCartIncrement,
   setCartSplice,
   setCartItem,
-  setCurrentAttr,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+
+// TODO - change css on click of button to change color of button

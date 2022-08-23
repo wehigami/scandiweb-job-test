@@ -7,7 +7,8 @@ import Women from "./routes/women";
 import Men from "./routes/men";
 import Kids from "./routes/kids";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { persistor, store } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -25,23 +26,27 @@ const links = [
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          {links.map((link) => {
-            return <Route path={link.href} element={link.element} key={link} />;
-          })}
-          <Route
-            path="*"
-            element={
-              <main style={{ padding: "1rem" }}>
-                <p>There's nothing here!</p>
-              </main>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </ApolloProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            {links.map((link) => {
+              return (
+                <Route path={link.href} element={link.element} key={link} />
+              );
+            })}
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </ApolloProvider>
+    </PersistGate>
   </Provider>
 );

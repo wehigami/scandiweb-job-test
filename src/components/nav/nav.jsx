@@ -148,7 +148,7 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
-  cart: state.addToCart,
+
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick };

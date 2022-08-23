@@ -73,7 +73,7 @@ class CartAdd extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cart: state.addToCart.cart,
+  cart: state.cart.cart,
 });
 
 const mapDispatchToProps = { setCart, setCartIncrement };
