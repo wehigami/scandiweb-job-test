@@ -21,14 +21,14 @@ class cartItem extends React.Component {
     this.setState({ current: itemId });
   };
 
-  componentDidUpdate() {
-    localStorage.setItem("current", this.state.current);
-  }
+  // componentDidUpdate() {
+  //   localStorage.setItem("current", this.state.current);
+  // }
 
-  componentDidMount() {
-    const current = localStorage.getItem('current');
-    this.setState({current: current});
-  }
+  // componentDidMount() {
+  //   const current = localStorage.getItem('current');
+  //   this.setState({current: current});
+  // }
 
   render() {
     const countBtnStyle = {
@@ -61,137 +61,134 @@ class cartItem extends React.Component {
       return this.props.cart[index];
     };
     return (
-      console.log(this.props.cart),
-      (
-        <>
+      <>
+        <div
+          key={this.props.productId}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "0.7fr 0.3fr 1fr",
+            columnGap: "10px",
+            padding: "10px",
+          }}
+        >
+          <div>
+            <p>{this.props.productName}</p>
+
+            {this.props.productPrices.map((price) =>
+              this.props.label === price.currency.label ? (
+                <p key={price.amount} style={{ fontWeight: 600 }}>
+                  <span>{this.props.symbol}</span>
+                  <span>{itemPrice(cart(this.props.productId))}</span>
+                </p>
+              ) : null
+            )}
+
+            {this.props.productAttributes.map((attribute) => (
+              <div key={attribute.id}>
+                <p>{attribute.name}:</p>
+                {attribute.items.map((item) =>
+                  attribute.name === "Color" ? (
+                    <button
+                      key={item.id}
+                      style={
+                        item.id === this.state.current
+                          ? {
+                              ...attrBtnStyle,
+                              background: item.value,
+                              width: 16,
+                              height: 16,
+                              border: "2px solid #5ECE7B",
+                            }
+                          : {
+                              ...attrBtnStyle,
+                              border: "none",
+                              background: item.value,
+                              width: 16,
+                              height: 16,
+                            }
+                      }
+                      onClick={() => {
+                        this.props.setCartItem([
+                          this.props.productId,
+                          attribute.id,
+                          item.id,
+                        ]);
+                        this.handleClick(item.id);
+                      }}
+                    ></button>
+                  ) : (
+                    <button
+                      key={item.id}
+                      style={
+                        item.id === this.state.current
+                          ? {
+                              ...attrBtnStyle,
+                              background: "#1D1F22",
+                              color: "#fff",
+                            }
+                          : attrBtnStyle
+                      }
+                      onClick={() => {
+                        this.props.setCartItem([
+                          this.props.productId,
+                          attribute.id,
+                          item.id,
+                        ]);
+                        this.handleClick(item.id);
+                      }}
+                    >
+                      {item.value}
+                    </button>
+                  )
+                )}
+              </div>
+            ))}
+          </div>
           <div
-            key={this.props.productId}
             style={{
               display: "grid",
-              gridTemplateColumns: "0.7fr 0.3fr 1fr",
-              columnGap: "10px",
-              padding: "10px",
+              gridTemplateRows: "repeat(3, 1fr)",
+              fontWeight: 600,
+              justifyContent: "center",
             }}
           >
-            <div>
-              <p>{this.props.productName}</p>
-
-              {this.props.productPrices.map((price) =>
-                this.props.label === price.currency.label ? (
-                  <p key={price.amount} style={{ fontWeight: 600 }}>
-                    <span>{this.props.symbol}</span>
-                    <span>{itemPrice(cart(this.props.productId))}</span>
-                  </p>
-                ) : null
-              )}
-
-              {this.props.productAttributes.map((attribute) => (
-                <div key={attribute.id}>
-                  <p>{attribute.name}:</p>
-                  {attribute.items.map((item) =>
-                    attribute.name === "Color" ? (
-                      <button
-                        key={item.id}
-                        style={
-                          item.id === this.state.current
-                            ? {
-                                ...attrBtnStyle,
-                                background: item.value,
-                                width: 16,
-                                height: 16,
-                                border: "2px solid #5ECE7B",
-                              }
-                            : {
-                                ...attrBtnStyle,
-                                border: "none",
-                                background: item.value,
-                                width: 16,
-                                height: 16,
-                              }
-                        }
-                        onClick={() => {
-                          this.props.setCartItem([
-                            this.props.productId,
-                            attribute.id,
-                            item.id,
-                          ]);
-                          this.handleClick(item.id);
-                        }}
-                      ></button>
-                    ) : (
-                      <button
-                        key={item.id}
-                        style={
-                          item.id === this.state.current
-                            ? {
-                                ...attrBtnStyle,
-                                background: "#1D1F22",
-                                color: "#fff",
-                              }
-                            : attrBtnStyle
-                        }
-                        onClick={() => {
-                          this.props.setCartItem([
-                            this.props.productId,
-                            attribute.id,
-                            item.id,
-                          ]);
-                          this.handleClick(item.id);
-                        }}
-                      >
-                        {item.value}
-                      </button>
-                    )
-                  )}
-                </div>
-              ))}
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateRows: "repeat(3, 1fr)",
-                fontWeight: 600,
-                justifyContent: "center",
+            <button
+              style={countBtnStyle}
+              onClick={() => {
+                this.props.setCartIncrement(this.props.productId);
               }}
             >
-              <button
-                style={countBtnStyle}
-                onClick={() => {
-                  this.props.setCartIncrement(this.props.productId);
-                }}
-              >
-                +
-              </button>
-              <div
-                style={{
-                  justifySelf: "center",
-                  alignSelf: "center",
-                }}
-              >
-                {cart(this.props.productId).quantity}
-              </div>
-              <button
-                style={{ ...countBtnStyle, alignSelf: "end" }}
-                onClick={() => {
-                  cart(this.props.productId).quantity === 1
-                    ? this.props.setCartSplice(this.props.productId)
-                    : this.props.setCartDecrement(this.props.productId);
-                }}
-              >
-                -
-              </button>
-            </div>
-
+              +
+            </button>
             <div
               style={{
-                backgroundImage: `url(${this.props.productGallery[0]})`,
-                backgroundSize: "300%",
-                backgroundPosition: "center",
+                justifySelf: "center",
+                alignSelf: "center",
               }}
-            />
+            >
+              {cart(this.props.productId).quantity}
+            </div>
+            <button
+              style={{ ...countBtnStyle, alignSelf: "end" }}
+              onClick={() => {
+                cart(this.props.productId).quantity === 1
+                  ? this.props.setCartSplice(this.props.productId)
+                  : this.props.setCartDecrement(this.props.productId);
+              }}
+            >
+              -
+            </button>
           </div>
-        </>
-      )
+
+          <div
+            style={{
+              backgroundImage: `url(${this.props.productGallery[0]})`,
+              backgroundSize: "300%",
+              backgroundPosition: "center",
+            }}
+          />
+        </div>
+      </>
     );
   }
 }

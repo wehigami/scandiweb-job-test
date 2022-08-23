@@ -4,11 +4,11 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
-import { Link } from "react-router-dom";
-import Dropdown from "../dropdown/dropdown";
+import { Link, Outlet } from "react-router-dom";
 import Product from "./product";
 import style from "./products.module.scss";
 import CartAdd from "./cartadd";
+import { location } from "../../lib/location";
 
 class Products extends React.Component {
   constructor(props) {
@@ -22,39 +22,6 @@ class Products extends React.Component {
     this.setState({ dropdownActive: !this.state.dropdownActive });
   };
   render() {
-    const categoriesQuery = (
-      <Query query={getQuery(1)}>
-        {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error :(</p>;
-          return (
-            <>
-              {data.categories.map((category) => (
-                <p
-                  key={category.name}
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    height: 35,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                    textTransform: "capitalize",
-                  }}
-                  onClick={() => {
-                    this.props.setActiveCategoryName(category.name);
-                    this.handleClick();
-                  }}
-                >
-                  {category.name}
-                </p>
-              ))}
-            </>
-          );
-        }}
-      </Query>
-    );
-
     const mainDivStyle = {
       display: "flex",
       flexDirection: "column",
@@ -64,6 +31,7 @@ class Products extends React.Component {
       padding: 15,
       zIndex: 1,
     };
+
     let opacityDivStyle = {
       ...mainDivStyle,
       opacity: 0.5,
@@ -71,16 +39,6 @@ class Products extends React.Component {
 
     return (
       <div style={{ padding: "20px 100px 20px 100px" }}>
-        <Dropdown
-          text={this.props.categoryName}
-          style={{
-            textTransform: "capitalize",
-            fontWeight: 400,
-            fontSize: "32px",
-          }}
-          query={categoriesQuery}
-          category
-        />
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
@@ -88,8 +46,17 @@ class Products extends React.Component {
             return (
               <>
                 {data.categories.map((category) =>
-                  this.props.categoryName === category.name ? (
+                  location() === category.name ? (
                     <div key={category.name}>
+                      <h2
+                        style={{
+                          textTransform: "capitalize",
+                          fontWeight: 400,
+                          fontSize: "32px",
+                        }}
+                      >
+                        {category.name}
+                      </h2>
                       <div
                         style={{
                           display: "grid",
@@ -102,7 +69,8 @@ class Products extends React.Component {
                               key={product.id}
                               style={mainDivStyle}
                               className={style.productHighlight}
-                              onMouseEnter={() => //responsible for showing the add to cart button on hover
+                              onMouseEnter={() =>
+                                //responsible for showing the add to cart button on hover
                                 this.props.setProductHover([true, product.id])
                               }
                               onMouseLeave={() =>
@@ -117,15 +85,22 @@ class Products extends React.Component {
                                     margin: "370px 0 0 390px",
                                     position: "absolute",
                                   }}
-                                 
                                 >
-                                  <CartAdd productId={product.id} productPrices={product.prices.map((price) => {
-                                    return {label: price.currency.label, amount: price.amount}
-                                  })}/>
+                                  <CartAdd
+                                    productId={product.id}
+                                    productPrices={product.prices.map(
+                                      (price) => {
+                                        return {
+                                          label: price.currency.label,
+                                          amount: price.amount,
+                                        };
+                                      }
+                                    )}
+                                  />
                                 </div>
                               ) : null}
                               <Link
-                                to={`products/${product.id}`}
+                                to={`/product/${product.id}`}
                                 style={{
                                   color: "#1D1F22",
                                   display: "contents",

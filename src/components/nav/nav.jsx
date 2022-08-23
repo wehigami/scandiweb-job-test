@@ -9,6 +9,9 @@ import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import { setCartClick } from "../../redux/cartClickSlice";
 import Dropdown from "../dropdown/dropdown";
+import { links } from '../../index'
+import { getQuery } from "../../lib/queries";
+
 
 class Nav extends React.Component {
   constructor(props) {
@@ -23,14 +26,10 @@ class Nav extends React.Component {
   };
 
   render() {
-    const labels = [
-      { name: "Women", href: "/women", active: false },
-      { name: "Men", href: "/men", active: false },
-      { name: "Kids", href: "/kids", active: false },
-    ];
+    const labels = links
 
     const currencyQuery = (
-      <Query query={this.props.navData}>
+      <Query query={getQuery(0)}>
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error :(</p>;

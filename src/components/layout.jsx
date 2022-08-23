@@ -20,7 +20,7 @@ class Layout extends React.Component {
             onClick={() => this.props.setCartClick()}
           />
         ) : null}
-        <Nav navData={this.props.navData} />
+        <Nav />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <CartComponent />
         </div>
