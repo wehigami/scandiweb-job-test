@@ -4,7 +4,7 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Product from "./product";
 import style from "./products.module.scss";
 import CartAdd from "./cartadd";
@@ -51,7 +51,7 @@ class Products extends React.Component {
                       <h2
                         style={{
                           textTransform: "capitalize",
-                          fontWeight: 400,
+                          fontWeight: 300,
                           fontSize: "32px",
                         }}
                       >

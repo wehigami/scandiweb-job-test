@@ -6,30 +6,11 @@ import {
   setCartSplice,
   setCartItem,
 } from "../../redux/cartSlice";
+import Attributes from "../buttons/attributes";
 
 // allProps = [productID, productName, productPrices, productAttributes, productGallery]
 
 class cartItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: "",
-    };
-  }
-
-  handleClick = (itemId) => {
-    this.setState({ current: itemId });
-  };
-
-  // componentDidUpdate() {
-  //   localStorage.setItem("current", this.state.current);
-  // }
-
-  // componentDidMount() {
-  //   const current = localStorage.getItem('current');
-  //   this.setState({current: current});
-  // }
-
   render() {
     const countBtnStyle = {
       border: "1px solid #1D1F22",
@@ -73,6 +54,7 @@ class cartItem extends React.Component {
         >
           <div>
             <p>{this.props.productName}</p>
+            <p>{this.props.productBrand}</p>
 
             {this.props.productPrices.map((price) =>
               this.props.label === price.currency.label ? (
@@ -83,66 +65,17 @@ class cartItem extends React.Component {
               ) : null
             )}
 
-            {this.props.productAttributes.map((attribute) => (
-              <div key={attribute.id}>
-                <p>{attribute.name}:</p>
-                {attribute.items.map((item) =>
-                  attribute.name === "Color" ? (
-                    <button
-                      key={item.id}
-                      style={
-                        item.id === this.state.current
-                          ? {
-                              ...attrBtnStyle,
-                              background: item.value,
-                              width: 16,
-                              height: 16,
-                              border: "2px solid #5ECE7B",
-                            }
-                          : {
-                              ...attrBtnStyle,
-                              border: "none",
-                              background: item.value,
-                              width: 16,
-                              height: 16,
-                            }
-                      }
-                      onClick={() => {
-                        this.props.setCartItem([
-                          this.props.productId,
-                          attribute.id,
-                          item.id,
-                        ]);
-                        this.handleClick(item.id);
-                      }}
-                    ></button>
-                  ) : (
-                    <button
-                      key={item.id}
-                      style={
-                        item.id === this.state.current
-                          ? {
-                              ...attrBtnStyle,
-                              background: "#1D1F22",
-                              color: "#fff",
-                            }
-                          : attrBtnStyle
-                      }
-                      onClick={() => {
-                        this.props.setCartItem([
-                          this.props.productId,
-                          attribute.id,
-                          item.id,
-                        ]);
-                        this.handleClick(item.id);
-                      }}
-                    >
-                      {item.value}
-                    </button>
-                  )
-                )}
-              </div>
-            ))}
+            <Attributes
+              productAttributes={this.props.productAttributes}
+              productId={this.props.productId}
+              colorStyle={{ width: 16, height: 16 }}
+              style={{
+                margin: "0 5px 5px 0",
+                cursor: "pointer",
+                border: "1px solid #1D1F22",
+              }}
+              otherStyle={{ padding: 5, fontWeight: 500 }}
+            ></Attributes>
           </div>
           <div
             style={{
@@ -185,6 +118,7 @@ class cartItem extends React.Component {
               backgroundImage: `url(${this.props.productGallery[0]})`,
               backgroundSize: "300%",
               backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
           />
         </div>

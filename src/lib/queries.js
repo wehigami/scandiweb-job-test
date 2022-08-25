@@ -42,6 +42,7 @@ const allQueries = [
               }
               amount
             }
+            brand
           }
         }
       }
@@ -51,7 +52,4 @@ const allQueries = [
 
 export function getQuery(x) {
   return allQueries[x].query;
-}
-
-export function getUseQuery(x) {
 }

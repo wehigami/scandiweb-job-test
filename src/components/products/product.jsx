@@ -42,7 +42,7 @@ class Product extends React.Component {
           {this.allProps[3].map((price) => (
             <div key={price.amount}>
               {this.props.label === price.currency.label ? (
-                <p style={{ fontWeight: 600 }}>
+                <p style={{ fontWeight: 500 }}>
                   <span>{this.props.symbol}</span>
                   <span>{price.amount}</span>
                 </p>

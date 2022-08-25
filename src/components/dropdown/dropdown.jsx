@@ -44,8 +44,8 @@ class Dropdown extends React.Component {
           }}
           onClick={this.handleClick}
         >
-          <p style={this.props.style}>
-            {this.props.nav ? (<strong>{this.props.text}</strong>) : this.props.text}
+          <p style={{fontWeight: 500}}>
+            {this.props.text}
           </p>
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>

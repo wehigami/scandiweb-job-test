@@ -9,9 +9,8 @@ import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import { setCartClick } from "../../redux/cartClickSlice";
 import Dropdown from "../dropdown/dropdown";
-import { links } from '../../index'
+import { links } from "../../index";
 import { getQuery } from "../../lib/queries";
-
 
 class Nav extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const labels = links
+    const labels = links;
 
     const currencyQuery = (
       <Query query={getQuery(0)}>
@@ -45,6 +44,7 @@ class Nav extends React.Component {
                     alignItems: "center",
                     justifyContent: "center",
                     display: "flex",
+                    fontWeight: 500
                   }}
                   onClick={() => {
                     this.props.setActiveCurrency([
@@ -55,10 +55,7 @@ class Nav extends React.Component {
                     this.handleClick();
                   }}
                 >
-                  <strong>
-                    {currency.symbol}
-                    <br />
-                  </strong>
+                  {currency.symbol}
                   {currency.label}
                 </p>
               ))}
@@ -75,9 +72,8 @@ class Nav extends React.Component {
           display: "grid",
           gridTemplateColumns: "33% 33% 33%",
           backgroundColor: "#fff",
-          position: 'relative',
-          zIndex: '3',
-
+          position: "relative",
+          zIndex: "3",
         }}
       >
         <div
@@ -147,7 +143,6 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
-
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick };
