@@ -55,17 +55,6 @@ class ProductPage extends React.Component {
           }
         });
         this.props.cleanDummyCart();
-      } else {
-        this.props.setCart({
-          id: productId,
-          price: productPrices.map((price) => {
-            return {
-              label: price.currency.label,
-              amount: price.amount,
-            };
-          }),
-          quantity: 1,
-        });
       }
     };
     return (
@@ -90,8 +79,8 @@ class ProductPage extends React.Component {
                     >
                       <div
                         style={{
-                          overflow: "scroll",
-                          scrollbarWidth: "none",
+                          overflowY: "scroll",
+                          direction: 'rtl'
                         }}
                       >
                         {product.gallery.map((item) => (

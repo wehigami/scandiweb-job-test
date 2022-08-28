@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/layout";
-import Products from "../components/products/products";
+import Products from "../components/products/productListingPage";
 
 class Kids extends React.Component {
   render() {

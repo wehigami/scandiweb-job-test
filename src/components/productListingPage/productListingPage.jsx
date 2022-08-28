@@ -113,6 +113,7 @@ class Products extends React.Component {
                                   productName={product.name}
                                   productPrices={product.prices}
                                   highlightStyle={style.productHighlight}
+                                  productBrand={product.brand}
                                 />
                               </Link>
                             </div>
@@ -123,6 +124,7 @@ class Products extends React.Component {
                                 productImg={product.gallery[0]}
                                 productName={product.name}
                                 productPrices={product.prices}
+                                productBrand={product.brand}
                                 notInStock
                               />
                             </div>

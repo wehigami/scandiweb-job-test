@@ -2,20 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 
 class Product extends React.Component {
-  allProps = [
-    this.props.productId,
-    this.props.productImg,
-    this.props.productName,
-    this.props.productPrices,
-    this.props.highlightStyle,
-  ];
 
   render() {
     return (
       <>
         <div
           style={{
-            backgroundImage: `url(${this.allProps[1]})`,
+            backgroundImage: `url(${this.props.productImg})`,
             height: 400,
             width: "100%",
             backgroundSize: "cover",
@@ -38,8 +31,8 @@ class Product extends React.Component {
         </div>
 
         <div>
-          <h3 style={{ fontWeight: 400 }}>{this.allProps[2]}</h3>
-          {this.allProps[3].map((price) => (
+          <h3 style={{ fontWeight: 400 }}>{this.props.productName} {this.props.productBrand}</h3>
+          {this.props.productPrices.map((price) => (
             <div key={price.amount}>
               {this.props.label === price.currency.label ? (
                 <p style={{ fontWeight: 500 }}>
