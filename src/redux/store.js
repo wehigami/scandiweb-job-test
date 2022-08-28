@@ -4,6 +4,7 @@ import categoryReducer from './categorySlice'
 import productHoverReducer from "./productHoverSlice";
 import cartReducer from "./cartSlice";
 import cartClickReducer from "./cartClickSlice";
+import dummyCartReducer from './dummyCartSlice';
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
@@ -21,7 +22,8 @@ export const store = configureStore({
         activeCategory: categoryReducer,
         productHover: productHoverReducer,
         cart: persistReducer(persistConfig, cartReducer),
-        cartClick: cartClickReducer,    
+        cartClick: cartClickReducer,
+        dummyCart: dummyCartReducer,
     },
     middleware: [thunk]
 });

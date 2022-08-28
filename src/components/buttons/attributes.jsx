@@ -5,94 +5,79 @@ import {
   setCartIncrement,
   setCartSplice,
   setCartItem,
+  setCart,
 } from "../../redux/cartSlice";
+import { setDummyCart } from "../../redux/dummyCartSlice";
+import "./attributes.css";
 
 class Attributes extends React.Component {
+  // componentDidUpdate() {
+  //   console.log(this.props.dummyCart);
+  // }
   render() {
     //border: "1px solid #1D1F22",
+    let index = this.props.cart.findIndex(
+      (item) => item.id === this.props.productId
+    );
 
-    let style = (itemId, trueStyle, falseStyle) => {
-      let style = {};
-      let index = this.props.cart.findIndex(
-        (item) => item.id === this.props.productId
+    let style = (itemId, attributeName, attributeId) => {
+      let style;
+      let dummyIndex = this.props.dummyCart.findIndex(
+        (item) => item[attributeId]
       );
-      for (const [key, value] of Object.entries(this.props.cart[index])) {
-        if (itemId === value) {
-          console.log(`${key}: ${value}`);
-          style = trueStyle;
-        } else {
-          style = falseStyle;
+
+      if (this.props.cart[index]) {
+        for (const [key, value] of Object.entries(this.props.cart[index])) {
+          if (itemId === value && attributeName === key) {
+            attributeName === "Color"
+              ? (style = { border: "2px solid #5ECE7B" })
+              : (style = { background: "black", color: "white" });
+          }
+        }
+      } else if (this.props.dummyCart[dummyIndex] && this.props.dummyCart.length > 0) {
+        if (itemId === this.props.dummyCart[dummyIndex][attributeId]) {
+          attributeName === "Color"
+            ? (style = { border: "2px solid #5ECE7B" })
+            : (style = { background: "black", color: "white" });
         }
       }
+
       return style;
     };
-
-    // this.props.cart.map((item) => {
-    //   for (const [key, value] of Object.entries(item)) {
-    //     console.log(`${key}: ${value}`);
-    //     if(key === attribute.id )
-    //   }
-    // });
     return (
       <>
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
-            <p>{attribute.name}:</p>
-            {attribute.items.map((item) =>
-              attribute.name === "Color" ? (
-                <button
-                  key={item.id}
-                  style={style(
+            <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
+            {attribute.items.map((item) => (
+              <button
+                key={item.id}
+                style={
+                  attribute.name === "Color"
+                    ? {
+                        ...style(item.id, attribute.name, attribute.id),
+                        ...this.props.style,
+                        ...this.props.colorStyle,
+                        background: item.value,
+                      }
+                    : {
+                        ...style(item.id, attribute.name, attribute.id),
+                        ...this.props.style,
+                        ...this.props.otherStyle,
+                      }
+                }
+                onClick={() => {
+                  this.props.setCartItem([
+                    this.props.productId,
+                    attribute.id,
                     item.id,
-                    {
-                      ...this.props.style,
-                      ...this.props.colorStyle,
-                      background: item.value,
-                      border: "1px solid #5ECE7B",
-                    },
-                    {
-                      ...this.props.style,
-                      ...this.props.colorStyle,
-                      background: item.value,
-                    }
-                  )}
-                  onClick={() => {
-                    this.props.setCartItem([
-                      this.props.productId,
-                      attribute.id,
-                      item.id,
-                    ]);
-                  }}
-                ></button>
-              ) : (
-                <button
-                  key={item.id}
-                  style={style(
-                    item.id,
-                    {
-                      ...this.props.style,
-                      ...this.props.otherStyle,
-                      background: "black",
-                      color: "#fff",
-                    },
-                    {
-                      ...this.props.style,
-                      ...this.props.otherStyle,
-                      background: "#fff",
-                    }
-                  )}
-                  onClick={() => {
-                    this.props.setCartItem([
-                      this.props.productId,
-                      attribute.id,
-                      item.id,
-                    ]);
-                  }}
-                >
-                  {item.value}
-                </button>
-              )
-            )}
+                  ]);
+                  this.props.setDummyCart([attribute.id, item.id]);
+                }}
+              >
+                {attribute.name === "Color" ? null : item.value}
+              </button>
+            ))}
           </div>
         ))}
       </>
@@ -104,12 +89,15 @@ const mapStateToProps = (state) => ({
   cart: state.cart.cart,
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  dummyCart: state.dummyCart.dummyCart,
 });
 const mapDispatchToProps = {
   setCartDecrement,
   setCartIncrement,
   setCartSplice,
   setCartItem,
+  setCart,
+  setDummyCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

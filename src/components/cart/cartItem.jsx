@@ -20,13 +20,6 @@ class cartItem extends React.Component {
       cursor: "pointer",
     };
 
-    const attrBtnStyle = {
-      border: "1px solid #1D1F22",
-      background: "#fff",
-      margin: "0 5px 5px 0",
-      cursor: "pointer",
-    };
-
     const itemPrice = (cart) => {
       let index = cart.price.findIndex(
         (item) => item.label === this.props.label
@@ -68,14 +61,14 @@ class cartItem extends React.Component {
             <Attributes
               productAttributes={this.props.productAttributes}
               productId={this.props.productId}
-              colorStyle={{ width: 16, height: 16 }}
               style={{
                 margin: "0 5px 5px 0",
                 cursor: "pointer",
-                border: "1px solid #1D1F22",
               }}
-              otherStyle={{ padding: 5, fontWeight: 500 }}
-            ></Attributes>
+              colorStyle={{ width: 16, height: 16 }}
+              otherStyle={{ padding: 5, fontWeight: 500, }}
+              productPrices={this.props.productPrices}
+            />
           </div>
           <div
             style={{

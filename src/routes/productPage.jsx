@@ -4,20 +4,24 @@ import { getQuery } from "../lib/queries";
 import { Query } from "@apollo/client/react/components";
 import { location } from "../lib/location";
 import { connect } from "react-redux";
-import {
-  setCartDecrement,
-  setCartIncrement,
-  setCartSplice,
-  setCartItem,
-} from "../redux/cartSlice";
+import { setCartIncrement, setCartItem, setCart } from "../redux/cartSlice";
+import { setDummyCart, cleanDummyCart } from "../redux/dummyCartSlice";
+import Attributes from "../components/buttons/attributes";
 
 class ProductPage extends React.Component {
-  // componentDidMount() {
-  //   console.log(this.props.cart);
-  // }
-  // componentDidUpdate() {
-  //   console.log(this.props.cart);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentImage: "",
+    };
+  }
+
+  setCurrentImage = (image) => {
+    this.setState({ currentImage: image });
+  };
+
+  componentDidUpdate() {}
+
   render() {
     const labelStyle = {
       fontSize: 18,
@@ -26,10 +30,43 @@ class ProductPage extends React.Component {
       fontFamily: "Roboto",
     };
 
-    const attrButtonStyle = {
-      border: "1px solid #1D1F22",
-      marginRight: 12,
-      fontSize: 16,
+    let cartClick = (productId, productPrices) => {
+      let index = this.props.cart.findIndex((item) => item.id === productId);
+      if (this.props.cart[index]) {
+        this.props.setCartIncrement(productId);
+      } else if (this.props.dummyCart.length > 0) {
+        this.props.setCart({
+          id: productId,
+          price: productPrices.map((price) => {
+            return {
+              label: price.currency.label,
+              amount: price.amount,
+            };
+          }),
+          quantity: 1,
+        });
+        this.props.dummyCart.forEach((arrayItem) => {
+          for (let key in arrayItem) {
+            if (arrayItem.hasOwnProperty(key)) {
+              this.props.setCartItem([productId, key, arrayItem[key]]);
+              console.log(key);
+              console.log(arrayItem[key]);
+            }
+          }
+        });
+        this.props.cleanDummyCart();
+      } else {
+        this.props.setCart({
+          id: productId,
+          price: productPrices.map((price) => {
+            return {
+              label: price.currency.label,
+              amount: price.amount,
+            };
+          }),
+          quantity: 1,
+        });
+      }
     };
     return (
       <Layout>
@@ -46,14 +83,15 @@ class ProductPage extends React.Component {
                       style={{
                         display: "grid",
                         gridTemplateColumns: "0.1fr 0.5fr 0.4fr",
+                        gridTemplateRows: "610px",
                         margin: "100px",
+                        height: "610",
                       }}
                     >
                       <div
                         style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
+                          overflow: "scroll",
+                          scrollbarWidth: "none",
                         }}
                       >
                         {product.gallery.map((item) => (
@@ -64,20 +102,32 @@ class ProductPage extends React.Component {
                               width: "100px",
                               backgroundSize: "cover",
                               marginBottom: 30,
+                              cursor: "pointer",
                             }}
                             key={item}
+                            onClick={() => {
+                              this.setCurrentImage(item);
+                            }}
                           />
                         ))}
                       </div>
                       <div
                         style={{
-                          backgroundImage: `url(${product.gallery[0]})`,
                           marginRight: "100px",
-                          height: 610,
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition: "center",
+                          display: "flex",
+                          justifyContent: "center",
                         }}
-                      ></div>
+                      >
+                        <img
+                          src={
+                            this.state.currentImage.length < 1
+                              ? product.gallery[0]
+                              : this.state.currentImage
+                          }
+                          alt="product"
+                          style={{ maxHeight: "100%", maxWidth: "100%" }}
+                        />
+                      </div>
                       <div>
                         <div style={{ fontSize: 30, marginBottom: 45 }}>
                           <h1 style={{ margin: 0, fontSize: 30 }}>
@@ -85,51 +135,25 @@ class ProductPage extends React.Component {
                           </h1>
                           <span>{product.brand}</span>
                         </div>
-
-                        {product.attributes.map((attribute) => (
-                          <div key={attribute.id}>
-                            <p style={labelStyle}>{attribute.name}:</p>
-                            {attribute.items.map((item) =>
-                              attribute.name === "Color" ? (
-                                <button
-                                  key={item.id}
-                                  style={{
-                                    ...attrButtonStyle,
-                                    width: 32,
-                                    height: 32,
-                                    background: item.value,
-                                  }}
-                                  onClick={() => {
-                                    this.props.setCartItem([
-                                      product.id,
-                                      attribute.id,
-                                      item.id,
-                                    ]);
-                                  }}
-                                ></button>
-                              ) : (
-                                <button
-                                  key={item.id}
-                                  style={{
-                                    ...attrButtonStyle,
-                                    width: 65,
-                                    height: 45,
-                                    background: "none",
-                                  }}
-                                  onClick={() => {
-                                    this.props.setCartItem([
-                                      product.id,
-                                      attribute.id,
-                                      item.id,
-                                    ]);
-                                  }}
-                                >
-                                  {item.value}
-                                </button>
-                              )
-                            )}
-                          </div>
-                        ))}
+                        <Attributes
+                          productAttributes={product.attributes}
+                          productId={product.id}
+                          style={{
+                            margin: "0 5px 5px 0",
+                            cursor: "pointer",
+                            marginRight: 12,
+                          }}
+                          colorStyle={{ width: 32, height: 32 }}
+                          otherStyle={{
+                            padding: 5,
+                            fontWeight: 500,
+                            width: 65,
+                            height: 45,
+                            fontSize: 16,
+                          }}
+                          labelStyle={labelStyle}
+                          productPrices={product.prices}
+                        />
 
                         <p
                           style={{
@@ -149,7 +173,11 @@ class ProductPage extends React.Component {
                             ) : null}
                           </div>
                         ))}
-                        <button>Add to cart</button>
+                        <button
+                          onClick={() => cartClick(product.id, product.prices)}
+                        >
+                          Add to cart
+                        </button>
                         <p
                           dangerouslySetInnerHTML={{
                             __html: product.description,
@@ -173,12 +201,14 @@ const mapStateToProps = (state) => ({
   cart: state.cart.cart,
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  dummyCart: state.dummyCart.dummyCart,
 });
 const mapDispatchToProps = {
-  setCartDecrement,
   setCartIncrement,
-  setCartSplice,
   setCartItem,
+  setCart,
+  setDummyCart,
+  cleanDummyCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

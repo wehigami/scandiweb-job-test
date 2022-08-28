@@ -19,12 +19,6 @@ const btnStyle = {
 };
 
 class Cart extends React.Component {
-  componentDidMount() {
-    console.log(this.props.cart);
-  }
-  componentDidUpdate() {
-    console.log(this.props.cart);
-  }
   render() {
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
@@ -47,6 +41,7 @@ class Cart extends React.Component {
     };
 
     return this.props.cartClick ? (
+
       <div
         style={{
           height: 650,
