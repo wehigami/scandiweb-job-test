@@ -9,61 +9,52 @@ import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import { setCartClick } from "../../redux/cartClickSlice";
 import Dropdown from "../dropdown/dropdown";
-import { links } from "../../index";
 import { getQuery } from "../../lib/queries";
+import { setCurrentLink } from "../../redux/currentLinkSlice";
 
 class Nav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownActive: false,
-    };
-  }
-
-  handleClick = () => {
-    this.setState({ dropdownActive: !this.state.dropdownActive });
-  };
+  currencyQuery = (
+    <Query query={getQuery(0)}>
+      {({ loading, error, data }) => {
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error :(</p>;
+        return (
+          <>
+            {data.currencies.map((currency) => (
+              <p
+                key={currency.symbol}
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  height: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  fontWeight: 500,
+                }}
+                onClick={() => {
+                  this.props.setActiveCurrency([
+                    currency.symbol,
+                    currency.label,
+                  ]);
+                }}
+              >
+                {currency.symbol}
+                {currency.label}
+              </p>
+            ))}
+          </>
+        );
+      }}
+    </Query>
+  );
 
   render() {
-    const labels = links;
-
-    const currencyQuery = (
-      <Query query={getQuery(0)}>
-        {({ loading, error, data }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error :(</p>;
-          return (
-            <>
-              {data.currencies.map((currency) => (
-                <p
-                  key={currency.symbol}
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    height: 35,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                    fontWeight: 500
-                  }}
-                  onClick={() => {
-                    this.props.setActiveCurrency([
-                      currency.symbol,
-                      currency.label,
-                    ]);
-
-                    this.handleClick();
-                  }}
-                >
-                  {currency.symbol}
-                  {currency.label}
-                </p>
-              ))}
-            </>
-          );
-        }}
-      </Query>
-    );
+    const labels = [
+      { name: "all", href: "/all" },
+      { name: "clothes", href: "/clothes" },
+      { name: "tech", href: "/tech" },
+    ];
 
     return (
       <nav
@@ -89,9 +80,12 @@ class Nav extends React.Component {
               <div
                 style={{ textTransform: "uppercase", marginRight: "20px" }}
                 key={label.name}
+                onClick={() => {
+                  this.props.setCurrentLink(label.name);
+                }}
               >
                 <NavLink
-                  to={label.href}
+                  to={`/product-listing-page/${label.name}`}
                   className={({ isActive }) =>
                     isActive ? navStyle.active : navStyle.label
                   }
@@ -125,7 +119,7 @@ class Nav extends React.Component {
           }}
         >
           {/*dropdown goes here*/}
-          <Dropdown text={this.props.symbol} query={currencyQuery} nav />
+          <Dropdown text={this.props.symbol} query={this.currencyQuery} />
 
           <img
             src={Cart}
@@ -145,5 +139,5 @@ const mapStateToProps = (state) => ({
   symbol: state.activeCurrency.symbol,
 });
 
-const mapDispatchToProps = { setActiveCurrency, setCartClick };
+const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

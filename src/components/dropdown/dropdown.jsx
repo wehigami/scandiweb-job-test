@@ -7,7 +7,27 @@ class Dropdown extends React.Component {
     super(props);
     this.state = {
       dropdownActive: false,
+      wrapperRef: React.createRef(),
+      handleClickOutside: this.handleClickOutside.bind(this)
     };
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.state.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.state.handleClickOutside);
+  }
+
+  /**
+   * Alert if clicked on outside of element
+   */
+  handleClickOutside(event) {
+    if (this.state.wrapperRef && !this.state.wrapperRef.current.contains(event.target)) {
+      this.setState({ dropdownActive: false });
+
+    }
   }
 
   handleClick = () => {
@@ -25,15 +45,12 @@ class Dropdown extends React.Component {
         };
 
     const pickerStyle = {
-      marginTop: "200px",
-      userSelect: 'none'
+      userSelect: "none",
+      right: 100
     };
 
-    if (this.props.category) {
-      pickerStyle.marginTop = "10px";
-    }
     return (
-      <>
+      <div ref={this.state.wrapperRef}>
         <div
           style={{
             display: "flex",
@@ -42,19 +59,21 @@ class Dropdown extends React.Component {
             alignItems: "center",
             userSelect: "none",
           }}
-          onClick={this.handleClick}
+          onClick={() => this.handleClick()}
         >
-          <p style={{fontWeight: 500}}>
-            {this.props.text}
-          </p>
+          <p style={{ fontWeight: 500 }}>{this.props.text}</p>
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>
         {this.state.dropdownActive ? (
-          <div className="picker" style={pickerStyle}>
+          <div
+            className="picker"
+            style={pickerStyle}
+            onClick={() => this.handleClick()}
+          >
             {this.props.query}
           </div>
         ) : null}
-      </>
+      </div>
     );
   }
 }

@@ -13,6 +13,8 @@ class ProductPage extends React.Component {
     super(props);
     this.state = {
       currentImage: "",
+      clearCart: this.props.cleanDummyCart(),
+
     };
   }
 
@@ -20,7 +22,9 @@ class ProductPage extends React.Component {
     this.setState({ currentImage: image });
   };
 
-  componentDidUpdate() {}
+  componentDidMount() {
+    return this.state.clearCart;
+  }
 
   render() {
     const labelStyle = {

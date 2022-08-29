@@ -5,6 +5,7 @@ import {
   setCart,
   setCartIncrement,
 } from "../../redux/cartSlice";
+import { setCartMessage } from '../../redux/cartClickSlice'
 
 class CartAdd extends React.Component {
   render() {
@@ -21,31 +22,26 @@ class CartAdd extends React.Component {
     };
 
     let cartClick = () => {
-      if (this.props.cart.length === 0) {
+      if (
+        this.props.cart[
+          this.props.cart.findIndex((item) => item.id === this.props.productId)
+        ]
+      ) {
+        this.props.setCartIncrement(this.props.productId);
+        this.props.setCartMessage("");
+      } else if (this.props.productAttributes.length < 1) {
         this.props.setCart({
           id: this.props.productId,
           price: this.props.productPrices,
           quantity: 1,
         });
+        this.props.setCartMessage("");
       } else {
-        if (
-          this.props.cart[
-            this.props.cart.findIndex(
-              (item) => item.id === this.props.productId
-            )
-          ]
-        ) {
-          this.props.setCartIncrement(this.props.productId);
-        } else {
-          this.props.setCart({
-            id: this.props.productId,
-            price: this.props.productPrices,
-            quantity: 1,
-          });
-        }
+        this.props.setCartMessage(
+          "You can't add an item without selecting the attributes first!"
+        );
       }
     };
-
 
     return (
       <div>
@@ -76,6 +72,6 @@ const mapStateToProps = (state) => ({
   cart: state.cart.cart,
 });
 
-const mapDispatchToProps = { setCart, setCartIncrement };
+const mapDispatchToProps = { setCart, setCartIncrement, setCartMessage };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartAdd);

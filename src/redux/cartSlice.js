@@ -29,6 +29,7 @@ export const cartSlice = createSlice({
       }
       //action.payload[0] is the id of the item, action.payload[1] is the id of the value, action.payload[2] is the new value on the item
     },
+
   },
 });
 
