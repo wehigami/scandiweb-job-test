@@ -25,7 +25,7 @@ export const cartSlice = createSlice({
     setCartItem(state, action) {
       let index = state.cart.findIndex((item) => item.id === action.payload[0]);
       if (state.cart[index]) {
-        state.cart[index][`${action.payload[1]}`] = action.payload[2];
+        state.cart[index][action.payload[1]] = action.payload[2];
       }
       //action.payload[0] is the id of the item, action.payload[1] is the id of the value, action.payload[2] is the new value on the item
     },

@@ -68,6 +68,7 @@ class cartItem extends React.Component {
               colorStyle={{ width: 16, height: 16 }}
               otherStyle={{ padding: 5, fontWeight: 500, }}
               productPrices={this.props.productPrices}
+              inCart
             />
           </div>
           <div

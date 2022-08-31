@@ -6,6 +6,7 @@ import {
   setCartSplice,
   setCartItem,
   setCart,
+  setCartAttributes
 } from "../../redux/cartSlice";
 import { setDummyCart } from "../../redux/dummyCartSlice";
 import "./attributes.css";
@@ -26,19 +27,29 @@ class Attributes extends React.Component {
         (item) => item[attributeId]
       );
 
-      if (this.props.cart[index]) {
-        for (const [key, value] of Object.entries(this.props.cart[index])) {
-          if (itemId === value && attributeName === key) {
+      if (this.props.inCart) {
+        if (this.props.cart[index]) {
+          this.props.cart[index].attributes.forEach(item => {
+            for (const [key, value] of Object.entries(item)) {
+              if (itemId === value && attributeName === key) {
+                attributeName === "Color"
+                  ? (style = { border: "2px solid #5ECE7B" })
+                  : (style = { background: "black", color: "white" });
+              }
+            }
+          })
+            
+        }
+      } else {
+        if (
+          this.props.dummyCart[dummyIndex] &&
+          this.props.dummyCart.length > 0
+        ) {
+          if (itemId === this.props.dummyCart[dummyIndex][attributeId]) {
             attributeName === "Color"
               ? (style = { border: "2px solid #5ECE7B" })
               : (style = { background: "black", color: "white" });
           }
-        }
-      } else if (this.props.dummyCart[dummyIndex] && this.props.dummyCart.length > 0) {
-        if (itemId === this.props.dummyCart[dummyIndex][attributeId]) {
-          attributeName === "Color"
-            ? (style = { border: "2px solid #5ECE7B" })
-            : (style = { background: "black", color: "white" });
         }
       }
 
@@ -46,6 +57,7 @@ class Attributes extends React.Component {
     };
     return (
       <>
+      {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
@@ -67,12 +79,13 @@ class Attributes extends React.Component {
                       }
                 }
                 onClick={() => {
-                  this.props.setCartItem([
-                    this.props.productId,
-                    attribute.id,
-                    item.id,
-                  ]);
-                  this.props.setDummyCart([attribute.id, item.id]);
+                  this.props.inCart
+                    ? this.props.setCartItem([
+                        this.props.productId,
+                        'attributes',
+                        [{ [attribute.id]: item.id }]
+                      ])
+                    : this.props.setDummyCart([attribute.id, item.id]);
                 }}
               >
                 {attribute.name === "Color" ? null : item.value}

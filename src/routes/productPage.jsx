@@ -26,6 +26,11 @@ class ProductPage extends React.Component {
     return this.state.clearCart;
   }
 
+  componentDidUpdate() {
+    console.log(this.props.cart)
+    localStorage.clear();
+  }
+
   render() {
     const labelStyle = {
       fontSize: 18,
@@ -35,8 +40,8 @@ class ProductPage extends React.Component {
     };
 
     let cartClick = (productId, productPrices) => {
-      let index = this.props.cart.findIndex((item) => item.id === productId);
-      if (this.props.cart[index]) {
+      let idIndex = this.props.cart.findIndex((item) => item.id === productId);
+      if (this.props.cart[idIndex]) {
         this.props.setCartIncrement(productId);
       } else if (this.props.dummyCart.length > 0) {
         this.props.setCart({
@@ -49,15 +54,7 @@ class ProductPage extends React.Component {
           }),
           quantity: 1,
         });
-        this.props.dummyCart.forEach((arrayItem) => {
-          for (let key in arrayItem) {
-            if (arrayItem.hasOwnProperty(key)) {
-              this.props.setCartItem([productId, key, arrayItem[key]]);
-              console.log(key);
-              console.log(arrayItem[key]);
-            }
-          }
-        });
+        this.props.setCartItem([productId, 'attributes', this.props.dummyCart])
         this.props.cleanDummyCart();
       }
     };
