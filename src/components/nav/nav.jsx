@@ -56,6 +56,8 @@ class Nav extends React.Component {
       { name: "tech", href: "/tech" },
     ];
 
+    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
+
     return (
       <nav
         style={{
@@ -128,6 +130,7 @@ class Nav extends React.Component {
             style={{ marginLeft: "20px", cursor: "pointer" }}
             onClick={() => this.props.setCartClick()}
           />
+          <span style={{marginLeft: '3px', userSelect: 'none'}}>{uniqueItems.size}</span>
         </div>
       </nav>
     );
@@ -137,6 +140,7 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  cart: state.cart.cart
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };

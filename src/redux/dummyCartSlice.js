@@ -4,6 +4,7 @@ export const dummyCartSlice = createSlice({
   name: "dummyCart",
   initialState: {
     dummyCart: [],
+    dummyMiniCart: [],
   },
   reducers: {
     setDummyCart(state, action) {
@@ -18,8 +19,10 @@ export const dummyCartSlice = createSlice({
     },
     cleanDummyCart(state) {
       state.dummyCart = [];
-    }
+    },
+
   },
+
 });
 
 const { actions, reducer } = dummyCartSlice;

@@ -29,16 +29,15 @@ class Attributes extends React.Component {
 
       if (this.props.inCart) {
         if (this.props.cart[index]) {
-          this.props.cart[index].attributes.forEach(item => {
-            for (const [key, value] of Object.entries(item)) {
-              if (itemId === value && attributeName === key) {
+          this.props.cart[index].attributes.forEach((attribute) => {
+            for(const [key, value] of Object.entries(attribute)) {
+              if (attributeId === key && itemId === value) {
                 attributeName === "Color"
                   ? (style = { border: "2px solid #5ECE7B" })
                   : (style = { background: "black", color: "white" });
-              }
+              }     
             }
-          })
-            
+          })  
         }
       } else {
         if (
@@ -52,12 +51,11 @@ class Attributes extends React.Component {
           }
         }
       }
-
       return style;
     };
+
     return (
       <>
-      {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
@@ -80,11 +78,7 @@ class Attributes extends React.Component {
                 }
                 onClick={() => {
                   this.props.inCart
-                    ? this.props.setCartItem([
-                        this.props.productId,
-                        'attributes',
-                        [{ [attribute.id]: item.id }]
-                      ])
+                    ? this.props.setCartAttributes([this.props.productId, attribute.id, item.id])
                     : this.props.setDummyCart([attribute.id, item.id]);
                 }}
               >
@@ -103,6 +97,7 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   dummyCart: state.dummyCart.dummyCart,
+  dummyMiniCart: state.dummyCart.dummyMiniCart
 });
 const mapDispatchToProps = {
   setCartDecrement,
@@ -111,6 +106,7 @@ const mapDispatchToProps = {
   setCartItem,
   setCart,
   setDummyCart,
+  setCartAttributes
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

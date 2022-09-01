@@ -14,7 +14,6 @@ class ProductPage extends React.Component {
     this.state = {
       currentImage: "",
       clearCart: this.props.cleanDummyCart(),
-
     };
   }
 
@@ -26,11 +25,6 @@ class ProductPage extends React.Component {
     return this.state.clearCart;
   }
 
-  componentDidUpdate() {
-    console.log(this.props.cart)
-    localStorage.clear();
-  }
-
   render() {
     const labelStyle = {
       fontSize: 18,
@@ -39,11 +33,12 @@ class ProductPage extends React.Component {
       fontFamily: "Roboto",
     };
 
-    let cartClick = (productId, productPrices) => {
+    let cartClick = (productId, productPrices, attributesLen) => {
+      let dummyCartSize = this.props.dummyCart.length;
       let idIndex = this.props.cart.findIndex((item) => item.id === productId);
       if (this.props.cart[idIndex]) {
         this.props.setCartIncrement(productId);
-      } else if (this.props.dummyCart.length > 0) {
+      } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
           id: productId,
           price: productPrices.map((price) => {
@@ -54,7 +49,7 @@ class ProductPage extends React.Component {
           }),
           quantity: 1,
         });
-        this.props.setCartItem([productId, 'attributes', this.props.dummyCart])
+        this.props.setCartItem([productId, "attributes", this.props.dummyCart]);
         this.props.cleanDummyCart();
       }
     };
@@ -81,7 +76,7 @@ class ProductPage extends React.Component {
                       <div
                         style={{
                           overflowY: "scroll",
-                          direction: 'rtl'
+                          direction: "rtl",
                         }}
                       >
                         {product.gallery.map((item) => (
@@ -164,7 +159,13 @@ class ProductPage extends React.Component {
                           </div>
                         ))}
                         <button
-                          onClick={() => cartClick(product.id, product.prices)}
+                          onClick={() =>
+                            cartClick(
+                              product.id,
+                              product.prices,
+                              product.attributes.length
+                            )
+                          }
                         >
                           Add to cart
                         </button>

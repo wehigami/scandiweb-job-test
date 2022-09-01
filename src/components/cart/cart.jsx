@@ -19,6 +19,9 @@ const btnStyle = {
 };
 
 class Cart extends React.Component {
+  componentDidUpdate() {
+    console.log(this.props.cart)
+  }
   render() {
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 

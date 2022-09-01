@@ -7,7 +7,7 @@ export const cartSlice = createSlice({
   name: "addToCart",
   initialState: {
     cart: [],
-    cartPrices: 0,
+    attributes: [],
   },
   reducers: {
     setCart(state, action) {
@@ -29,7 +29,22 @@ export const cartSlice = createSlice({
       }
       //action.payload[0] is the id of the item, action.payload[1] is the id of the value, action.payload[2] is the new value on the item
     },
-
+    setCartAttributes(state, action) {
+      let index = state.cart.findIndex((item) => item.id === action.payload[0]);
+      if (state.cart[index]) {
+        state.cart[index].attributes.forEach((attribute) => {
+          for (const [key, value] of Object.entries(attribute)) {
+            if (key !== action.payload[1]) {
+              state.cart[index].attributes.push({
+                [action.payload[1]]: action.payload[2],
+              });
+            } else if(key === action.payload[1] && value !== action.payload[2]) {
+              attribute[key] = action.payload[2];
+            }
+          }
+        });
+      }
+    },
   },
 });
 
@@ -40,5 +55,6 @@ export const {
   setCartIncrement,
   setCartSplice,
   setCartItem,
+  setCartAttributes
 } = actions;
 export default reducer;
