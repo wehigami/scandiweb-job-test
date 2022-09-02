@@ -20,20 +20,21 @@ class cartItem extends React.Component {
       cursor: "pointer",
     };
 
-    const itemPrice = (cart) => {
-      let index = cart.price.findIndex(
+    let idIndex = this.props.cart.findIndex(
+      (item) => item.id === this.props.productId
+    );
+
+    const itemPrice = () => {
+      let labelIndex = this.props.cart[idIndex].price.findIndex(
         (item) => item.label === this.props.label
       );
       let price = (
-        parseFloat(cart.price[index].amount) * cart.quantity
+        parseFloat(this.props.cart[idIndex].price[labelIndex].amount) *
+        this.props.cart[idIndex].quantity
       ).toFixed(2);
       return price;
     };
 
-    const cart = (productId) => {
-      let index = this.props.cart.findIndex((item) => item.id === productId);
-      return this.props.cart[index];
-    };
     return (
       <>
         <div
@@ -53,7 +54,7 @@ class cartItem extends React.Component {
               this.props.label === price.currency.label ? (
                 <p key={price.amount} style={{ fontWeight: 600 }}>
                   <span>{this.props.symbol}</span>
-                  <span>{itemPrice(cart(this.props.productId))}</span>
+                  <span>{itemPrice(this.props.cart[idIndex])}</span>
                 </p>
               ) : null
             )}
@@ -66,7 +67,7 @@ class cartItem extends React.Component {
                 cursor: "pointer",
               }}
               colorStyle={{ width: 16, height: 16 }}
-              otherStyle={{ padding: 5, fontWeight: 500, }}
+              otherStyle={{ padding: 5, fontWeight: 500 }}
               productPrices={this.props.productPrices}
               inCart
             />
@@ -93,12 +94,12 @@ class cartItem extends React.Component {
                 alignSelf: "center",
               }}
             >
-              {cart(this.props.productId).quantity}
+              {this.props.cart[idIndex].quantity}
             </div>
             <button
               style={{ ...countBtnStyle, alignSelf: "end" }}
               onClick={() => {
-                cart(this.props.productId).quantity === 1
+                this.props.cart[idIndex].quantity === 1
                   ? this.props.setCartSplice(this.props.productId)
                   : this.props.setCartDecrement(this.props.productId);
               }}

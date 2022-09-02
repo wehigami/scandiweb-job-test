@@ -8,12 +8,15 @@ import { setCartIncrement, setCartItem, setCart } from "../redux/cartSlice";
 import { setDummyCart, cleanDummyCart } from "../redux/dummyCartSlice";
 import Attributes from "../components/buttons/attributes";
 
+//TODO:
+
 class ProductPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentImage: "",
       clearCart: this.props.cleanDummyCart(),
+      dummyCopy: [],
     };
   }
 
@@ -34,10 +37,11 @@ class ProductPage extends React.Component {
     };
 
     let cartClick = (productId, productPrices, attributesLen) => {
+      this.setState({ dummyCopy: this.props.dummyCart });
       let dummyCartSize = this.props.dummyCart.length;
       let idIndex = this.props.cart.findIndex((item) => item.id === productId);
-      if (this.props.cart[idIndex]) {
-        this.props.setCartIncrement(productId);
+      if (this.props.cart[idIndex] === true) {
+          this.props.setCartIncrement(productId);
       } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
           id: productId,

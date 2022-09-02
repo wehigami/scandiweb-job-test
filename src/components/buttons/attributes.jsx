@@ -12,9 +12,7 @@ import { setDummyCart } from "../../redux/dummyCartSlice";
 import "./attributes.css";
 
 class Attributes extends React.Component {
-  // componentDidUpdate() {
-  //   console.log(this.props.dummyCart);
-  // }
+
   render() {
     //border: "1px solid #1D1F22",
     let index = this.props.cart.findIndex(
@@ -97,7 +95,7 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   dummyCart: state.dummyCart.dummyCart,
-  dummyMiniCart: state.dummyCart.dummyMiniCart
+  dummyMiniCart: state.dummyCart.dummyMiniCart,
 });
 const mapDispatchToProps = {
   setCartDecrement,

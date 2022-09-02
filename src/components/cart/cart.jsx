@@ -19,11 +19,7 @@ const btnStyle = {
 };
 
 class Cart extends React.Component {
-  componentDidUpdate() {
-    console.log(this.props.cart)
-  }
   render() {
-    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
     const cartQuantity =
       this.props.cart.length > 0
@@ -44,7 +40,6 @@ class Cart extends React.Component {
     };
 
     return this.props.cartClick ? (
-
       <div
         style={{
           height: 650,
@@ -78,17 +73,19 @@ class Cart extends React.Component {
                 }}
               >
                 {data.categories[0].products.map((product) =>
-                  uniqueItems.has(product.id) ? (
-                    <CartItem
-                      productId={product.id}
-                      productName={product.name}
-                      productPrices={product.prices}
-                      productAttributes={product.attributes}
-                      productGallery={product.gallery}
-                      productBrand={product.brand}
-                      key={product.id}
-                    />
-                  ) : null
+                  this.props.cart.map((item) =>
+                    item.id === product.id ? (
+                      <CartItem
+                        productId={product.id}
+                        productName={product.name}
+                        productPrices={product.prices}
+                        productAttributes={product.attributes}
+                        productGallery={product.gallery}
+                        productBrand={product.brand}
+                        key={product.id}
+                      />
+                    ) : null
+                  )
                 )}
               </div>
             );
