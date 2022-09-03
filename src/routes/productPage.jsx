@@ -40,8 +40,9 @@ class ProductPage extends React.Component {
       this.setState({ dummyCopy: this.props.dummyCart });
       let dummyCartSize = this.props.dummyCart.length;
       let idIndex = this.props.cart.findIndex((item) => item.id === productId);
-      if (this.props.cart[idIndex] === true) {
-          this.props.setCartIncrement(productId);
+
+      if (this.props.cart[idIndex]) {
+        this.props.setCartIncrement(productId);
       } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
           id: productId,
@@ -54,9 +55,11 @@ class ProductPage extends React.Component {
           quantity: 1,
         });
         this.props.setCartItem([productId, "attributes", this.props.dummyCart]);
+        console.log(this.props.cart)
         this.props.cleanDummyCart();
       }
     };
+
     return (
       <Layout>
         <Query query={getQuery(1)}>
