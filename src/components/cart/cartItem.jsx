@@ -100,8 +100,8 @@ class cartItem extends React.Component {
               style={{ ...countBtnStyle, alignSelf: "end" }}
               onClick={() => {
                 this.props.cart[idIndex].quantity === 1
-                  ? this.props.setCartSplice(this.props.cart[idIndex].attributes)
-                  : this.props.setCartDecrement(this.props.cart[idIndex].attributes);
+                  ? this.props.setCartSplice(this.props.productId)
+                  : this.props.setCartDecrement(this.props.productId);
               }}
             >
               -

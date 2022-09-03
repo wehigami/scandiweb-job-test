@@ -15,7 +15,7 @@ class Attributes extends React.Component {
 
   render() {
     //border: "1px solid #1D1F22",
-    let idIndex = this.props.cart.findIndex(
+    let index = this.props.cart.findIndex(
       (item) => item.id === this.props.productId
     );
 
@@ -26,8 +26,8 @@ class Attributes extends React.Component {
       );
 
       if (this.props.inCart) {
-        if (this.props.cart[idIndex]) {
-          this.props.cart[idIndex].attributes.forEach((attribute) => {
+        if (this.props.cart[index]) {
+          this.props.cart[index].attributes.forEach((attribute) => {
             for(const [key, value] of Object.entries(attribute)) {
               if (attributeId === key && itemId === value) {
                 attributeName === "Color"
@@ -54,7 +54,6 @@ class Attributes extends React.Component {
 
     return (
       <>
-      {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
