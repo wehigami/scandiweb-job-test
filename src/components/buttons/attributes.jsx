@@ -54,6 +54,7 @@ class Attributes extends React.Component {
 
     return (
       <>
+      {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
