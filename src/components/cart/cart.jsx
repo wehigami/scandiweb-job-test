@@ -20,7 +20,6 @@ const btnStyle = {
 
 class Cart extends React.Component {
   render() {
-
     const cartQuantity =
       this.props.cart.length > 0
         ? this.props.cart.reduce((acc, item) => {
@@ -73,18 +72,23 @@ class Cart extends React.Component {
                 }}
               >
                 {data.categories[0].products.map((product) =>
-                  this.props.cart.map((item) =>
-                    item.id === product.id ? (
-                      <CartItem
-                        productId={product.id}
-                        productName={product.name}
-                        productPrices={product.prices}
-                        productAttributes={product.attributes}
-                        productGallery={product.gallery}
-                        productBrand={product.brand}
-                        key={product.id}
-                      />
-                    ) : null
+                  product.attributes.map((attribute) =>
+                    attribute.items.map((item) =>
+                      this.props.cart.map((object) =>
+                        object.id === (`${product.id}-${item.value}`) ? (
+                          console.log(item.value),
+                          <CartItem
+                            productId={`${product.id}-${item.value}`}
+                            productName={product.name}
+                            productPrices={product.prices}
+                            productAttributes={product.attributes}
+                            productGallery={product.gallery}
+                            productBrand={product.brand}
+                            key={product.id}
+                          />
+                        ) : null
+                      )
+                    )
                   )
                 )}
               </div>

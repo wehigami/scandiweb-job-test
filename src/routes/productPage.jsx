@@ -36,15 +36,22 @@ class ProductPage extends React.Component {
       fontFamily: "Roboto",
     };
 
+    let uniqueId = this.props.dummyCart.map(
+      (item) => item[Object.keys(item)[0]]
+    )[0];
+
     let cartClick = (productId, productPrices, attributesLen) => {
       this.setState({ dummyCopy: this.props.dummyCart });
       let dummyCartSize = this.props.dummyCart.length;
-      let idIndex = this.props.cart.findIndex((item) => item.id === productId);
+      let idIndex = this.props.cart.findIndex(
+        (item) => item.id === productId + "-" + uniqueId
+      );
+
       if (this.props.cart[idIndex]) {
-          this.props.setCartIncrement(productId);
+        this.props.setCartIncrement(productId + "-" + uniqueId);
       } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
-          id: productId,
+          id: productId + "-" + uniqueId,
           price: productPrices.map((price) => {
             return {
               label: price.currency.label,
@@ -52,13 +59,14 @@ class ProductPage extends React.Component {
             };
           }),
           quantity: 1,
+          attributes: this.props.dummyCart,
         });
-        this.props.setCartItem([productId, "attributes", this.props.dummyCart]);
         this.props.cleanDummyCart();
       }
     };
     return (
       <Layout>
+        {localStorage.clear()}
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>loading...</p>;
@@ -126,7 +134,7 @@ class ProductPage extends React.Component {
                         </div>
                         <Attributes
                           productAttributes={product.attributes}
-                          productId={product.id}
+                          productId={product.id + '-' + uniqueId}
                           style={{
                             margin: "0 5px 5px 0",
                             cursor: "pointer",

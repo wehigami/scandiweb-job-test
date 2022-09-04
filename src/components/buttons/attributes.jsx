@@ -6,13 +6,12 @@ import {
   setCartSplice,
   setCartItem,
   setCart,
-  setCartAttributes
+  setCartAttributes,
 } from "../../redux/cartSlice";
 import { setDummyCart } from "../../redux/dummyCartSlice";
 import "./attributes.css";
 
 class Attributes extends React.Component {
-
   render() {
     //border: "1px solid #1D1F22",
     let index = this.props.cart.findIndex(
@@ -28,14 +27,14 @@ class Attributes extends React.Component {
       if (this.props.inCart) {
         if (this.props.cart[index]) {
           this.props.cart[index].attributes.forEach((attribute) => {
-            for(const [key, value] of Object.entries(attribute)) {
+            for (const [key, value] of Object.entries(attribute)) {
               if (attributeId === key && itemId === value) {
                 attributeName === "Color"
                   ? (style = { border: "2px solid #5ECE7B" })
                   : (style = { background: "black", color: "white" });
-              }     
+              }
             }
-          })  
+          });
         }
       } else {
         if (
@@ -54,7 +53,7 @@ class Attributes extends React.Component {
 
     return (
       <>
-      {localStorage.clear()}
+        {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
@@ -77,7 +76,11 @@ class Attributes extends React.Component {
                 }
                 onClick={() => {
                   this.props.inCart
-                    ? this.props.setCartAttributes([this.props.productId, attribute.id, item.id])
+                    ? this.props.setCartAttributes([
+                        this.props.productId,
+                        attribute.id,
+                        item.id,
+                      ])
                     : this.props.setDummyCart([attribute.id, item.id]);
                 }}
               >
@@ -105,7 +108,7 @@ const mapDispatchToProps = {
   setCartItem,
   setCart,
   setDummyCart,
-  setCartAttributes
+  setCartAttributes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attributes);
