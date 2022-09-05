@@ -10,7 +10,7 @@ import { setCartClick } from "../../redux/cartClickSlice";
 import { setCurrentLink } from "../../redux/currentLinkSlice";
 import Dropdown from "../dropdown/dropdown";
 import { getQuery } from "../../lib/queries";
-import CartComponent from "../cart/cart";
+import MiniCart from "../cart/cart";
 
 const wrapperStyle = {
   padding: "20px 100px 20px 100px",
@@ -127,7 +127,7 @@ class Nav extends React.Component {
         >
           {/*dropdown goes here*/}
           <Dropdown text={this.props.symbol} query={this.currencyQuery} />
-
+          <MiniCart />
           
           <span style={{ marginLeft: "3px", userSelect: "none" }}>
             {uniqueItems.size}
