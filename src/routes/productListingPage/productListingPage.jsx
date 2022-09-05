@@ -26,6 +26,9 @@ let opacityDivStyle = {
 };
 
 class Products extends React.Component {
+  componentDidMount() {
+    return location();
+  }
   render() {
     const productComponent = (
       inStock,
@@ -45,8 +48,8 @@ class Products extends React.Component {
       };
       return <Product {...props} />;
     };
-    return ( 
-      <Layout>  
+    return (
+      <Layout>
         <div style={{ padding: "20px 100px 20px 100px" }}>
           {this.props.cartMessage.length > 0 ? (
             <p>{this.props.cartMessage}</p>
@@ -164,6 +167,7 @@ const mapStateToProps = (state) => ({
   productsId: state.productHover.productId,
   label: state.activeCurrency.label,
   cartMessage: state.cartClick.cartMessage,
+  currentLink: state.currentLink.currentLink,
 });
 
 const mapDispatchToProps = { setProductHover };

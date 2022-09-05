@@ -8,9 +8,9 @@ import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import { setCartClick } from "../../redux/cartClickSlice";
+import { setCurrentLink } from "../../redux/currentLinkSlice";
 import Dropdown from "../dropdown/dropdown";
 import { getQuery } from "../../lib/queries";
-import { setCurrentLink } from "../../redux/currentLinkSlice";
 
 const wrapperStyle = {
   padding: "20px 100px 20px 100px",
@@ -84,15 +84,14 @@ class Nav extends React.Component {
                         marginRight: "20px",
                       }}
                       key={category.name}
-                      onClick={() => {
-                        this.props.setCurrentLink(category.name);
-                      }}
                     >
                       <NavLink
                         to={`/product-listing-page/${category.name}`}
                         className={({ isActive }) =>
                           isActive ? navStyle.active : navStyle.label
                         }
+                        onClick={() => {this.props.setCurrentLink(category.name)
+                           console.log(this.props.currentLink)}}
                       >
                         <span>{category.name}</span>
                       </NavLink>
@@ -148,7 +147,7 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   cart: state.cart.cart,
-  currentLink: state.currentLink.currentLink,
+  currentLink: state.currentLink.currentLink
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };

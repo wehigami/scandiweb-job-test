@@ -23,7 +23,7 @@ export const store = configureStore({
         cart: persistReducer(persistConfig, cartReducer),
         cartClick: cartClickReducer,
         dummyCart: dummyCartReducer,
-        currentLink: currentLinkReducer
+        currentLink: currentLinkReducer,
     },
     middleware: [thunk]
 });

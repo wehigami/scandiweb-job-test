@@ -5,9 +5,9 @@ import { persistor, store } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import ProductPage from "./routes/productPage";
 import Plp from "./routes/productListingPage/productListingPage";
+import App from "./App";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
