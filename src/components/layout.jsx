@@ -1,7 +1,5 @@
 import React from "react";
 import Nav from "./nav/nav";
-import CartComponent from "../components/cart/cart";
-import { setCartClick } from "../redux/cartClickSlice";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
@@ -16,16 +14,14 @@ class Layout extends React.Component {
       };
 
       if (this.props.cartClick) {
-        return <div style={ovStyle} onClick={() => this.props.setCartClick()} />;
+        return <div style={ovStyle} />;
       }
     };
     return (
       <div>
         {darkenOverlay()}
         <Nav />
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <CartComponent />
-        </div>
+
         <section>{this.props.children}</section>
       </div>
     );
@@ -36,6 +32,5 @@ const mapStateToProps = (state) => ({
   cartClick: state.cartClick.cartClicked,
 });
 
-const mapDispatchToProps = { setCartClick };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(mapStateToProps)(Layout);

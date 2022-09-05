@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import navStyle from "./nav.module.scss";
 import Logo from "../../imgs/logo.svg";
-import Cart from "../../imgs/Cart.svg";
 import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
@@ -11,6 +10,7 @@ import { setCartClick } from "../../redux/cartClickSlice";
 import { setCurrentLink } from "../../redux/currentLinkSlice";
 import Dropdown from "../dropdown/dropdown";
 import { getQuery } from "../../lib/queries";
+import CartComponent from "../cart/cart";
 
 const wrapperStyle = {
   padding: "20px 100px 20px 100px",
@@ -90,8 +90,9 @@ class Nav extends React.Component {
                         className={({ isActive }) =>
                           isActive ? navStyle.active : navStyle.label
                         }
-                        onClick={() => {this.props.setCurrentLink(category.name)
-                           console.log(this.props.currentLink)}}
+                        onClick={() => {
+                          this.props.setCurrentLink(category.name);
+                        }}
                       >
                         <span>{category.name}</span>
                       </NavLink>
@@ -127,13 +128,7 @@ class Nav extends React.Component {
           {/*dropdown goes here*/}
           <Dropdown text={this.props.symbol} query={this.currencyQuery} />
 
-          <img
-            src={Cart}
-            alt="cart"
-            width={20}
-            style={{ marginLeft: "20px", cursor: "pointer" }}
-            onClick={() => this.props.setCartClick()}
-          />
+          
           <span style={{ marginLeft: "3px", userSelect: "none" }}>
             {uniqueItems.size}
           </span>
@@ -147,7 +142,8 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   cart: state.cart.cart,
-  currentLink: state.currentLink.currentLink
+  currentLink: state.currentLink.currentLink,
+  cartClick: state.cartClick.cartClicked,
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };

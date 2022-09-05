@@ -7,8 +7,8 @@ export const cartClickSlice = createSlice({
     cartMessage: "",
   },
   reducers: {
-    setCartClick(state) {
-      state.cartClicked = !state.cartClicked;
+    setCartClick(state, action) {
+      state.cartClicked = action.payload;
     },
     setCartMessage(state, action) {
       state.cartMessage = action.payload;

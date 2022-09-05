@@ -16,13 +16,6 @@ const countBtnStyle = {
   cursor: "pointer",
 };
 
-const wrapperStyle = {
-  display: "grid",
-  gridTemplateColumns: "0.7fr 0.3fr 1fr",
-  columnGap: "10px",
-  padding: "10px",
-}
-
 
 class cartItem extends React.Component {
   render() {
@@ -45,11 +38,11 @@ class cartItem extends React.Component {
       <>
         <div
           key={this.props.cartId}
-          style={wrapperStyle}
+          style={{...this.props.wrapperStyle}}
         >
           <div>
-            <p>{this.props.productName}</p>
-            <p>{this.props.productBrand}</p>
+            <p style={this.props.productNameStyle}>{this.props.productName}</p>
+            <span style={this.props.productBrandStyle}>{this.props.productBrand}</span>
 
             {this.props.productPrices.map((price) =>
               this.props.label === price.currency.label ? (
@@ -63,12 +56,11 @@ class cartItem extends React.Component {
             <Attributes
               productAttributes={this.props.productAttributes}
               cartId={this.props.cartId}
-              style={{
-                margin: "0 5px 5px 0",
-              }}
-              colorStyle={{ width: 16, height: 16 }}
-              basicStyle={{ padding: 5, fontWeight: 500 }}
+              style={this.props.style}
+              colorStyle={this.props.colorStyle}
+              basicStyle={this.props.basicStyle}
               productPrices={this.props.productPrices}
+              labelStyle={this.props.labelStyle}
               inCart
             />
           </div>
