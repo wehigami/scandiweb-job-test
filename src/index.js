@@ -8,6 +8,7 @@ import ReactDOM from "react-dom/client";
 import ProductPage from "./routes/productPage";
 import Plp from "./routes/productListingPage/productListingPage";
 import App from "./App";
+import CartPage from "./routes/cartPage";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/",
@@ -23,6 +24,7 @@ root.render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/product-listing-page">
               <Route path=":listingId" element={<Plp />} />
             </Route>

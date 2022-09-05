@@ -5,6 +5,7 @@ import { Query } from "@apollo/client/react/components";
 import { setCart } from "../../redux/cartSlice";
 import CartItem from "./cartItem";
 import { before_ } from "../../lib/utils";
+import { Link } from "react-router-dom";
 
 const wrapperStyle = {
   height: 650,
@@ -17,13 +18,15 @@ const wrapperStyle = {
   display: "grid",
   gridTemplateRows: "0.1fr 1.5fr 0.2fr",
   padding: 15,
-}
+};
 
 const btnStyle = {
   alignSelf: "end",
-  height: 45,
   textTransform: "uppercase",
   fontWeight: 600,
+  width: "100%",
+  height: "80%",
+  cursor: "pointer",
 };
 
 const cartFooterStyle = {
@@ -31,12 +34,10 @@ const cartFooterStyle = {
   gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
   columnGap: 10,
   gridTemplateAreas: "'a b' 'c d'",
-  margin: "30px 0",
-}
+};
 
 class Cart extends React.Component {
   render() {
-
     const cartQuantity =
       this.props.cart.length > 0
         ? this.props.cart.reduce((acc, item) => {
@@ -55,11 +56,8 @@ class Cart extends React.Component {
       return total.toFixed(2);
     };
 
-
     return this.props.cartClick ? (
-      <div
-        style={wrapperStyle}
-      >
+      <div style={wrapperStyle}>
         <p style={{ marginBottom: "30px" }}>
           <strong>My Bag.</strong>{" "}
           {this.props.cart.length === 0 ? 0 : cartQuantity}{" "}
@@ -80,53 +78,66 @@ class Cart extends React.Component {
               >
                 {data.categories[0].products.map((product) =>
                   this.props.cart.map((object) =>
-                    before_(object.id) === product.id ? (
-                      console.log(object.id),
-                      <CartItem
-                        cartId={object.id}
-                        productName={product.name}
-                        productPrices={product.prices}
-                        productAttributes={product.attributes}
-                        productGallery={product.gallery}
-                        productBrand={product.brand}
-                        key={object.id}
-                      />
-                    ) : null
+                    before_(object.id) === product.id
+                      ? (console.log(object.id),
+                        (
+                          <CartItem
+                            cartId={object.id}
+                            productName={product.name}
+                            productPrices={product.prices}
+                            productAttributes={product.attributes}
+                            productGallery={product.gallery}
+                            productBrand={product.brand}
+                            key={object.id}
+                          />
+                        ))
+                      : null
                   )
                 )}
               </div>
             );
           }}
         </Query>
-        <div
-          style={cartFooterStyle}
-        >
+        <div style={cartFooterStyle}>
           <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
-          <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
+          <p
+            style={{
+              gridArea: "b",
+              justifySelf: "end",
+              fontWeight: 600,
+              marginBottom: 30,
+            }}
+          >
             {this.props.symbol}
             {cartTotal()}
           </p>
-          <button
-            style={{
-              ...btnStyle,
-              gridArea: "c",
-              background: "#fff",
-              border: "1px solid #1D1F22",
-            }}
-          >
-            view bag
-          </button>
-          <button
-            style={{
-              ...btnStyle,
-              gridArea: "d",
-              background: "#5ECE7B",
-              color: "#fff",
-              border: "none",
-            }}
-          >
-            check out
-          </button>
+
+          <Link to={`/cart`}>
+            <button
+              style={{
+                ...btnStyle,
+                gridArea: "c",
+                background: "#fff",
+                border: "1px solid #1D1F22",
+              }}
+            >
+              view bag
+            </button>
+          </Link>
+
+          <Link to="#">
+            <button
+              style={{
+                ...btnStyle,
+                gridArea: "d",
+                background: "#5ECE7B",
+                color: "#fff",
+                border: "none",
+              }}
+            >
+              check out
+            </button>
+          </Link>
         </div>
       </div>
     ) : null;

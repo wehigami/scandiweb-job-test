@@ -8,7 +8,7 @@ class App extends React.Component {
         <Layout>
           <p style={{textAlign: 'center'}}>
             This is the main page <br />
-            Hello!
+            Hello World!
           </p>
         </Layout>
       </>

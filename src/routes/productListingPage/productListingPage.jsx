@@ -52,7 +52,7 @@ class Products extends React.Component {
       <Layout>
         <div style={{ padding: "20px 100px 20px 100px" }}>
           {this.props.cartMessage.length > 0 ? (
-            <p>{this.props.cartMessage}</p>
+            <p style={{textAlign: 'center'}}>{this.props.cartMessage}</p>
           ) : null}
           <Query query={getQuery(1)}>
             {({ loading, error, data }) => {
