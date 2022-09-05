@@ -17,7 +17,7 @@ export const dummyCartSlice = createSlice({
         state.dummyCart[index][`${action.payload[0]}`] = action.payload[1];
       }
     },
-    cleanDummyCart(state) {
+    clearDummyCart(state) {
       state.dummyCart = [];
     },
 
@@ -26,5 +26,5 @@ export const dummyCartSlice = createSlice({
 });
 
 const { actions, reducer } = dummyCartSlice;
-export const { setDummyCart, cleanDummyCart } = actions;
+export const { setDummyCart, clearDummyCart } = actions;
 export default reducer;

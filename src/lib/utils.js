@@ -5,9 +5,5 @@ export function location() {
 }
 
 export function before_(str) {
-  return str.substring(0, str.indexOf("_"));
-}
-
-export function after_(str) {
-  return str.substring(str.indexOf('_') + 1);
+  return str.includes("_") ? str.substring(0, str.indexOf("_")) : str;
 }

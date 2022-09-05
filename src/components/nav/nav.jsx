@@ -12,6 +12,15 @@ import Dropdown from "../dropdown/dropdown";
 import { getQuery } from "../../lib/queries";
 import { setCurrentLink } from "../../redux/currentLinkSlice";
 
+const wrapperStyle = {
+  padding: "20px 100px 20px 100px",
+  display: "grid",
+  gridTemplateColumns: "33% 33% 33%",
+  backgroundColor: "#fff",
+  position: "relative",
+  zIndex: "3",
+};
+
 class Nav extends React.Component {
   currencyQuery = (
     <Query query={getQuery(0)}>
@@ -50,20 +59,10 @@ class Nav extends React.Component {
   );
 
   render() {
-
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
     return (
-      <nav
-        style={{
-          padding: "20px 100px 20px 100px",
-          display: "grid",
-          gridTemplateColumns: "33% 33% 33%",
-          backgroundColor: "#fff",
-          position: "relative",
-          zIndex: "3",
-        }}
-      >
+      <nav style={wrapperStyle}>
         <div
           className="labels"
           style={{
@@ -149,6 +148,7 @@ const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
   cart: state.cart.cart,
+  currentLink: state.currentLink.currentLink,
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };

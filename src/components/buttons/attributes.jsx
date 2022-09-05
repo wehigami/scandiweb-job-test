@@ -1,68 +1,70 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  setCartDecrement,
-  setCartIncrement,
-  setCartSplice,
-  setCartItem,
   setCart,
-  setCartAttributes,
 } from "../../redux/cartSlice";
 import { setDummyCart } from "../../redux/dummyCartSlice";
 import "./attributes.css";
-import { before_, after_ } from '../../lib/utils'
 
 class Attributes extends React.Component {
   render() {
-    //border: "1px solid #1D1F22",
-    let index = this.props.cart.findIndex(
+    const index = this.props.cart.findIndex(
       (item) => item.id === this.props.cartId
     );
 
-    let style = (itemId, attributeName, attributeId) => {
-      let style;
-      let dummyIndex = this.props.dummyCart.findIndex(
-        (item) => item[attributeId]
-      );
-
-      if (this.props.inCart) {
-        if (this.props.cart[index]) {
+    const style = (itemId, attributeName, attributeId, itemValue) => {
+      const stylize = () => {
+        let style;
+        const styleActive = () =>
+          attributeName === "Color"
+            ? (style = {border: "2px solid #5ECE7B", })
+            : (style = {background: "black", color: "white", });
+            
+        const dummyIndex = this.props.dummyCart.findIndex(
+          (item) => item[attributeId]
+        );
+  
+        if (this.props.inCart) {
           this.props.cart[index].attributes.forEach((attribute) => {
             for (const [key, value] of Object.entries(attribute)) {
               if (attributeId === key && itemId === value) {
-                attributeName === "Color"
-                  ? (style = { border: "2px solid #5ECE7B" })
-                  : (style = { background: "black", color: "white" });
+                styleActive();
               }
             }
           });
-        }
-      } else {
-        if (
+        } else if (
           this.props.dummyCart[dummyIndex] &&
           this.props.dummyCart.length > 0
         ) {
           if (itemId === this.props.dummyCart[dummyIndex][attributeId]) {
-            attributeName === "Color"
-              ? (style = { border: "2px solid #5ECE7B" })
-              : (style = { background: "black", color: "white" });
+            styleActive();
+  
           }
         }
-      }
-      return style;
-    };
-
-    let inCartClick = (attributeId, itemId) => {
-      this.props.setCartAttributes([
-        this.props.cartId,
-        attributeId,
-        itemId,
-      ]);
+        return style;
+      };
+      
+      return attributeName === "Color"
+      ? {
+          ...stylize(),
+          ...this.props.style,
+          ...this.props.colorStyle,
+          background: itemValue,
+        }
+      : {
+          ...stylize(),
+          ...this.props.style,
+          ...this.props.basicStyle,
+        }
     }
+
+    function inCartclick() {
+      return;
+    }
+    
 
     return (
       <>
-        {localStorage.clear()}
         {this.props.productAttributes.map((attribute) => (
           <div key={attribute.id}>
             <p style={{ ...this.props.labelStyle }}>{attribute.name}:</p>
@@ -70,22 +72,11 @@ class Attributes extends React.Component {
               <button
                 key={item.id}
                 style={
-                  attribute.name === "Color"
-                    ? {
-                        ...style(item.id, attribute.name, attribute.id),
-                        ...this.props.style,
-                        ...this.props.colorStyle,
-                        background: item.value,
-                      }
-                    : {
-                        ...style(item.id, attribute.name, attribute.id),
-                        ...this.props.style,
-                        ...this.props.otherStyle,
-                      }
+                  style(item.id, attribute.name, attribute.id, item.value)
                 }
                 onClick={() => {
                   this.props.inCart
-                    ? inCartClick(attribute.id, item.id)
+                    ? inCartclick()
                     : this.props.setDummyCart([attribute.id, item.id]);
                 }}
               >
@@ -101,19 +92,11 @@ class Attributes extends React.Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart.cart,
-  label: state.activeCurrency.label,
-  symbol: state.activeCurrency.symbol,
   dummyCart: state.dummyCart.dummyCart,
-  dummyMiniCart: state.dummyCart.dummyMiniCart,
 });
 const mapDispatchToProps = {
-  setCartDecrement,
-  setCartIncrement,
-  setCartSplice,
-  setCartItem,
   setCart,
   setDummyCart,
-  setCartAttributes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

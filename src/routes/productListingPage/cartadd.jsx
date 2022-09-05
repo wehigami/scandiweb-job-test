@@ -7,27 +7,27 @@ import {
 } from "../../redux/cartSlice";
 import { setCartMessage } from '../../redux/cartClickSlice'
 
+let surfaceStyle = {
+  width: 52,
+  height: 52,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "50%",
+  position: "absolute",
+  zIndex: "2",
+  background: "#5ECE7B",
+};
+
 class CartAdd extends React.Component {
   render() {
-    let surfaceStyle = {
-      width: 52,
-      height: 52,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: "50%",
-      position: "absolute",
-      zIndex: "2",
-      background: "#5ECE7B",
-    };
-
     let cartClick = () => {
       if (
         this.props.cart[
           this.props.cart.findIndex((item) => item.id === this.props.productId)
         ]
       ) {
-        this.props.setCartIncrement(this.props.productId);
+        this.props.setCartIncrement([this.props.productId]);
         this.props.setCartMessage("");
       } else if (this.props.productAttributes.length < 1) {
         this.props.setCart({

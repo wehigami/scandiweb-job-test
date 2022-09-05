@@ -4,18 +4,31 @@ import { getQuery } from "../lib/queries";
 import { Query } from "@apollo/client/react/components";
 import { location } from "../lib/utils";
 import { connect } from "react-redux";
-import { setCartIncrement, setCartItem, setCart } from "../redux/cartSlice";
-import { setDummyCart, cleanDummyCart } from "../redux/dummyCartSlice";
+import { setCartIncrement, setCart } from "../redux/cartSlice";
+import { clearDummyCart } from "../redux/dummyCartSlice";
 import Attributes from "../components/buttons/attributes";
+import AddToCart from "../components/buttons/addToCart";
 
-//TODO:
+const attrStyle = {
+  margin: "0 5px 5px 0",
+  cursor: "pointer",
+  marginRight: 12,
+};
+
+const attrBasicStyle = {
+  padding: 5,
+  fontWeight: 500,
+  width: 65,
+  height: 45,
+  fontSize: 16,
+};
 
 class ProductPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentImage: "",
-      clearCart: this.props.cleanDummyCart(),
+      clearCart: this.props.clearDummyCart(),
     };
   }
 
@@ -28,6 +41,10 @@ class ProductPage extends React.Component {
   }
 
   render() {
+    const uniqueId = this.props.dummyCart
+      .map((item) => item[Object.keys(item)[0]])
+      .join("-");
+
     const labelStyle = {
       fontSize: 18,
       fontWeight: 700,
@@ -35,37 +52,8 @@ class ProductPage extends React.Component {
       fontFamily: "Roboto",
     };
 
-    let uniqueId = this.props.dummyCart.map(
-      (item) => item[Object.keys(item)[0]]
-    ).join('-');
-
-    let cartClick = (productId, productPrices, attributesLen) => {
-      let dummyCartSize = this.props.dummyCart.length;
-      let productUniqueId = productId + "_" + uniqueId;
-      let idIndex = this.props.cart.findIndex(
-        (item) => item.id === productUniqueId
-      );
-
-      if (this.props.cart[idIndex]) {
-        this.props.setCartIncrement(productUniqueId);
-      } else if (dummyCartSize === attributesLen) {
-        this.props.setCart({
-          id: productUniqueId,
-          price: productPrices.map((price) => {
-            return {
-              label: price.currency.label,
-              amount: price.amount,
-            };
-          }),
-          quantity: 1,
-          attributes: this.props.dummyCart,
-        });
-        this.props.cleanDummyCart();
-      }
-    };
     return (
       <Layout>
-        {localStorage.clear()}
         {console.log(this.props.cart)}
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
@@ -87,7 +75,7 @@ class ProductPage extends React.Component {
                     >
                       <div
                         style={{
-                          overflowY: "scroll",
+                          overflowY: product.gallery.length >= 5 ? "scroll" : null,
                           direction: "rtl",
                         }}
                       >
@@ -134,20 +122,10 @@ class ProductPage extends React.Component {
                         </div>
                         <Attributes
                           productAttributes={product.attributes}
-                          productId={product.id + '-' + uniqueId}
-                          style={{
-                            margin: "0 5px 5px 0",
-                            cursor: "pointer",
-                            marginRight: 12,
-                          }}
+                          productId={product.id + "-" + uniqueId}
+                          style={attrStyle}
                           colorStyle={{ width: 32, height: 32 }}
-                          otherStyle={{
-                            padding: 5,
-                            fontWeight: 500,
-                            width: 65,
-                            height: 45,
-                            fontSize: 16,
-                          }}
+                          basicStyle={attrBasicStyle}
                           labelStyle={labelStyle}
                           productPrices={product.prices}
                         />
@@ -170,17 +148,8 @@ class ProductPage extends React.Component {
                             ) : null}
                           </div>
                         ))}
-                        <button
-                          onClick={() =>
-                            cartClick(
-                              product.id,
-                              product.prices,
-                              product.attributes.length
-                            )
-                          }
-                        >
-                          Add to cart
-                        </button>
+                        {/*add to cart goes here */}
+                        <AddToCart productId={product.id} productPrices={product.prices} productAttributes={product.attributes}/>
                         <p
                           dangerouslySetInnerHTML={{
                             __html: product.description,
@@ -208,10 +177,8 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setCartIncrement,
-  setCartItem,
   setCart,
-  setDummyCart,
-  cleanDummyCart,
+  clearDummyCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductPage);

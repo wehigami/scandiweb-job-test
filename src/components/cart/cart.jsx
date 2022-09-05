@@ -2,15 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import { getQuery } from "../../lib/queries";
 import { Query } from "@apollo/client/react/components";
-import {
-  setCart,
-  setCartDecrement,
-  setCartIncrement,
-  setCartSplice,
-  setCartItem,
-} from "../../redux/cartSlice";
+import { setCart } from "../../redux/cartSlice";
 import CartItem from "./cartItem";
 import { before_ } from "../../lib/utils";
+
+const wrapperStyle = {
+  height: 650,
+  width: 300,
+  background: "#fff",
+  position: "absolute",
+  zIndex: "3",
+  marginRight: 100,
+  overflow: "hidden",
+  display: "grid",
+  gridTemplateRows: "0.1fr 1.5fr 0.2fr",
+  padding: 15,
+}
 
 const btnStyle = {
   alignSelf: "end",
@@ -19,8 +26,17 @@ const btnStyle = {
   fontWeight: 600,
 };
 
+const cartFooterStyle = {
+  display: "grid",
+  gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
+  columnGap: 10,
+  gridTemplateAreas: "'a b' 'c d'",
+  margin: "30px 0",
+}
+
 class Cart extends React.Component {
   render() {
+
     const cartQuantity =
       this.props.cart.length > 0
         ? this.props.cart.reduce((acc, item) => {
@@ -38,20 +54,11 @@ class Cart extends React.Component {
       });
       return total.toFixed(2);
     };
+
+
     return this.props.cartClick ? (
       <div
-        style={{
-          height: 650,
-          width: 300,
-          background: "#fff",
-          position: "absolute",
-          zIndex: "3",
-          marginRight: 100,
-          overflow: "hidden",
-          display: "grid",
-          gridTemplateRows: "0.1fr 1.5fr 0.2fr",
-          padding: 15,
-        }}
+        style={wrapperStyle}
       >
         <p style={{ marginBottom: "30px" }}>
           <strong>My Bag.</strong>{" "}
@@ -72,31 +79,27 @@ class Cart extends React.Component {
                 }}
               >
                 {data.categories[0].products.map((product) =>
-                  this.props.cart.map((object) => (
-                    before_(object.id) === product.id ?
-                    <CartItem
-                      cartId={object.id}
-                      productName={product.name}
-                      productPrices={product.prices}
-                      productAttributes={product.attributes}
-                      productGallery={product.gallery}
-                      productBrand={product.brand}
-                      key={object.id}
-                    /> : null
-                  ))
+                  this.props.cart.map((object) =>
+                    before_(object.id) === product.id ? (
+                      console.log(object.id),
+                      <CartItem
+                        cartId={object.id}
+                        productName={product.name}
+                        productPrices={product.prices}
+                        productAttributes={product.attributes}
+                        productGallery={product.gallery}
+                        productBrand={product.brand}
+                        key={object.id}
+                      />
+                    ) : null
+                  )
                 )}
               </div>
             );
           }}
         </Query>
         <div
-          style={{
-            display: "grid",
-            gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
-            columnGap: 10,
-            gridTemplateAreas: "'a b' 'c d'",
-            margin: "30px 0",
-          }}
+          style={cartFooterStyle}
         >
           <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
           <p style={{ gridArea: "b", justifySelf: "end", fontWeight: 600 }}>
@@ -138,10 +141,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   setCart,
-  setCartDecrement,
-  setCartIncrement,
-  setCartSplice,
-  setCartItem,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -6,42 +6,47 @@ import Layout from "../../components/layout";
 import { getQuery } from "../../lib/queries";
 import { Query } from "@apollo/client/react/components";
 import { connect } from "react-redux";
-import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
 import { Link } from "react-router-dom";
-import { location } from '../../lib/utils'
+import { location } from "../../lib/utils";
 
+const mainDivStyle = {
+  display: "flex",
+  flexDirection: "column",
+  background: "#fff",
+  height: "500px",
+  margin: 40,
+  padding: 15,
+  zIndex: 1,
+};
+
+let opacityDivStyle = {
+  ...mainDivStyle,
+  opacity: 0.5,
+};
 
 class Products extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownActive: false,
-    };
-  }
-
-  handleClick = () => {
-    this.setState({ dropdownActive: !this.state.dropdownActive });
-  };
-
   render() {
-    const mainDivStyle = {
-      display: "flex",
-      flexDirection: "column",
-      background: "#fff",
-      height: "500px",
-      margin: 40,
-      padding: 15,
-      zIndex: 1,
+    const productComponent = (
+      inStock,
+      productId,
+      productGallery,
+      productName,
+      productPrices,
+      productBrand
+    ) => {
+      const props = {
+        productId: productId,
+        productImg: productGallery[0],
+        productName: productName,
+        productPrices: productPrices,
+        productBrand: productBrand,
+        notInStock: inStock ? false : true,
+      };
+      return <Product {...props} />;
     };
-
-    let opacityDivStyle = {
-      ...mainDivStyle,
-      opacity: 0.5,
-    };
-
-    return (
-      <Layout>
+    return ( 
+      <Layout>  
         <div style={{ padding: "20px 100px 20px 100px" }}>
           {this.props.cartMessage.length > 0 ? (
             <p>{this.props.cartMessage}</p>
@@ -117,26 +122,26 @@ class Products extends React.Component {
                                   }}
                                   key={product.id}
                                 >
-                                  <Product
-                                    productId={product.id}
-                                    productImg={product.gallery[0]}
-                                    productName={product.name}
-                                    productPrices={product.prices}
-                                    highlightStyle={style.productHighlight}
-                                    productBrand={product.brand}
-                                  />
+                                  {productComponent(
+                                    true,
+                                    product.id,
+                                    product.gallery,
+                                    product.name,
+                                    product.prices,
+                                    product.brand
+                                  )}
                                 </Link>
                               </div>
                             ) : (
                               <div key={product.id} style={opacityDivStyle}>
-                                <Product
-                                  productId={product.id}
-                                  productImg={product.gallery[0]}
-                                  productName={product.name}
-                                  productPrices={product.prices}
-                                  productBrand={product.brand}
-                                  notInStock
-                                />
+                                {productComponent(
+                                  true,
+                                  product.id,
+                                  product.gallery,
+                                  product.name,
+                                  product.prices,
+                                  product.brand
+                                )}
                               </div>
                             )
                           )}
@@ -155,14 +160,12 @@ class Products extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  categoryName: state.activeCategory.categoryName,
   hover: state.productHover.hover,
   productsId: state.productHover.productId,
   label: state.activeCurrency.label,
   cartMessage: state.cartClick.cartMessage,
-  currentLink: state.currentLink.currentLink,
 });
 
-const mapDispatchToProps = { setActiveCategoryName, setProductHover, };
+const mapDispatchToProps = { setProductHover };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

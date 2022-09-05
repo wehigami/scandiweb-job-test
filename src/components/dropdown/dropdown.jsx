@@ -2,13 +2,26 @@ import React from "react";
 import Arrow from "../../imgs/arrow.svg";
 import "./dropdown.scss";
 
+const wrapperStyle = {
+  display: "flex",
+  cursor: "pointer",
+  height: "25px",
+  alignItems: "center",
+  userSelect: "none",
+};
+
+const pickerStyle = {
+  userSelect: "none",
+  right: 100,
+};
+
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dropdownActive: false,
       wrapperRef: React.createRef(),
-      handleClickOutside: this.handleClickOutside.bind(this)
+      handleClickOutside: this.handleClickOutside.bind(this),
     };
   }
 
@@ -24,9 +37,11 @@ class Dropdown extends React.Component {
    * Alert if clicked on outside of element
    */
   handleClickOutside(event) {
-    if (this.state.wrapperRef && !this.state.wrapperRef.current.contains(event.target)) {
+    if (
+      this.state.wrapperRef &&
+      !this.state.wrapperRef.current.contains(event.target)
+    ) {
       this.setState({ dropdownActive: false });
-
     }
   }
 
@@ -44,23 +59,10 @@ class Dropdown extends React.Component {
           marginLeft: "5px",
         };
 
-    const pickerStyle = {
-      userSelect: "none",
-      right: 100
-    };
-
+        
     return (
       <div ref={this.state.wrapperRef}>
-        <div
-          style={{
-            display: "flex",
-            cursor: "pointer",
-            height: "25px",
-            alignItems: "center",
-            userSelect: "none",
-          }}
-          onClick={() => this.handleClick()}
-        >
+        <div style={wrapperStyle} onClick={() => this.handleClick()}>
           <p style={{ fontWeight: 500 }}>{this.props.text}</p>
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>

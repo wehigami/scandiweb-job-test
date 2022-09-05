@@ -8,27 +8,33 @@ import {
 } from "../../redux/cartSlice";
 import Attributes from "../buttons/attributes";
 
-// allProps = [productID, productName, productPrices, productAttributes, productGallery]
+const countBtnStyle = {
+  border: "1px solid #1D1F22",
+  height: "22px",
+  width: "22px",
+  background: "#fff",
+  cursor: "pointer",
+};
+
+const wrapperStyle = {
+  display: "grid",
+  gridTemplateColumns: "0.7fr 0.3fr 1fr",
+  columnGap: "10px",
+  padding: "10px",
+}
+
 
 class cartItem extends React.Component {
   render() {
-    const countBtnStyle = {
-      border: "1px solid #1D1F22",
-      height: "22px",
-      width: "22px",
-      background: "#fff",
-      cursor: "pointer",
-    };
-
-    let idIndex = this.props.cart.findIndex(
+    const idIndex = this.props.cart.findIndex(
       (item) => item.id === this.props.cartId
     );
 
     const itemPrice = () => {
-      let labelIndex = this.props.cart[idIndex].price.findIndex(
+      const labelIndex = this.props.cart[idIndex].price.findIndex(
         (item) => item.label === this.props.label
       );
-      let price = (
+      const price = (
         parseFloat(this.props.cart[idIndex].price[labelIndex].amount) *
         this.props.cart[idIndex].quantity
       ).toFixed(2);
@@ -39,12 +45,7 @@ class cartItem extends React.Component {
       <>
         <div
           key={this.props.cartId}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "0.7fr 0.3fr 1fr",
-            columnGap: "10px",
-            padding: "10px",
-          }}
+          style={wrapperStyle}
         >
           <div>
             <p>{this.props.productName}</p>
@@ -64,10 +65,9 @@ class cartItem extends React.Component {
               cartId={this.props.cartId}
               style={{
                 margin: "0 5px 5px 0",
-                cursor: "pointer",
               }}
               colorStyle={{ width: 16, height: 16 }}
-              otherStyle={{ padding: 5, fontWeight: 500 }}
+              basicStyle={{ padding: 5, fontWeight: 500 }}
               productPrices={this.props.productPrices}
               inCart
             />
@@ -83,7 +83,7 @@ class cartItem extends React.Component {
             <button
               style={countBtnStyle}
               onClick={() => {
-                this.props.setCartIncrement(this.props.cartId);
+                this.props.setCartIncrement([this.props.cartId]);
               }}
             >
               +
@@ -100,8 +100,8 @@ class cartItem extends React.Component {
               style={{ ...countBtnStyle, alignSelf: "end" }}
               onClick={() => {
                 this.props.cart[idIndex].quantity === 1
-                  ? this.props.setCartSplice(this.props.cartId)
-                  : this.props.setCartDecrement(this.props.cartId);
+                  ? this.props.setCartSplice([this.props.cartId])
+                  : this.props.setCartDecrement([this.props.cartId]);
               }}
             >
               -

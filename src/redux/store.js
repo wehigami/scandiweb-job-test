@@ -1,5 +1,4 @@
 import currencyReducer from './currencySlice'
-import categoryReducer from './categorySlice'
 import productHoverReducer from "./productHoverSlice";
 import cartReducer from "./cartSlice";
 import cartClickReducer from "./cartClickSlice";
@@ -20,7 +19,6 @@ const persistConfig = {
 export const store = configureStore({
     reducer: {
         activeCurrency: persistReducer(persistConfig, currencyReducer),
-        activeCategory: categoryReducer,
         productHover: productHoverReducer,
         cart: persistReducer(persistConfig, cartReducer),
         cartClick: cartClickReducer,
