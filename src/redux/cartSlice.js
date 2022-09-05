@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let index = (state, action, array) =>
+let index = (state, action) =>
   state.cart.findIndex((item) => item.id === action.payload);
 
 export const cartSlice = createSlice({

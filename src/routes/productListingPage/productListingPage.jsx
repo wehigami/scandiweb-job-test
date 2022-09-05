@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { setActiveCategoryName } from "../../redux/categorySlice";
 import { setProductHover } from "../../redux/productHoverSlice";
 import { Link } from "react-router-dom";
-import { location } from '../../lib/location'
+import { location } from '../../lib/utils'
 
 
 class Products extends React.Component {

@@ -21,7 +21,7 @@ class cartItem extends React.Component {
     };
 
     let idIndex = this.props.cart.findIndex(
-      (item) => item.id === this.props.productId
+      (item) => item.id === this.props.cartId
     );
 
     const itemPrice = () => {
@@ -38,7 +38,7 @@ class cartItem extends React.Component {
     return (
       <>
         <div
-          key={this.props.productId}
+          key={this.props.cartId}
           style={{
             display: "grid",
             gridTemplateColumns: "0.7fr 0.3fr 1fr",
@@ -61,7 +61,7 @@ class cartItem extends React.Component {
 
             <Attributes
               productAttributes={this.props.productAttributes}
-              productId={this.props.productId}
+              cartId={this.props.cartId}
               style={{
                 margin: "0 5px 5px 0",
                 cursor: "pointer",
@@ -83,7 +83,7 @@ class cartItem extends React.Component {
             <button
               style={countBtnStyle}
               onClick={() => {
-                this.props.setCartIncrement(this.props.productId);
+                this.props.setCartIncrement(this.props.cartId);
               }}
             >
               +
@@ -100,8 +100,8 @@ class cartItem extends React.Component {
               style={{ ...countBtnStyle, alignSelf: "end" }}
               onClick={() => {
                 this.props.cart[idIndex].quantity === 1
-                  ? this.props.setCartSplice(this.props.productId)
-                  : this.props.setCartDecrement(this.props.productId);
+                  ? this.props.setCartSplice(this.props.cartId)
+                  : this.props.setCartDecrement(this.props.cartId);
               }}
             >
               -

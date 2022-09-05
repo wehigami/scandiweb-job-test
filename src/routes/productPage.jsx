@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../components/layout";
 import { getQuery } from "../lib/queries";
 import { Query } from "@apollo/client/react/components";
-import { location } from "../lib/location";
+import { location } from "../lib/utils";
 import { connect } from "react-redux";
 import { setCartIncrement, setCartItem, setCart } from "../redux/cartSlice";
 import { setDummyCart, cleanDummyCart } from "../redux/dummyCartSlice";
@@ -16,7 +16,6 @@ class ProductPage extends React.Component {
     this.state = {
       currentImage: "",
       clearCart: this.props.cleanDummyCart(),
-      dummyCopy: [],
     };
   }
 
@@ -38,20 +37,20 @@ class ProductPage extends React.Component {
 
     let uniqueId = this.props.dummyCart.map(
       (item) => item[Object.keys(item)[0]]
-    )[0];
+    ).join('-');
 
     let cartClick = (productId, productPrices, attributesLen) => {
-      this.setState({ dummyCopy: this.props.dummyCart });
       let dummyCartSize = this.props.dummyCart.length;
+      let productUniqueId = productId + "_" + uniqueId;
       let idIndex = this.props.cart.findIndex(
-        (item) => item.id === productId + "-" + uniqueId
+        (item) => item.id === productUniqueId
       );
 
       if (this.props.cart[idIndex]) {
-        this.props.setCartIncrement(productId + "-" + uniqueId);
+        this.props.setCartIncrement(productUniqueId);
       } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
-          id: productId + "-" + uniqueId,
+          id: productUniqueId,
           price: productPrices.map((price) => {
             return {
               label: price.currency.label,
@@ -67,6 +66,7 @@ class ProductPage extends React.Component {
     return (
       <Layout>
         {localStorage.clear()}
+        {console.log(this.props.cart)}
         <Query query={getQuery(1)}>
           {({ loading, error, data }) => {
             if (loading) return <p>loading...</p>;

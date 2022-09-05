@@ -10,6 +10,7 @@ import {
   setCartItem,
 } from "../../redux/cartSlice";
 import CartItem from "./cartItem";
+import { before_ } from "../../lib/utils";
 
 const btnStyle = {
   alignSelf: "end",
@@ -37,7 +38,6 @@ class Cart extends React.Component {
       });
       return total.toFixed(2);
     };
-
     return this.props.cartClick ? (
       <div
         style={{
@@ -72,24 +72,18 @@ class Cart extends React.Component {
                 }}
               >
                 {data.categories[0].products.map((product) =>
-                  product.attributes.map((attribute) =>
-                    attribute.items.map((item) =>
-                      this.props.cart.map((object) =>
-                        object.id === (`${product.id}-${item.value}`) ? (
-                          console.log(item.value),
-                          <CartItem
-                            productId={`${product.id}-${item.value}`}
-                            productName={product.name}
-                            productPrices={product.prices}
-                            productAttributes={product.attributes}
-                            productGallery={product.gallery}
-                            productBrand={product.brand}
-                            key={product.id}
-                          />
-                        ) : null
-                      )
-                    )
-                  )
+                  this.props.cart.map((object) => (
+                    before_(object.id) === product.id ?
+                    <CartItem
+                      cartId={object.id}
+                      productName={product.name}
+                      productPrices={product.prices}
+                      productAttributes={product.attributes}
+                      productGallery={product.gallery}
+                      productBrand={product.brand}
+                      key={object.id}
+                    /> : null
+                  ))
                 )}
               </div>
             );

@@ -50,11 +50,6 @@ class Nav extends React.Component {
   );
 
   render() {
-    const labels = [
-      { name: "all", href: "/all" },
-      { name: "clothes", href: "/clothes" },
-      { name: "tech", href: "/tech" },
-    ];
 
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
@@ -77,26 +72,37 @@ class Nav extends React.Component {
             alignSelf: "center",
           }}
         >
-          {labels.map((label) => {
-            return (
-              <div
-                style={{ textTransform: "uppercase", marginRight: "20px" }}
-                key={label.name}
-                onClick={() => {
-                  this.props.setCurrentLink(label.name);
-                }}
-              >
-                <NavLink
-                  to={`/product-listing-page/${label.name}`}
-                  className={({ isActive }) =>
-                    isActive ? navStyle.active : navStyle.label
-                  }
-                >
-                  <span>{label.name}</span>
-                </NavLink>
-              </div>
-            );
-          })}
+          <Query query={getQuery(1)}>
+            {({ loading, error, data }) => {
+              if (loading) return <p>Loading...</p>;
+              if (error) return <p>Error :(</p>;
+              return (
+                <>
+                  {data.categories.map((category) => (
+                    <div
+                      style={{
+                        textTransform: "uppercase",
+                        marginRight: "20px",
+                      }}
+                      key={category.name}
+                      onClick={() => {
+                        this.props.setCurrentLink(category.name);
+                      }}
+                    >
+                      <NavLink
+                        to={`/product-listing-page/${category.name}`}
+                        className={({ isActive }) =>
+                          isActive ? navStyle.active : navStyle.label
+                        }
+                      >
+                        <span>{category.name}</span>
+                      </NavLink>
+                    </div>
+                  ))}
+                </>
+              );
+            }}
+          </Query>
         </div>
 
         <div
@@ -130,7 +136,9 @@ class Nav extends React.Component {
             style={{ marginLeft: "20px", cursor: "pointer" }}
             onClick={() => this.props.setCartClick()}
           />
-          <span style={{marginLeft: '3px', userSelect: 'none'}}>{uniqueItems.size}</span>
+          <span style={{ marginLeft: "3px", userSelect: "none" }}>
+            {uniqueItems.size}
+          </span>
         </div>
       </nav>
     );
@@ -140,7 +148,7 @@ class Nav extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
-  cart: state.cart.cart
+  cart: state.cart.cart,
 });
 
 const mapDispatchToProps = { setActiveCurrency, setCartClick, setCurrentLink };

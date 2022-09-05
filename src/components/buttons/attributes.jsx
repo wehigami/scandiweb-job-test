@@ -10,12 +10,13 @@ import {
 } from "../../redux/cartSlice";
 import { setDummyCart } from "../../redux/dummyCartSlice";
 import "./attributes.css";
+import { before_, after_ } from '../../lib/utils'
 
 class Attributes extends React.Component {
   render() {
     //border: "1px solid #1D1F22",
     let index = this.props.cart.findIndex(
-      (item) => item.id === this.props.productId
+      (item) => item.id === this.props.cartId
     );
 
     let style = (itemId, attributeName, attributeId) => {
@@ -51,6 +52,14 @@ class Attributes extends React.Component {
       return style;
     };
 
+    let inCartClick = (attributeId, itemId) => {
+      this.props.setCartAttributes([
+        this.props.cartId,
+        attributeId,
+        itemId,
+      ]);
+    }
+
     return (
       <>
         {localStorage.clear()}
@@ -76,11 +85,7 @@ class Attributes extends React.Component {
                 }
                 onClick={() => {
                   this.props.inCart
-                    ? this.props.setCartAttributes([
-                        this.props.productId,
-                        attribute.id,
-                        item.id,
-                      ])
+                    ? inCartClick(attribute.id, item.id)
                     : this.props.setDummyCart([attribute.id, item.id]);
                 }}
               >
