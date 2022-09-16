@@ -1,0 +1,28 @@
+.wrapper { 
+    height: 650px;
+    width: 300px;
+    background: #fff;
+    position: absolute;
+    z-index: 3;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 0.1fr 1.5fr 0.2fr;
+    padding: 15px;
+    right: 100px;
+}
+
+.button {
+    align-self: end;
+    text-transform: uppercase;
+    font-weight: 600;
+    width: 100%;
+    height: 80%;
+    cursor: pointer;
+}
+
+.footer {
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    column-gap: 10px;
+    grid-template-areas: 'a b' 'c d';
+}

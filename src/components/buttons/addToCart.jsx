@@ -31,7 +31,6 @@ class AddToCart extends React.Component {
 
       if (this.props.cart[idIndex]) {
         this.props.setCartIncrement([productUniqueId]);
-        this.props.clearDummyCart();
       } else if (dummyCartSize === attributesLen) {
         this.props.setCart({
           id: productUniqueId,
@@ -44,23 +43,30 @@ class AddToCart extends React.Component {
           quantity: 1,
           attributes: this.props.dummyCart,
         });
-        this.props.clearDummyCart();
       }
     };
     return (
       <>
-        <button
-          onClick={() =>
-            cartClick(
-              this.props.productId,
-              this.props.productPrices,
-              this.props.productAttributes.length
-            )
-          }
-          style={addToCartStyle}
-        >
-          Add to cart
-        </button>
+        {this.props.inStock ? (
+          <button
+            onClick={() =>
+              cartClick(
+                this.props.productId,
+                this.props.productPrices,
+                this.props.productAttributes.length
+              )
+            }
+            style={addToCartStyle}
+          >
+            Add to cart
+          </button>
+        ) : (
+          <button
+            style={{...addToCartStyle, background: 'grey', cursor: 'default'}}
+          >
+            Out of Stock
+          </button>
+        )}
       </>
     );
   }

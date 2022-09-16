@@ -1,20 +1,13 @@
 import React from "react";
 import Nav from "./nav/nav";
 import { connect } from "react-redux";
+import style from './layout.module.scss';
 
 class Layout extends React.Component {
   render() {
     const darkenOverlay = () => {
-      const ovStyle = {
-        width: "100%",
-        height: "100%",
-        background: "rgba(0, 0, 0, 0.3)",
-        position: "fixed",
-        zIndex: "3",
-      };
-
       if (this.props.cartClick) {
-        return <div style={ovStyle} />;
+        return <div className={style.overlay} />;
       }
     };
     return (

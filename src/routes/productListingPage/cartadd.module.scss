@@ -1,0 +1,16 @@
+.surface {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  z-index: 2;
+  background: #5ece7b;
+}
+
+.img {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(200%)
+    contrast(119%);
+  user-select: none;
+}

@@ -1,25 +1,17 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import navStyle from "./nav.module.scss";
-import Logo from "../../imgs/logo.svg";
-import "./nav.scss";
 import { Query } from "@apollo/client/react/components";
+import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { setActiveCurrency } from "../../redux/currencySlice";
 import { setCartClick } from "../../redux/cartClickSlice";
 import { setCurrentLink } from "../../redux/currentLinkSlice";
-import Dropdown from "../dropdown/dropdown";
 import { getQuery } from "../../lib/queries";
+import React from "react";
 import MiniCart from "../cart/cart";
+import style from "./nav.module.scss";
+import Logo from "../../imgs/logo.svg";
+import Dropdown from "../dropdown/dropdown";
+import "./nav.scss";
 
-const wrapperStyle = {
-  padding: "20px 100px 20px 100px",
-  display: "grid",
-  gridTemplateColumns: "33% 33% 33%",
-  backgroundColor: "#fff",
-  position: "relative",
-  zIndex: "3",
-};
 
 class Nav extends React.Component {
   currencyQuery = (
@@ -62,7 +54,7 @@ class Nav extends React.Component {
     const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
     return (
-      <nav style={wrapperStyle}>
+      <nav className={style.wrapper}>
         <div
           className="labels"
           style={{
@@ -88,7 +80,7 @@ class Nav extends React.Component {
                       <NavLink
                         to={`/product-listing-page/${category.name}`}
                         className={({ isActive }) =>
-                          isActive ? navStyle.active : navStyle.label
+                          isActive ? style.active : style.label
                         }
                         onClick={() => {
                           this.props.setCurrentLink(category.name);

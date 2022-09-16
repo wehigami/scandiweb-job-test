@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { before_ } from "../lib/utils";
 import CartItem from "../components/cart/cartItem";
 import { cartTotal } from "../lib/utils";
+import style from './cartPage.module.scss'
 
 const itemWrapperStyle = {
   display: "grid",
@@ -29,20 +30,6 @@ const itemLabelStyle = {
   fontWeight: 700,
   textTransform: "uppercase",
   fontFamily: "Roboto",
-};
-
-const orderStyle = {
-  background: "#5ECE7B",
-  width: 300,
-  height: 50,
-  padding: "16px 32px",
-  alignItems: "center",
-  color: "white",
-  textTransform: "uppercase",
-  fontSize: 14,
-  border: "none",
-  cursor: "pointer",
-  marginTop: 25
 };
 
 class CartPage extends React.Component {
@@ -68,13 +55,13 @@ class CartPage extends React.Component {
           >
             Cart
           </h1>
-          <Query query={getQuery(1)}>
+          <Query query={getQuery(2)} variables={{title: 'all'}}>
             {({ loading, error, data }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <p>Error :(</p>;
               return (
                 <>
-                  {data.categories[0].products.map((product) =>
+                  {data.category.products.map((product) =>
                     this.props.cart.map((object) =>
                       before_(object.id) === product.id ? (
                         <CartItem
@@ -126,7 +113,7 @@ class CartPage extends React.Component {
               </strong>
             </p>
           </div>
-          <button style={orderStyle}>
+          <button className={style.orderBtn}>
             order
           </button>
         </div>

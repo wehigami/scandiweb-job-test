@@ -7,15 +7,7 @@ import {
   setCartItem,
 } from "../../redux/cartSlice";
 import Attributes from "../buttons/attributes";
-
-const countBtnStyle = {
-  border: "1px solid #1D1F22",
-  height: "22px",
-  width: "22px",
-  background: "#fff",
-  cursor: "pointer",
-};
-
+import style from './cartItem.module.scss';
 
 class cartItem extends React.Component {
   render() {
@@ -36,13 +28,12 @@ class cartItem extends React.Component {
 
     return (
       <>
-        <div
-          key={this.props.cartId}
-          style={{...this.props.wrapperStyle}}
-        >
+        <div key={this.props.cartId} style={{ ...this.props.wrapperStyle }}>
           <div>
             <p style={this.props.productNameStyle}>{this.props.productName}</p>
-            <span style={this.props.productBrandStyle}>{this.props.productBrand}</span>
+            <span style={this.props.productBrandStyle}>
+              {this.props.productBrand}
+            </span>
 
             {this.props.productPrices.map((price) =>
               this.props.label === price.currency.label ? (
@@ -73,7 +64,7 @@ class cartItem extends React.Component {
             }}
           >
             <button
-              style={countBtnStyle}
+              className={style.countBtn}
               onClick={() => {
                 this.props.setCartIncrement([this.props.cartId]);
               }}
@@ -89,7 +80,8 @@ class cartItem extends React.Component {
               {this.props.cart[idIndex].quantity}
             </div>
             <button
-              style={{ ...countBtnStyle, alignSelf: "end" }}
+            className={style.countBtn}
+              style={{alignSelf: "end" }}
               onClick={() => {
                 this.props.cart[idIndex].quantity === 1
                   ? this.props.setCartSplice([this.props.cartId])
@@ -100,14 +92,13 @@ class cartItem extends React.Component {
             </button>
           </div>
 
-          <div
-            style={{
-              backgroundImage: `url(${this.props.productGallery[0]})`,
-              backgroundSize: "300%",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
+          <div style={{alignSelf: 'center'}}>
+            <img
+              src={this.props.productGallery[0]}
+              alt="product"
+              width="100%"
+            />
+          </div>
         </div>
       </>
     );

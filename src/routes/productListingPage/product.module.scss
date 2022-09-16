@@ -1,0 +1,12 @@
+.cart {
+    position: absolute;
+    align-self: flex-end;
+    margin-top: 380px;
+    margin-right: 10px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-end;
+}

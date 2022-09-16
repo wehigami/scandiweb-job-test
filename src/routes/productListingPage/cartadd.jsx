@@ -6,48 +6,43 @@ import {
   setCartIncrement,
 } from "../../redux/cartSlice";
 import { setCartMessage } from '../../redux/cartClickSlice'
-
-let surfaceStyle = {
-  width: 52,
-  height: 52,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: "50%",
-  position: "absolute",
-  zIndex: "2",
-  background: "#5ECE7B",
-};
+import style from './cartadd.module.scss';
 
 class CartAdd extends React.Component {
   render() {
     let cartClick = () => {
+      const uniqueId = this.props.productAttributes
+      .map((item) => item[Object.keys(item)[0]])
+      .join("-");
+
+      const fullId = this.props.productId + '_' + uniqueId
       if (
         this.props.cart[
-          this.props.cart.findIndex((item) => item.id === this.props.productId)
+          this.props.cart.findIndex((item) => item.id === fullId)
         ]
       ) {
-        this.props.setCartIncrement([this.props.productId]);
-        this.props.setCartMessage("");
+        this.props.setCartIncrement([fullId]);
       } else if (this.props.productAttributes.length < 1) {
         this.props.setCart({
-          id: this.props.productId,
+          id: fullId,
           price: this.props.productPrices,
           quantity: 1,
         });
-        this.props.setCartMessage("");
-      } else {
-        this.props.setCartMessage(
-          "You can't add an item without selecting the attributes first!"
-        );
+      } else if (this.props.productAttributes.length >= 1) {
+        this.props.setCart({
+          id: fullId,
+          price: this.props.productPrices,
+          quantity: 1,
+          attributes: this.props.productAttributes
+        });
       }
     };
 
     return (
       <div>
+        {console.log(this.props.productAttributes)}
         <div
-          style={surfaceStyle}
-          className="surface"
+          className={style.surface}
           onClick={() => {
             cartClick();
           }}
@@ -55,11 +50,7 @@ class CartAdd extends React.Component {
           <img
             src={Cart}
             alt="cart"
-            style={{
-              filter:
-                "invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(200%) contrast(119%)",
-              userSelect: "none",
-            }}
+            className={style.img}
             height="24px"
           />
         </div>

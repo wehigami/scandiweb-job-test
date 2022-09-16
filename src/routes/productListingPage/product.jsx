@@ -1,50 +1,62 @@
 import React from "react";
 import { connect } from "react-redux";
+import CartAdd from "./cartadd";
+import { Link } from "react-router-dom";
+import style from './product.module.scss'
 
 class Product extends React.Component {
   render() {
-    const wrapperStyle = {
-      backgroundImage: `url(${this.props.productImg})`,
-      height: 400,
-      width: "100%",
-      backgroundSize: "cover",
-      backgroundPosition: "90% 10%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    };
-
     return (
-      <>
-        <div style={wrapperStyle}>
-          {this.props.notInStock ? (
-            <span
-              style={{
-                fontSize: 24,
-                textTransform: "uppercase",
-              }}
-            >
-              Out of stock
-            </span>
-          ) : null}
-        </div>
+      <div className={style.wrapper}>
+        {this.props.hover && this.props.productsId === this.props.productId ? (
+          <div className={style.cart}>
+            {this.props.inStock ? (
+              <CartAdd
+                productId={this.props.productId}
+                productPrices={this.props.productPrices.map((price) => {
+                  return {
+                    label: price.currency.label,
+                    amount: price.amount,
+                  };
+                })}
+                productAttributes={this.props.productAttributes.map(
+                  (attribute) => {
+                    return {
+                      [attribute.id]: attribute.items[0].id,
+                    };
+                  }
+                )}
+              />
+            ) : null}
+          </div>
+        ) : null}
 
-        <div>
-          <h3 style={{ fontWeight: 400 }}>
-            {this.props.productName} {this.props.productBrand}
-          </h3>
-          {this.props.productPrices.map((price) => (
-            <div key={price.amount}>
-              {this.props.label === price.currency.label ? (
-                <p style={{ fontWeight: 500 }}>
-                  <span>{this.props.symbol}</span>
-                  <span>{price.amount}</span>
-                </p>
-              ) : null}
-            </div>
-          ))}
-        </div>
-      </>
+        <Link
+          to={`/product/${this.props.productId}`}
+          style={{
+            color: "#1D1F22",
+          }}
+          key={this.props.productId}
+        >
+          <img src={this.props.productImg} alt="product" height="410" />
+
+          <div>
+            <h3 style={{ fontWeight: 400 }}>
+              {this.props.productName} {this.props.productBrand}
+            </h3>
+            {this.props.productPrices.map((price) => (
+              <div key={price.amount}>
+                {this.props.label === price.currency.label ? (
+                  <p style={{ fontWeight: 500 }}>
+                    <span>{this.props.symbol}</span>
+                    <span>{price.amount}</span>
+                  </p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </Link>
+      </div>
     );
   }
 }
@@ -52,6 +64,8 @@ class Product extends React.Component {
 const mapStateToProps = (state) => ({
   label: state.activeCurrency.label,
   symbol: state.activeCurrency.symbol,
+  hover: state.productHover.hover,
+  productsId: state.productHover.productId,
 });
 
 export default connect(mapStateToProps)(Product);

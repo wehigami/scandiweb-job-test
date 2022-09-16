@@ -1,19 +1,6 @@
 import React from "react";
 import Arrow from "../../imgs/arrow.svg";
-import "./dropdown.scss";
-
-const wrapperStyle = {
-  display: "flex",
-  cursor: "pointer",
-  height: "25px",
-  alignItems: "center",
-  userSelect: "none",
-};
-
-const pickerStyle = {
-  userSelect: "none",
-  right: 100,
-};
+import style from "./dropdown.module.scss";
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -62,14 +49,13 @@ class Dropdown extends React.Component {
         
     return (
       <div ref={this.state.wrapperRef}>
-        <div style={wrapperStyle} onClick={() => this.handleClick()}>
+        <div className={style.wrapper} onClick={() => this.handleClick()}>
           <p style={{ fontWeight: 500 }}>{this.props.text}</p>
           <img src={Arrow} alt="Arrow" style={arrowStyle} />
         </div>
         {this.state.dropdownActive ? (
           <div
-            className="picker"
-            style={pickerStyle}
+            className={style.picker}
             onClick={() => this.handleClick()}
           >
             {this.props.query}

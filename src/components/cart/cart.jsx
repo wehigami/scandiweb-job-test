@@ -9,35 +9,7 @@ import { Link } from "react-router-dom";
 import { cartTotal } from "../../lib/utils";
 import { setCartClick } from "../../redux/cartClickSlice";
 import CartImg from "../../imgs/Cart.svg";
-
-const wrapperStyle = {
-  height: 650,
-  width: 300,
-  background: "#fff",
-  position: "absolute",
-  zIndex: "3",
-  overflow: "hidden",
-  display: "grid",
-  gridTemplateRows: "0.1fr 1.5fr 0.2fr",
-  padding: 15,
-  right: 100
-};
-
-const btnStyle = {
-  alignSelf: "end",
-  textTransform: "uppercase",
-  fontWeight: 600,
-  width: "100%",
-  height: "80%",
-  cursor: "pointer",
-};
-
-const cartFooterStyle = {
-  display: "grid",
-  gridTemplate: "repeat(2, 1fr) / repeat(2, 1fr)",
-  columnGap: 10,
-  gridTemplateAreas: "'a b' 'c d'",
-};
+import style from "./cart.module.scss";
 
 const itemWrapperStyle = {
   display: "grid",
@@ -92,17 +64,21 @@ class Cart extends React.Component {
           alt="cart"
           width={20}
           style={{ marginLeft: "20px", cursor: "pointer" }}
-          onClick={() => this.props.cartClick ? this.props.setCartClick(false) : this.props.setCartClick(true)}
+          onClick={() =>
+            this.props.cartClick
+              ? this.props.setCartClick(false)
+              : this.props.setCartClick(true)
+          }
         />
         {this.props.cartClick ? (
-          <div style={wrapperStyle}>
+          <div className={style.wrapper}>
             <p style={{ marginBottom: "30px" }}>
               <strong>My Bag.</strong>{" "}
               {this.props.cart.length === 0 ? 0 : cartQuantity}{" "}
               {this.props.cart.length === 1 ? "item" : "items"}
             </p>
 
-            <Query query={getQuery(1)}>
+            <Query query={getQuery(2)} variables={{ title: "all" }}>
               {({ loading, error, data }) => {
                 if (loading) return <p>Loading...</p>;
                 if (error) return <p>Error :(</p>;
@@ -114,7 +90,7 @@ class Cart extends React.Component {
                       scrollbarWidth: "none",
                     }}
                   >
-                    {data.categories[0].products.map((product) =>
+                    {data.category.products.map((product) =>
                       this.props.cart.map((object) =>
                         before_(object.id) === product.id ? (
                           <CartItem
@@ -139,7 +115,7 @@ class Cart extends React.Component {
                 );
               }}
             </Query>
-            <div style={cartFooterStyle}>
+            <div className={style.footer}>
               <p style={{ gridArea: "a", fontWeight: 600 }}>Total</p>
               <p
                 style={{
@@ -155,8 +131,8 @@ class Cart extends React.Component {
 
               <Link to={`/cart`}>
                 <button
+                  className={style.button}
                   style={{
-                    ...btnStyle,
                     gridArea: "c",
                     background: "#fff",
                     border: "1px solid #1D1F22",
@@ -168,8 +144,8 @@ class Cart extends React.Component {
 
               <Link to="#">
                 <button
+                  className={style.button}
                   style={{
-                    ...btnStyle,
                     gridArea: "d",
                     background: "#5ECE7B",
                     color: "#fff",

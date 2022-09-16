@@ -52,16 +52,16 @@ class ProductPage extends React.Component {
       fontFamily: "Roboto",
     };
 
+
     return (
       <Layout>
-        {console.log(this.props.cart)}
-        <Query query={getQuery(1)}>
+        <Query query={getQuery(2)} variables={{title: "all"}}>
           {({ loading, error, data }) => {
             if (loading) return <p>loading...</p>;
             if (error) return <p>error :(</p>;
             return (
               <>
-                {data.categories[0].products.map((product) =>
+                {data.category.products.map((product) =>
                   location() === product.id ? (
                     <div
                       key={product.id}
@@ -75,7 +75,8 @@ class ProductPage extends React.Component {
                     >
                       <div
                         style={{
-                          overflowY: product.gallery.length >= 5 ? "scroll" : null,
+                          overflowY:
+                            product.gallery.length >= 5 ? "scroll" : null,
                           direction: "rtl",
                         }}
                       >
@@ -149,13 +150,18 @@ class ProductPage extends React.Component {
                           </div>
                         ))}
                         {/*add to cart goes here */}
-                        <AddToCart productId={product.id} productPrices={product.prices} productAttributes={product.attributes}/>
+                        <AddToCart
+                          productId={product.id}
+                          productPrices={product.prices}
+                          productAttributes={product.attributes}
+                          inStock={product.inStock}
+                        />
                         <p
-                          dangerouslySetInnerHTML={{
-                            __html: product.description,
-                          }}
+                          ref={this.state.descriptionRef}
                           style={{ fontFamily: "Roboto" }}
-                        ></p>
+                        >
+                          {product.description}
+                        </p>
                       </div>
                     </div>
                   ) : null
