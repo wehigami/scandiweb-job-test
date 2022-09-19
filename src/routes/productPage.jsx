@@ -8,6 +8,7 @@ import { setCartIncrement, setCart } from "../redux/cartSlice";
 import { clearDummyCart } from "../redux/dummyCartSlice";
 import Attributes from "../components/buttons/attributes";
 import AddToCart from "../components/buttons/addToCart";
+import parse from 'html-react-parser'
 
 const attrStyle = {
   margin: "0 5px 5px 0",
@@ -53,9 +54,10 @@ class ProductPage extends React.Component {
     };
 
 
+
     return (
       <Layout>
-        <Query query={getQuery(2)} variables={{title: "all"}}>
+        <Query query={getQuery(2)} variables={{ title: "all" }}>
           {({ loading, error, data }) => {
             if (loading) return <p>loading...</p>;
             if (error) return <p>error :(</p>;
@@ -156,12 +158,11 @@ class ProductPage extends React.Component {
                           productAttributes={product.attributes}
                           inStock={product.inStock}
                         />
-                        <p
-                          ref={this.state.descriptionRef}
+                        <div
                           style={{ fontFamily: "Roboto" }}
                         >
-                          {product.description}
-                        </p>
+                          {parse(product.description)}
+                        </div>
                       </div>
                     </div>
                   ) : null
