@@ -14,7 +14,7 @@ let opacityDivStyle = {
 
 class Products extends React.Component {
   componentDidMount() {
-    return location();
+    this.props.setProductHover([false, null]);
   }
   render() {
     return (
