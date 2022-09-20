@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import CartAdd from "./cartadd";
 import { Link } from "react-router-dom";
-import style from './product.module.scss'
+import style from "./product.module.scss";
 
 class Product extends React.Component {
   render() {
@@ -36,9 +36,14 @@ class Product extends React.Component {
           style={{
             color: "#1D1F22",
           }}
+          className={style.productWrapper}
           key={this.props.productId}
         >
-          <img src={this.props.productImg} alt="product" height="410" />
+          <img
+            src={this.props.productImg}
+            alt="product"
+            className={style.productImg}
+          />
 
           <div>
             <h3 style={{ fontWeight: 400 }}>

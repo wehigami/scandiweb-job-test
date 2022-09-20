@@ -26,22 +26,13 @@ class Products extends React.Component {
               if (error) return <p>Error :(</p>;
               return (
                 <>
-                  <div>
+                  <div className={style.wrapper}>
                     <h2
-                      style={{
-                        textTransform: "capitalize",
-                        fontWeight: 300,
-                        fontSize: "32px",
-                      }}
-                    >
+                      className={style.categoryTitle}>
                       {data.category.name}
                     </h2>
                     <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(3, 1fr)",
-                        justifyItems: "center",
-                      }}
+                      className={style.productWrapper}
                     >
                       {data.category.products.map((product) => (
                         <div

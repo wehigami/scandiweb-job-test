@@ -1,10 +1,26 @@
 .productHighlight:hover {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .productHighlight {
-    background: #fff;
-    z-index: 1;
-    padding: 15px;
-    margin: 15px;
+  background: #fff;
+  z-index: 1;
+  padding: 15px;
+  margin: 15px 20px 15px 15px;
+}
+
+.productWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.categoryTitle {
+  text-transform: capitalize;
+  font-weight: 300;
+  font-size: 32px;
+  margin-left: 15px;
+}
+
+.wrapper {
+    margin: 0 100px;
 }
