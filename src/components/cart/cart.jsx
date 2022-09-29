@@ -16,6 +16,7 @@ const itemWrapperStyle = {
   gridTemplateColumns: "0.7fr 0.3fr 1fr",
   columnGap: "10px",
   padding: "10px",
+  border: '1px solid red'
 };
 
 class Cart extends React.Component {
@@ -86,8 +87,7 @@ class Cart extends React.Component {
                   <div
                     style={{
                       height: "100%",
-                      overflow: "scroll",
-                      scrollbarWidth: "none",
+                      overflow: "hidden",
                     }}
                   >
                     {data.category.products.map((product) =>

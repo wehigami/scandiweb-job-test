@@ -30,10 +30,10 @@ class cartItem extends React.Component {
       <>
         <div key={this.props.cartId} style={{ ...this.props.wrapperStyle }}>
           <div>
-            <p style={this.props.productNameStyle}>{this.props.productName}</p>
-            <span style={this.props.productBrandStyle}>
+            <span style={this.props.productNameStyle}>{this.props.productName}</span>
+            <p style={this.props.productBrandStyle}>
               {this.props.productBrand}
-            </span>
+            </p>
 
             {this.props.productPrices.map((price) =>
               this.props.label === price.currency.label ? (

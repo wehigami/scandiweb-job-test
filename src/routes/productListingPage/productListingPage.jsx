@@ -49,6 +49,7 @@ class Products extends React.Component {
                             this.props.setProductHover([false, null])
                           }
                         >
+                          
                           <Product
                             productId={product.id}
                             productImg={product.gallery[0]}

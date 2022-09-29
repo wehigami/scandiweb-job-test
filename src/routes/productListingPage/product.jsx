@@ -11,22 +11,24 @@ class Product extends React.Component {
         {this.props.hover && this.props.productsId === this.props.productId ? (
           <div className={style.cart}>
             {this.props.inStock ? (
-              <CartAdd
-                productId={this.props.productId}
-                productPrices={this.props.productPrices.map((price) => {
-                  return {
-                    label: price.currency.label,
-                    amount: price.amount,
-                  };
-                })}
-                productAttributes={this.props.productAttributes.map(
-                  (attribute) => {
+              <>
+                <CartAdd
+                  productId={this.props.productId}
+                  productPrices={this.props.productPrices.map((price) => {
                     return {
-                      [attribute.id]: attribute.items[0].id,
+                      label: price.currency.label,
+                      amount: price.amount,
                     };
-                  }
-                )}
-              />
+                  })}
+                  productAttributes={this.props.productAttributes.map(
+                    (attribute) => {
+                      return {
+                        [attribute.id]: attribute.items[0].id,
+                      };
+                    }
+                  )}
+                />
+              </>
             ) : null}
           </div>
         ) : null}
@@ -39,6 +41,20 @@ class Product extends React.Component {
           className={style.productWrapper}
           key={this.props.productId}
         >
+          {this.props.inStock ? null : (
+            <p
+              style={{
+                position: "absolute",
+                marginTop: "160px",
+                alignSelf: "center",
+                textTransform: "uppercase",
+                weight: 400,
+                fontSize: 24
+              }}
+            >
+              Out of Stock
+            </p>
+          )}
           <img
             src={this.props.productImg}
             alt="product"
