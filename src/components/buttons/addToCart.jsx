@@ -17,6 +17,10 @@ const addToCartStyle = {
 };
 
 class AddToCart extends React.Component {
+  componentDidUpdate() {
+    console.log(this.props.cart);
+  }
+
   render() {
     const uniqueId = this.props.dummyCart
       .map((item) => item[Object.keys(item)[0]])
@@ -62,7 +66,7 @@ class AddToCart extends React.Component {
           </button>
         ) : (
           <button
-            style={{...addToCartStyle, background: 'grey', cursor: 'default'}}
+            style={{ ...addToCartStyle, background: "grey", cursor: "default" }}
           >
             Out of Stock
           </button>

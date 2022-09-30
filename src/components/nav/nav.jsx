@@ -51,7 +51,13 @@ class Nav extends React.Component {
   );
 
   render() {
-    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
+    //const uniqueItems = new Set(this.props.cart.map((item) => item.id));
+    const cartQuantity =
+    this.props.cart.length > 0
+      ? this.props.cart.reduce((acc, item) => {
+          return acc + item.quantity;
+        }, 0)
+      : null;
 
     return (
       <nav className={style.wrapper}>
@@ -122,7 +128,7 @@ class Nav extends React.Component {
           <MiniCart />
           
           <span style={{ marginLeft: "3px", userSelect: "none" }}>
-            {uniqueItems.size}
+            {cartQuantity}
           </span>
         </div>
       </nav>
