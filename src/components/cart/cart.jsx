@@ -57,28 +57,13 @@ class Cart extends React.Component {
           }, 0)
         : null;
 
-    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
 
 
     return (
       <div ref={this.state.wrapperRef}>
         <div>
-          <div
-            style={{
-              userSelect: "none",
-              background: "black",
-              color: "white",
-              width: 20,
-              height: 20,
-              fontWeight: 600,
-              borderRadius: 50,
-              textAlign: "center",
-              position: "absolute",
-              marginLeft: '34px',
-              bottom: 43
-            }}
-          >
-            <span>{uniqueItems.size}</span>
+          <div className={style.quantitySurface}>
+            <span>{this.props.cart.length == 0 ? '0' : cartQuantity}</span>
           </div>
           <img
             src={CartImg}

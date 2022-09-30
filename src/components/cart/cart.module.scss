@@ -26,3 +26,16 @@
     column-gap: 10px;
     grid-template-areas: 'a b' 'c d';
 }
+
+.quantitySurface {
+    user-select: none;
+    background: black;
+    color: white;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 50%;
+    text-align: center;
+    position: absolute;
+    margin-left: 34px;
+    bottom: 43px;
+}
