@@ -12,7 +12,6 @@ import Logo from "../../imgs/logo.svg";
 import Dropdown from "../dropdown/dropdown";
 import "./nav.scss";
 
-
 class Nav extends React.Component {
   currencyQuery = (
     <Query query={getQuery(0)}>
@@ -51,13 +50,6 @@ class Nav extends React.Component {
   );
 
   render() {
-    //const uniqueItems = new Set(this.props.cart.map((item) => item.id));
-    const cartQuantity =
-    this.props.cart.length > 0
-      ? this.props.cart.reduce((acc, item) => {
-          return acc + item.quantity;
-        }, 0)
-      : null;
 
     return (
       <nav className={style.wrapper}>
@@ -126,10 +118,8 @@ class Nav extends React.Component {
           {/*dropdown goes here*/}
           <Dropdown text={this.props.symbol} query={this.currencyQuery} />
           <MiniCart />
-          
-          <span style={{ marginLeft: "3px", userSelect: "none" }}>
-            {cartQuantity}
-          </span>
+
+
         </div>
       </nav>
     );

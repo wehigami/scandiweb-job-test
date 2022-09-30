@@ -57,19 +57,42 @@ class Cart extends React.Component {
           }, 0)
         : null;
 
+    const uniqueItems = new Set(this.props.cart.map((item) => item.id));
+
+
     return (
       <div ref={this.state.wrapperRef}>
-        <img
-          src={CartImg}
-          alt="cart"
-          width={20}
-          style={{ marginLeft: "20px", cursor: "pointer" }}
-          onClick={() =>
-            this.props.cartClick
-              ? this.props.setCartClick(false)
-              : this.props.setCartClick(true)
-          }
-        />
+        <div>
+          <div
+            style={{
+              userSelect: "none",
+              background: "black",
+              color: "white",
+              width: 20,
+              height: 20,
+              fontWeight: 600,
+              borderRadius: 50,
+              textAlign: "center",
+              position: "absolute",
+              marginLeft: '34px',
+              bottom: 43
+            }}
+          >
+            <span>{uniqueItems.size}</span>
+          </div>
+          <img
+            src={CartImg}
+            alt="cart"
+            width={20}
+            style={{ marginLeft: "20px", cursor: "pointer" }}
+            onClick={() =>
+              this.props.cartClick
+                ? this.props.setCartClick(false)
+                : this.props.setCartClick(true)
+            }
+          />
+        </div>
+
         {this.props.cartClick ? (
           <div className={style.wrapper}>
             <p style={{ marginBottom: "30px" }}>
